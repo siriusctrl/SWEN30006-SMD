@@ -10,9 +10,9 @@ import java.util.Stack;
  */
 public class StorageTube{
 	
-    public static final int CAREFUL_CAPACITY = 3;
-    public static final int NORMAL_CAPACITY = 4;
-    public static final int BIG_CAPACITY = 6;
+    //public static final int CAREFUL_CAPACITY = 3;
+    //public static final int NORMAL_CAPACITY = 4;
+    //public static final int BIG_CAPACITY = 6;
     
     public Stack<MailItem> tube;
     private int capacity;
@@ -20,16 +20,9 @@ public class StorageTube{
     /**
      * Constructor for the storage tube
      */
-    public StorageTube(boolean big, boolean careful){
+    public StorageTube(int capacity){
         this.tube = new Stack<MailItem>();
-        
-        if(big) {
-        	capacity = BIG_CAPACITY;
-        }else if(careful) {
-        	capacity = CAREFUL_CAPACITY;
-        }else {
-        	capacity = NORMAL_CAPACITY;
-        }
+        this.capacity = capacity;
     }
 
     /**
