@@ -9,10 +9,10 @@ import java.util.Stack;
  * The storage tube carried by the robot.
  */
 public class StorageTube{
-
+	
+    public static final int CAREFUL_CAPACITY = 3;
     public static final int NORMAL_CAPACITY = 4;
     public static final int BIG_CAPACITY = 6;
-    public static final int CAREFUL_CAPACITY = 3;
     
     public Stack<MailItem> tube;
     private int capacity;
