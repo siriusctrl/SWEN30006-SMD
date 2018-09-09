@@ -22,6 +22,7 @@ public class Automail {
     	boolean small = false; // Stating for not a big robot.
     	boolean careful = true; // Can handle fragile item, but can only take up to 3 item at a time and is half the speed of other robots. 
     	boolean careless = false; // Can't handle fragile item.
+	//123
     	
     	/** Initialize robots */
     	robot = new Robot[3];
