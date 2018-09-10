@@ -12,23 +12,19 @@ import java.util.TreeMap;
  */
 public abstract class Robot {
 
-	StorageTube tube;
-    IMailDelivery delivery;
+	protected StorageTube tube;
+    protected IMailDelivery delivery;
     protected final String id;
-    /** Possible states the robot can be in */
-    public enum RobotState { DELIVERING, WAITING, RETURNING }
-    public RobotState current_state;
-    private int current_floor;
-    private int destination_floor;
-    private IMailPool mailPool;
-    private boolean receivedDispatch;
-    private boolean strong;
-    private boolean careful;
-    private boolean big;
+    protected MailItem deliveryItem;
+	
+	protected int current_floor;
+    protected int destination_floor;
+    protected IMailPool mailPool;
+    protected int deliveryCounter;
     
-    private MailItem deliveryItem;
+    protected RobotState current_state;
     
-    private int deliveryCounter;
+    protected boolean receivedDispatch;
     
 
     /**
@@ -39,35 +35,23 @@ public abstract class Robot {
      * @param mailPool is the source of mail items
      * @param strong is whether the robot can carry heavy items
      */
-    public Robot(IMailDelivery delivery, IMailPool mailPool, boolean strong, boolean big, boolean careful){
+    public Robot(IMailDelivery delivery, IMailPool mailPool, StorageTube tube){
     	id = "R" + hashCode();
         // current_state = RobotState.WAITING;
+        this.delivery = delivery;
+        this.tube = tube;
+		receivedDispatch = false;
     	current_state = RobotState.RETURNING;
         current_floor = Building.MAILROOM_LOCATION;
-        this.delivery = delivery;
         this.mailPool = mailPool;
-        this.receivedDispatch = false;
-        this.big = big;
-        this.strong = strong;
-        this.careful = careful;
         this.deliveryCounter = 0;
-        tube = new StorageTube(big, careful);
     }
     
-    public void dispatch() {
+    /**
+     * Let the robot start dispatch
+     */
+    protected void dispatch() {
     	receivedDispatch = true;
-    }
-    
-    public boolean isStrong() {
-    	return strong;
-    }
-    
-    public boolean isCareful() {
-    	return careful;
-    }
-    
-    public boolean isBig() {
-    	return big;
     }
 
     /**
@@ -79,7 +63,7 @@ public abstract class Robot {
     /**
      * Sets the route for the robot
      */
-    private void setRoute() throws ItemTooHeavyException{
+    protected void setRoute(Boolean strong) throws ItemTooHeavyException{
         /** Pop the item from the StorageUnit */
         deliveryItem = tube.pop();
         if (!strong && deliveryItem.weight > 2000) throw new ItemTooHeavyException(); 
@@ -91,7 +75,7 @@ public abstract class Robot {
      * Generic function that moves the robot towards the destination
      * @param destination the floor towards which the robot is moving
      */
-    private void moveTowards(int destination) throws FragileItemBrokenException {
+    protected void moveTowards(int destination) throws FragileItemBrokenException {
         if (deliveryItem != null && deliveryItem.getFragile() || !tube.isEmpty() && tube.peek().getFragile()) throw new FragileItemBrokenException();
         if(current_floor < destination){
             current_floor++;
@@ -101,7 +85,7 @@ public abstract class Robot {
         }
     }
     
-    private String getIdTube() {
+    protected String getIdTube() {
     	return String.format("%s(%1d/%1d)", id, tube.getSize(), tube.getCapacity());
     }
     
@@ -109,11 +93,13 @@ public abstract class Robot {
      * Prints out the change in state
      * @param nextState the state to which the robot is transitioning
      */
-    private void changeState(RobotState nextState){
+    protected void changeState(RobotState nextState){
     	if (current_state != nextState) {
             System.out.printf("T: %3d > %7s changed from %s to %s%n", Clock.Time(), getIdTube(), current_state, nextState);
     	}
+    	
     	current_state = nextState;
+    	
     	if(nextState == RobotState.DELIVERING){
             System.out.printf("T: %3d > %7s-> [%s]%n", Clock.Time(), getIdTube(), deliveryItem.toString());
     	}

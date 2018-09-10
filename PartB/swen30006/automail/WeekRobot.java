@@ -7,9 +7,30 @@ import strategies.IMailPool;
 
 public class WeekRobot extends Robot {
 	
-	public WeekRobot(IMailDelivery delivery, IMailPool mailPool, boolean strong, boolean big, boolean careful) {
-		super(delivery, mailPool, strong, big, careful);
+	public static final int NORMAL_CAPACITY = 4;
+	public static final boolean STRONG = false;
+
+
+	
+	public WeekRobot(IMailDelivery delivery, IMailPool mailPool) {
+		super(delivery, mailPool, new StorageTube(NORMAL_CAPACITY));
 	}
+	
+	public void setRoute() throws ItemTooHeavyException {
+		super.setRoute(STRONG);
+	}
+	
+	public void moveTowards(int destination) throws FragileItemBrokenException {
+		super.moveTowards(destination);
+	}
+	
+	public void changeState(RobotState nextState){
+		super.changeState(nextState);
+	}
+	
+    public void dispatch() {
+    	super.dispatch();
+    }
 
 	@Override
 	public void step() throws ExcessiveDeliveryException, ItemTooHeavyException, FragileItemBrokenException {
