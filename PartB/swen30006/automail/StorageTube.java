@@ -8,28 +8,24 @@ import java.util.Stack;
 /**
  * The storage tube carried by the robot.
  */
-public class StorageTube{
-	
-    //public static final int CAREFUL_CAPACITY = 3;
-    //public static final int NORMAL_CAPACITY = 4;
-    //public static final int BIG_CAPACITY = 6;
-    
+public class StorageTube {
+
+    private int maxCapacity;
     public Stack<MailItem> tube;
-    private int capacity;
 
     /**
      * Constructor for the storage tube
      */
-    public StorageTube(int capacity){
+    public StorageTube(int maxCapacity){
         this.tube = new Stack<MailItem>();
-        this.capacity = capacity;
+        this.maxCapacity = maxCapacity;
     }
 
     /**
      * @return if the storage tube is full
      */
     public boolean isFull(){
-        return tube.size() == capacity;
+        return tube.size() == maxCapacity;
     }
 
     /**
@@ -52,29 +48,22 @@ public class StorageTube{
      * @throws TubeFullException thrown if an item is added which exceeds the capacity
      */
     public void addItem(MailItem item) throws TubeFullException, FragileItemBrokenException {
-        if(tube.size() < capacity){
-        	if (tube.isEmpty()) {
-        		tube.add(item);
-        	} else if (item.getFragile() || tube.peek().getFragile()) {
-        		throw new FragileItemBrokenException();
-        	} else {
-        		tube.add(item);
-        	}
-        } else {
+    		if (tube.size() < maxCapacity){
+	        	if (tube.isEmpty()) {
+	        		tube.add(item);
+	        	} else if (item.getFragile() || tube.peek().getFragile()) {
+	        		throw new FragileItemBrokenException();
+	        	} else {
+	        		tube.add(item);
+	        	}
+    		} else {
             throw new TubeFullException();
         }
-    }
+    	}
 
     /** @return the size of the tube **/
     public int getSize(){
-    	return tube.size();
-    }
-    
-    /**
-     * @return the maximum number of mail which the tube can take.
-     */
-    public int getCapacity() {
-    	return capacity;
+    		return tube.size();
     }
     
     /** 
@@ -84,4 +73,8 @@ public class StorageTube{
         return tube.pop();
     }
 
+    /** @return the maximum capacity of the tube **/
+    public int getMaxCapacity() {
+    		return maxCapacity;
+    }
 }

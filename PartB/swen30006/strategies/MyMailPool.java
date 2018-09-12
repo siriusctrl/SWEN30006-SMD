@@ -46,6 +46,7 @@ public class MyMailPool implements IMailPool {
 	}
 	
 	private LinkedList<Item> pool;
+	private static final int MAX_TAKE = 4;
 	private LinkedList<Robot> robots;
 	private int lightCount;
 
@@ -70,17 +71,17 @@ public class MyMailPool implements IMailPool {
 	
 	private void fillStorageTube(Robot robot) throws FragileItemBrokenException {
 		StorageTube tube = robot.getTube();
-		StorageTube temp = new StorageTube(robot.isBig(), robot.isCareful());
+		StorageTube temp = new StorageTube();
 		try { // Get as many items as available or as fit
 				if (robot.isStrong()) {
-					while(temp.getSize() < temp.getCapacity() && !pool.isEmpty() ) {
+					while(temp.getSize() < MAX_TAKE && !pool.isEmpty() ) {
 						Item item = pool.remove();
 						if (!item.heavy) lightCount--;
 						temp.addItem(item.mailItem);
 					}
 				} else {
 					ListIterator<Item> i = pool.listIterator();
-					while(temp.getSize() < temp.getCapacity() && lightCount > 0) {
+					while(temp.getSize() < MAX_TAKE && lightCount > 0) {
 						Item item = i.next();
 						if (!item.heavy) {
 							temp.addItem(item.mailItem);
