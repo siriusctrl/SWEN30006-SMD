@@ -1,5 +1,8 @@
 package automail;
 
+/**
+ * Clock class
+ */
 public class Clock {
 	
 	/** Represents the current time **/
@@ -9,10 +12,10 @@ public class Clock {
     public static int LAST_DELIVERY_TIME;
 
     public static int Time() {
-    	return Time;
+    		return Time;
     }
     
     public static void Tick() {
-    	Time++;
+    		Time++;
     }
 }

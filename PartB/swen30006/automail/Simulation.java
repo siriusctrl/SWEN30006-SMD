@@ -49,8 +49,8 @@ public class Simulation {
 			automailProperties.load(inStream);
 		} finally {
 			 if (inStream != null) {
-	                inStream.close();
-	            }
+				 inStream.close();
+			 }
 		}
 		// MailPool
 		String mailPoolName = automailProperties.getProperty("MailPool");
@@ -101,12 +101,11 @@ public class Simulation {
         mailGenerator.generateAllMail();
         // PriorityMailItem priority;  // Not used in this version
         while(MAIL_DELIVERED.size() != mailGenerator.MAIL_TO_CREATE) {
-        	//System.out.println(MAIL_DELIVERED.size() + " " + mailGenerator.MAIL_TO_CREATE);
-        	//System.out.println("-- Step: "+Clock.Time());
             /* priority = */ mailGenerator.step();
             try {
                 automail.mailPool.step();
-				for (Robot i:automail.robots) {
+				for (Robot i : automail.robots) {
+					// Step robots
 					i.step();
 				}
 			} catch (ExcessiveDeliveryException|ItemTooHeavyException|FragileItemBrokenException e) {
@@ -124,7 +123,7 @@ public class Simulation {
     	/** Confirm the delivery and calculate the total score */
     	public void deliver(MailItem deliveryItem){
     		if(!MAIL_DELIVERED.contains(deliveryItem)){
-                System.out.printf("T: %3d > Delivered [%s]%n", Clock.Time(), deliveryItem.toString());
+    			System.out.printf("T: %3d > Delivered [%s]%n", Clock.Time(), deliveryItem.toString());
     			MAIL_DELIVERED.add(deliveryItem);
     			// Calculate delivery score
     			total_score += calculateDeliveryScore(deliveryItem);
@@ -144,8 +143,7 @@ public class Simulation {
     	// Penalty for longer delivery times
     	final double penalty = 1.2;
     	double priority_weight = 0;
-        // Take (delivery time - arrivalTime)**penalty * (1+sqrt(priority_weight))
-    	if(deliveryItem instanceof PriorityMailItem){
+    	if (deliveryItem instanceof PriorityMailItem) {
     		priority_weight = ((PriorityMailItem) deliveryItem).getPriorityLevel();
     	}
         return Math.pow(Clock.Time() - deliveryItem.getArrivalTime(),penalty)*(1+Math.sqrt(priority_weight));

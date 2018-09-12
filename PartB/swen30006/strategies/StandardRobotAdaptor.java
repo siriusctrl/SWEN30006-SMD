@@ -1,14 +1,15 @@
 package strategies;
 
-import automail.CarefulRobot;
+import automail.StandardRobot;
 import automail.IMailDelivery;
 
+/** Adaptor for standard robots **/
 public class StandardRobotAdaptor implements RobotAdaptor {
 
 	@Override
-	public CarefulRobot create(IMailPool mailPool, IMailDelivery delivery) {
-		// TODO Auto-generated method stub
-		return new CarefulRobot(delivery, mailPool);
+	public StandardRobot create(IMailPool mailPool, IMailDelivery delivery) {
+		
+		return new StandardRobot(delivery, mailPool);
 	}
 
 }
