@@ -46,7 +46,7 @@ public abstract class Robot {
      */
     public Robot(IMailDelivery delivery, IMailPool mailPool, boolean strong, boolean careful, int capacity){
     		id = "R" + hashCode();
-        // current_state = RobotState.WAITING;
+    		//current_state = RobotState.WAITING;
     		current_state = RobotState.RETURNING;
         current_floor = Building.MAILROOM_LOCATION;
         tube = new StorageTube(capacity);
@@ -106,21 +106,21 @@ public abstract class Robot {
                 break;
     		case DELIVERING:
     			if(current_floor == destination_floor){ // If already here drop off either way
-                    /** Delivery complete, report this to the simulator! */
-                    delivery.deliver(deliveryItem);
-                    deliveryCounter++;
-                    if(deliveryCounter > tube.getMaxCapacity()){  // Implies a simulation bug
-                    	throw new ExcessiveDeliveryException();
-                    }
-                    /** Check if want to return, i.e. if there are no more items in the tube*/
-                    if(tube.isEmpty()){
-                    	changeState(RobotState.RETURNING);
-                    }
-                    else{
-                        /** If there are more items, set the robot's route to the location to deliver the item */
-                        setRoute();
-                        changeState(RobotState.DELIVERING);
-                    }
+				/** Delivery complete, report this to the simulator! */
+				delivery.deliver(deliveryItem);
+				deliveryCounter++;
+				if(deliveryCounter > tube.getMaxCapacity()){  // Implies a simulation bug
+					throw new ExcessiveDeliveryException();
+				}
+				/** Check if want to return, i.e. if there are no more items in the tube*/
+				if(tube.isEmpty()){
+					changeState(RobotState.RETURNING);
+				}
+				else{
+				    /** If there are more items, set the robot's route to the location to deliver the item */
+				    setRoute();
+				    changeState(RobotState.DELIVERING);
+				}
     			} else {
 	        		/** The robot is not at the destination yet, move towards it! */
     				if(!careful || carefulStop ) {
@@ -135,10 +135,11 @@ public abstract class Robot {
     /**
      * Sets the route for the robot
      */
-    private void setRoute() throws ItemTooHeavyException{
+    private void setRoute() throws ItemTooHeavyException, FragileItemBrokenException{
         /** Pop the item from the StorageUnit */
         deliveryItem = tube.pop();
         if (!strong && deliveryItem.weight > 2000) throw new ItemTooHeavyException(); 
+        if (!careful && deliveryItem.getFragile()) throw new FragileItemBrokenException();
         /** Set the destination floor */
         destination_floor = deliveryItem.getDestFloor();
     }
@@ -148,7 +149,6 @@ public abstract class Robot {
      * @param destination the floor towards which the robot is moving
      */
     private void moveTowards(int destination) throws FragileItemBrokenException {
-        if (deliveryItem != null && deliveryItem.getFragile() || !tube.isEmpty() && tube.peek().getFragile()) throw new FragileItemBrokenException();
         if(current_floor < destination){
             current_floor++;
         }

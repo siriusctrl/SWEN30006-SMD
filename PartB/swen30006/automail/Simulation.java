@@ -25,13 +25,13 @@ public class Simulation {
 	
 	
     /** Constant for the mail generator */
-    private static int MAIL_TO_CREATE;
+    public static int MAIL_TO_CREATE;
     
 
     private static ArrayList<MailItem> MAIL_DELIVERED;
     private static double total_score = 0;
 
-    public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException, FragileItemBrokenException {
     	Properties automailProperties = new Properties();
 		// Default properties
     	// automailProperties.setProperty("Robots", "Big,Careful,Standard,Weak");
@@ -72,7 +72,8 @@ public class Simulation {
 		// Robots
 		String robotsProp = automailProperties.getProperty("Robots");
 		List<RobotType> robotTypes = Stream.of(robotsProp.split(",")).map(RobotType::valueOf).collect(Collectors.toList());
-		System.out.print("Robots: "); System.out.println(robotTypes);
+		System.out.print("Robots: "); 
+		System.out.println(robotTypes);
 
 		// End properties
 		
@@ -100,11 +101,14 @@ public class Simulation {
         mailGenerator.generateAllMail();
         // PriorityMailItem priority;  // Not used in this version
         while(MAIL_DELIVERED.size() != mailGenerator.MAIL_TO_CREATE) {
+        	//System.out.println(MAIL_DELIVERED.size() + " " + mailGenerator.MAIL_TO_CREATE);
         	//System.out.println("-- Step: "+Clock.Time());
             /* priority = */ mailGenerator.step();
             try {
                 automail.mailPool.step();
-				for (Robot i:automail.robots) {i.step();}
+				for (Robot i:automail.robots) {
+					i.step();
+				}
 			} catch (ExcessiveDeliveryException|ItemTooHeavyException|FragileItemBrokenException e) {
 				e.printStackTrace();
 				System.out.println("Simulation unable to complete.");

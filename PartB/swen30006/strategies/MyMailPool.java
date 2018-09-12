@@ -27,8 +27,8 @@ public class MyMailPool implements IMailPool {
 		public Item(MailItem mailItem) {
 			priority = (mailItem instanceof PriorityMailItem) ? ((PriorityMailItem) mailItem).getPriorityLevel() : 1;
 			heavy = mailItem.getWeight() >= MAX_WEIGHT;
-			fragile = mailItem.getFragile();
 			destination = mailItem.getDestFloor();
+			fragile = mailItem.getFragile();
 			this.mailItem = mailItem;
 		}
 	}
@@ -52,10 +52,9 @@ public class MyMailPool implements IMailPool {
 	
 	// pool stores non-fragile items while fragilePool only stores fragile items
 	private LinkedList<Item> pool;
-	private LinkedList<Item> fragilePool;
 	private LinkedList<Robot> robots;
 
-	public MyMailPool() {
+	public MyMailPool(){
 		// Start empty
 		pool = new LinkedList<Item>();
 		robots = new LinkedList<Robot>();
@@ -63,13 +62,8 @@ public class MyMailPool implements IMailPool {
 
 	public void addToPool(MailItem mailItem) {
 		Item item = new Item(mailItem);
-		if (item.fragile) {
-			fragilePool.add(item);
-		} else {
-			pool.add(item);
-		}
+		pool.add(item);
 		pool.sort(new ItemComparator());
-		fragilePool.sort(new ItemComparator());
 	}
 	
 	@Override
@@ -87,7 +81,7 @@ public class MyMailPool implements IMailPool {
 			if (!robot.isStrong()) {
 				// Weak robot, can only take light and not-fragile items
 				ListIterator<Item> i = pool.listIterator();
-				while(temp.getSize() < temp.getMaxCapacity()) {
+				while(i.hasNext() && temp.getSize() < temp.getMaxCapacity()) {
 					Item item = i.next();
 					if (!item.heavy && !item.fragile) {
 						temp.addItem(item.mailItem);
@@ -95,24 +89,25 @@ public class MyMailPool implements IMailPool {
 					}
 				}
 			} else if (robot.isCareful()) {
-				// Careful robot, take items from fragilePool
-				while(temp.getSize() < temp.getMaxCapacity() && !fragilePool.isEmpty()) {
-					Item item = fragilePool.remove();
-					temp.addItem(item.mailItem);
+				// Careful robot, take fragile items first
+				ListIterator<Item> i = pool.listIterator();
+				while(i.hasNext() && temp.getSize() < temp.getMaxCapacity()) {
+					Item item = i.next();
+					if (item.fragile) {
+						temp.addItem(item.mailItem);
+						i.remove();
+					}
 				}
+				// Then take normal items
 				while (temp.getSize() < temp.getMaxCapacity() && !pool.isEmpty()) {
 					Item item = pool.remove();
-					if (!item.heavy) {
-						temp.addItem(item.mailItem);
-					}
+					temp.addItem(item.mailItem);
 				}
 			} else {
 				// Strong or big robot
 				while(temp.getSize() < temp.getMaxCapacity() && !pool.isEmpty() ) {
 					Item item = pool.remove();
-					if (!item.heavy) {
-						temp.addItem(item.mailItem);
-					}
+					temp.addItem(item.mailItem);
 				}
 			}
 			
