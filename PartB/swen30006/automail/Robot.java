@@ -56,6 +56,7 @@ public abstract class Robot {
         this.strong = strong;
         this.careful = careful;
         this.deliveryCounter = 0;
+        this.carefulStop = false;
     }
     
     public void dispatch() {
@@ -108,7 +109,7 @@ public abstract class Robot {
                     /** Delivery complete, report this to the simulator! */
                     delivery.deliver(deliveryItem);
                     deliveryCounter++;
-                    if(deliveryCounter > 4){  // Implies a simulation bug
+                    if(deliveryCounter > tube.getMaxCapacity()){  // Implies a simulation bug
                     	throw new ExcessiveDeliveryException();
                     }
                     /** Check if want to return, i.e. if there are no more items in the tube*/
@@ -122,7 +123,10 @@ public abstract class Robot {
                     }
     			} else {
 	        		/** The robot is not at the destination yet, move towards it! */
-	                moveTowards(destination_floor);
+    				if(!careful || carefulStop ) {
+    	                moveTowards(destination_floor);
+    				}
+    				carefulStop = !carefulStop;
     			}
                 break;
     	}

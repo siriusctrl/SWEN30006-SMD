@@ -1,28 +1,30 @@
 package strategies;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import automail.IMailDelivery;
 import automail.Robot;
+import automail.Simulation.RobotType;
+import automail.BigRobot;
+import automail.CarefulRobot;;
 
 public class Automail {
 	      
-	public ArrayList<Robot> robot = new ArrayList<>();
+	public ArrayList<Robot> robots = new ArrayList<>();
     public IMailPool mailPool;
     
-    public Automail(IMailPool mailPool, IMailDelivery delivery) {
+    public Automail(IMailPool mailPool, IMailDelivery delivery, List<RobotType> robotTypes) {
     	// Swap between simple provided strategies and your strategies here
     	    	
     	/** Initialize the MailPool */
     	
     	this.mailPool = mailPool;
     	
-        /** Initialize the RobotAction */
-    	boolean weak = false;  // Can't handle more than 2000 grams
-    	boolean strong = true; // Can handle any weight that arrives at the building
-    	
     	/** Initialize robots */
-    
+    	for(RobotType r: robotTypes) {
+    		robots.add(Class<?>))
+    	}
+    	
     }
     
 }
