@@ -3,7 +3,6 @@ package strategies;
 import java.util.LinkedList;
 import java.util.Comparator;
 import java.util.ListIterator;
-import java.util.function.Consumer;
 
 import automail.MailItem;
 import automail.PriorityMailItem;
