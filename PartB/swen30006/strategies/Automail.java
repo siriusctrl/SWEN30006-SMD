@@ -24,7 +24,7 @@ public class Automail {
 	    	for(RobotType r: robotTypes) {
 	    		try {
 	    			// Use adaptor to create robots
-				robots.add(robotFactory.getAdaptors(r.toString() + "RobotAdaptor").create(mailPool, delivery));
+				robots.add(RobotFactory.getInstance().getAdaptors(r.toString() + "RobotAdaptor").create(mailPool, delivery));
 			} catch (InstantiationException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
