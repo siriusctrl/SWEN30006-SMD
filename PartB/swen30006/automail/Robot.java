@@ -125,12 +125,7 @@ public abstract class Robot {
 					}
 	    			} else {
 		        		/** The robot is not at the destination yet, move towards it! */
-	    				if(!careful || carefulStop ) {
-	    					// Not careful robot, or careful robot but needs to move
-	    	                moveTowards(destination_floor);
-	    				}
-	    				// change state for careful robot
-	    				carefulStop = !carefulStop;
+	    				moveTowards(destination_floor);
 	    			}
 	            break;
 	    	}
@@ -139,7 +134,7 @@ public abstract class Robot {
     /**
      * Sets the route for the robot
      */
-    private void setRoute() throws ItemTooHeavyException, FragileItemBrokenException{
+    private void setRoute() throws ItemTooHeavyException, FragileItemBrokenException {
         /** Pop the item from the StorageUnit */
         deliveryItem = tube.pop();
         if (!strong && deliveryItem.weight > 2000) {
@@ -156,13 +151,21 @@ public abstract class Robot {
      * Generic function that moves the robot towards the destination
      * @param destination the floor towards which the robot is moving
      */
-    private void moveTowards(int destination) throws FragileItemBrokenException {
-        if(current_floor < destination){
-            current_floor++;
-        }
-        else{
-            current_floor--;
-        }
+    private void moveTowards(int destination) {
+    		// Not careful robot, or careful robot but needs to move
+    		boolean shouldMove = !careful || carefulStop;
+		
+    		if (shouldMove) {
+    			if (current_floor < destination) {
+    	            current_floor++;
+    	        }
+    	        else {
+    	            current_floor--;
+    	        }
+    		}
+        
+        // change state for careful robot
+        carefulStop = !carefulStop;
     }
     
     private String getIdTube() {
