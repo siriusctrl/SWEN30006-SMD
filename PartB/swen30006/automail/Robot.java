@@ -137,7 +137,7 @@ public abstract class Robot {
     private void setRoute() throws ItemTooHeavyException, FragileItemBrokenException {
         /** Pop the item from the StorageUnit */
         deliveryItem = tube.pop();
-        if (!strong && deliveryItem.weight > 2000) {
+        if (!strong && deliveryItem.getWeight() > 2000) {
         		throw new ItemTooHeavyException(); 
         }
         if (!careful && deliveryItem.getFragile()) {

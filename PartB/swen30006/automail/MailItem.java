@@ -11,15 +11,15 @@ import java.util.TreeMap;
 public class MailItem {
 	
     /** Represents the destination floor to which the mail is intended to go */
-    protected final int destination_floor;
+    private final int destination_floor;
     /** The mail identifier */
-    protected final String id;
+    private final String id;
     /** The time the mail item arrived */
-    protected final int arrival_time;
+    private final int arrival_time;
     /** The weight in grams of the mail item */
-    protected final int weight;
+    private final int weight;
     /** Whether the mail item is fragile */
-    protected final boolean fragile;
+    private final boolean fragile;
 
     /**
      * Constructor for a MailItem
