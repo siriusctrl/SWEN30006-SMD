@@ -150,7 +150,6 @@ public abstract class Robot {
     /**
      * Generic function that moves the robot towards the destination
      * @param destination the floor towards which the robot is moving
-     * @throws FragileItemBrokenException 
      */
     private void moveTowards(int destination) {
     		// Not careful robot, or careful robot but needs to move
