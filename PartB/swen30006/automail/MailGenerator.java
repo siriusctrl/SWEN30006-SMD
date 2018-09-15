@@ -9,6 +9,9 @@ import strategies.IMailPool;
  * This class generates the mail
  */
 public class MailGenerator {
+	
+	/** The threshold for the latest time for mail to arrive **/
+    public static int LAST_DELIVERY_TIME;
 
     public final int MAIL_TO_CREATE;
     
@@ -98,7 +101,7 @@ public class MailGenerator {
      * @return a random arrival time before the last delivery time
      */
     private int generateArrivalTime(){
-        return 1 + random.nextInt(Clock.LAST_DELIVERY_TIME);
+        return 1 + random.nextInt(LAST_DELIVERY_TIME);
     }
 
     /**

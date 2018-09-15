@@ -67,8 +67,8 @@ public class Simulation {
 		MAIL_TO_CREATE = Integer.parseInt(automailProperties.getProperty("Mail_to_Create"));
         System.out.printf("Mail_to_Create: %5d%n", MAIL_TO_CREATE);
 		// Last_Delivery_Time
-		Clock.LAST_DELIVERY_TIME = Integer.parseInt(automailProperties.getProperty("Last_Delivery_Time"));
-        System.out.printf("Last_Delivery_Time: %5d%n", Clock.LAST_DELIVERY_TIME);
+        MailGenerator.LAST_DELIVERY_TIME = Integer.parseInt(automailProperties.getProperty("Last_Delivery_Time"));
+        System.out.printf("Last_Delivery_Time: %5d%n", MailGenerator.LAST_DELIVERY_TIME);
 		// Robots
 		String robotsProp = automailProperties.getProperty("Robots");
 		List<RobotType> robotTypes = Stream.of(robotsProp.split(",")).map(RobotType::valueOf).collect(Collectors.toList());
