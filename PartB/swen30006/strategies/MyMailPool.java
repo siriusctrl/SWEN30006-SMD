@@ -100,15 +100,16 @@ public class MyMailPool implements IMailPool {
 					}
 				}
 			} else if (robot.isCareful()) {
-				// Careful robot, takes one fragile item first, if there is any
+				// Careful robot, takes one fragile item if there is any
 				if (!fragilePool.isEmpty()) {
 					Item item = fragilePool.remove();
 					temp.addItem(item.mailItem);
-				}
-				// Then take normal items
-				while (temp.getSize() < temp.getMaxCapacity() && !pool.isEmpty()) {
-					Item item = pool.remove();
-					temp.addItem(item.mailItem);
+				} else {
+					// Take normal items when there is no fragile ones
+					while (temp.getSize() < temp.getMaxCapacity() && !pool.isEmpty()) {
+						Item item = pool.remove();
+						temp.addItem(item.mailItem);
+					}
 				}
 			} else {
 				// Strong or big robot
