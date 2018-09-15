@@ -17,7 +17,7 @@ public interface IMailPool {
      * @param mailItem the mail item being added.
 	 * @throws FragileItemBrokenException 
      */
-    void addToPool(MailItem mailItem) throws FragileItemBrokenException;
+    void addToPool(MailItem mailItem);
     
     /**
      * load up any waiting robots with mailItems, if any.

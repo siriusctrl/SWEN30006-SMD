@@ -15,7 +15,6 @@ import exceptions.FragileItemBrokenException;
 public class MyMailPool implements IMailPool {
 	
 	public static final int MAX_WEIGHT = 2000;
-	private boolean hasCarefulRobot = false;
 	
 	private class Item {
 		int priority;
@@ -63,13 +62,9 @@ public class MyMailPool implements IMailPool {
 		robots = new LinkedList<Robot>();
 	}
 
-	public void addToPool(MailItem mailItem) throws FragileItemBrokenException {
+	public void addToPool(MailItem mailItem) {
 		Item item = new Item(mailItem);
 		if (item.fragile) {
-			if (!hasCarefulRobot) {
-				// If there is no careful robot while there is any fragile item, should throw FragileItemBrokenException.
-				throw new FragileItemBrokenException();
-			}
 			fragilePool.add(item);
 		} else {
 			pool.add(item);
@@ -133,10 +128,6 @@ public class MyMailPool implements IMailPool {
 
 	@Override
 	public void registerWaiting(Robot robot) {
-		if (robot.isCareful()) {
-			// there is a careful robot
-			hasCarefulRobot = true;
-		}
 		if (robot.isStrong()) {
 			robots.add(robot); 
 		} else {
