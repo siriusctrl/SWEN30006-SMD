@@ -28,7 +28,7 @@ public class RobotFactory {
 	 * @throws ClassNotFoundException
 	 */
 	public RobotAdaptor getAdaptors(String name) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		return (RobotAdaptor) Class.forName("strategies."+name).newInstance();
+		return (RobotAdaptor) Class.forName("strategies." + name).newInstance();
 	}
 
 }
