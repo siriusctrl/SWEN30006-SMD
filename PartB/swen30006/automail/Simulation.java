@@ -25,7 +25,7 @@ public class Simulation {
 	
 	
     /** Constant for the mail generator */
-    public static int MAIL_TO_CREATE;
+    private static int MAIL_TO_CREATE;
     
 
     private static ArrayList<MailItem> MAIL_DELIVERED;
