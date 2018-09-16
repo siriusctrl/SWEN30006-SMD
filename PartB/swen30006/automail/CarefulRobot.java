@@ -1,7 +1,5 @@
 package automail;
 
-import strategies.IMailPool;
-
 /**
  * Careful robot subclass, inherits from Robot.
  * Careful robot can take fragile items, one at a time.
@@ -16,7 +14,7 @@ public class CarefulRobot extends Robot {
      * @param delivery governs the final delivery
      * @param mailPool is the source of mail items
      */
-	public CarefulRobot(IMailDelivery delivery, IMailPool mailPool) {
-		super(delivery, mailPool, true, true, CAREFUL_APACITY);
+	public CarefulRobot(IMailDelivery delivery) {
+		super(delivery, true, true, CAREFUL_APACITY);
 	}
 }

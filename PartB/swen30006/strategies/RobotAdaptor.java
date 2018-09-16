@@ -13,7 +13,6 @@ public interface RobotAdaptor {
 	
 	/** Create robot 
 	 * @param delivery governs the final delivery
-     * @param mailPool is the source of mail items
 	 **/
-	Robot create(IMailPool mailPool, IMailDelivery delivery);
+	Robot create(IMailDelivery delivery);
 }

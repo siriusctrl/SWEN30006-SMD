@@ -1,7 +1,5 @@
 package automail;
 
-import strategies.IMailPool;
-
 /**
  * Standard robot subclass, inherits from Robot.
  */
@@ -15,7 +13,7 @@ public class StandardRobot extends Robot {
      * @param delivery governs the final delivery
      * @param mailPool is the source of mail items
      */
-	public StandardRobot(IMailDelivery delivery, IMailPool mailPool) {
-		super(delivery, mailPool, true, false, STANDARD_CAPACITY);
+	public StandardRobot(IMailDelivery delivery) {
+		super(delivery, true, false, STANDARD_CAPACITY);
 	}
 }

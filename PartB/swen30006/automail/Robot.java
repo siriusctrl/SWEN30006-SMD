@@ -3,7 +3,7 @@ package automail;
 import exceptions.ExcessiveDeliveryException;
 import exceptions.ItemTooHeavyException;
 import exceptions.FragileItemBrokenException;
-import strategies.IMailPool;
+import strategies.Automail;
 import strategies.MyMailPool;
 
 import java.util.Map;
@@ -24,7 +24,6 @@ public abstract class Robot {
     public RobotState current_state;
     private int current_floor;
     private int destination_floor;
-    private IMailPool mailPool;
     private boolean receivedDispatch;
     
     // Robots can be strong or weak; careful or not careful.
@@ -46,14 +45,13 @@ public abstract class Robot {
      * @param careful is whether the robot is careful and can carry fragile items
      * @param capacity is the size of storage tube
      */
-    public Robot(IMailDelivery delivery, IMailPool mailPool, boolean strong, boolean careful, int capacity){
+    public Robot(IMailDelivery delivery, boolean strong, boolean careful, int capacity){
 	id = "R" + hashCode();
 	//current_state = RobotState.WAITING;
 	current_state = RobotState.RETURNING;
         current_floor = Building.MAILROOM_LOCATION;
         tube = new StorageTube(capacity);
         this.delivery = delivery;
-        this.mailPool = mailPool;
         this.receivedDispatch = false;
         this.strong = strong;
         this.careful = careful;
@@ -85,11 +83,11 @@ public abstract class Robot {
 	                if(current_floor == Building.MAILROOM_LOCATION){
 		                	while(!tube.isEmpty()) {
 		                		MailItem mailItem = tube.pop();
-		                		mailPool.addToPool(mailItem);
+		                		Automail.mailPool.addToPool(mailItem);
 		                		System.out.printf("T: %3d > old addToPool [%s]%n", Clock.Time(), mailItem.toString());
 		                	}
 		        			/** Tell the sorter the robot is ready */
-		        			mailPool.registerWaiting(this);
+		                	Automail.mailPool.registerWaiting(this);
 		                changeState(RobotState.WAITING);
 		            } else {
 		                	/** If the robot is not at the mailroom floor yet, then move towards it! */
@@ -102,7 +100,7 @@ public abstract class Robot {
 	                	receivedDispatch = false;
 	                	deliveryCounter = 0; // reset delivery counter
 	        			setRoute();
-	        			mailPool.deregisterWaiting(this);
+	        			Automail.mailPool.deregisterWaiting(this);
 	                	changeState(RobotState.DELIVERING);
                 }
                 break;

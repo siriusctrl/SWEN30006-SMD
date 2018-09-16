@@ -106,7 +106,7 @@ public class Simulation {
         while(MAIL_DELIVERED.size() != mailGenerator.MAIL_TO_CREATE) {
             step();
             try {
-                automail.mailPool.step();
+                Automail.mailPool.step();
 				for (Robot i : automail.robots) {
 					// Step robots
 					i.step();

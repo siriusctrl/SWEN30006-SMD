@@ -7,9 +7,9 @@ import automail.IMailDelivery;
 public class CarefulRobotAdaptor implements RobotAdaptor {
 
 	@Override
-	public CarefulRobot create(IMailPool mailPool, IMailDelivery delivery) {
+	public CarefulRobot create(IMailDelivery delivery) {
 		
-		return new CarefulRobot(delivery, mailPool);
+		return new CarefulRobot(delivery);
 	}
 
 }

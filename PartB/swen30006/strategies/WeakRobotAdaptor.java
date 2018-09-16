@@ -7,9 +7,9 @@ import automail.WeakRobot;
 public class WeakRobotAdaptor implements RobotAdaptor {
 
 	@Override
-	public WeakRobot create(IMailPool mailPool, IMailDelivery delivery) {
+	public WeakRobot create(IMailDelivery delivery) {
 		
-		return new WeakRobot(delivery, mailPool);
+		return new WeakRobot(delivery);
 	}
 
 }

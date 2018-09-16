@@ -7,9 +7,9 @@ import automail.IMailDelivery;
 public class StandardRobotAdaptor implements RobotAdaptor {
 
 	@Override
-	public StandardRobot create(IMailPool mailPool, IMailDelivery delivery) {
+	public StandardRobot create(IMailDelivery delivery) {
 		
-		return new StandardRobot(delivery, mailPool);
+		return new StandardRobot(delivery);
 	}
 
 }

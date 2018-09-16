@@ -1,7 +1,5 @@
 package automail;
 
-import strategies.IMailPool;
-
 /**
  * Big robot subclass, inherits from Robot.
  */
@@ -15,7 +13,7 @@ public class BigRobot extends Robot {
      * @param delivery governs the final delivery
      * @param mailPool is the source of mail items
      */
-	public BigRobot(IMailDelivery delivery, IMailPool mailPool) {
-		super(delivery, mailPool, true, false, BIG_CAPACITY);
+	public BigRobot(IMailDelivery delivery) {
+		super(delivery, true, false, BIG_CAPACITY);
 	}
 }

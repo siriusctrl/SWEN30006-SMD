@@ -2,9 +2,6 @@ package automail;
 
 import java.util.*;
 
-import exceptions.FragileItemBrokenException;
-import strategies.IMailPool;
-
 /**
  * This class generates the mail
  */

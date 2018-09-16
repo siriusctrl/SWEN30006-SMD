@@ -12,18 +12,18 @@ import automail.Simulation.RobotType;
 public class Automail {
 	      
 	public ArrayList<Robot> robots = new ArrayList<>();
-    public IMailPool mailPool;
+    public static IMailPool mailPool;
     
     public Automail(IMailPool mailPool, IMailDelivery delivery, List<RobotType> robotTypes) {
     	
 	    	/** Initialize the MailPool */
-	    	this.mailPool = mailPool;
+	    	Automail.mailPool = mailPool;
 	    	
 	    	/** Initialize robots */
 	    	for(RobotType r: robotTypes) {
 	    		try {
 	    			// Use adaptor to create robots
-	    			robots.add(RobotFactory.getInstance().getAdaptors(r.toString() + "RobotAdaptor").create(mailPool, delivery));
+	    			robots.add(RobotFactory.getInstance().getAdaptors(r.toString() + "RobotAdaptor").create(delivery));
 			} catch (InstantiationException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
