@@ -4,6 +4,8 @@ import exceptions.ExcessiveDeliveryException;
 import exceptions.ItemTooHeavyException;
 import exceptions.FragileItemBrokenException;
 import strategies.IMailPool;
+import strategies.MyMailPool;
+
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -30,8 +32,6 @@ public abstract class Robot {
     private boolean strong;
     private boolean careful;
     private boolean carefulStop;
-    
-    private MailItem deliveryItem;
     
     private int deliveryCounter;
     
@@ -109,7 +109,7 @@ public abstract class Robot {
 	    		case DELIVERING:
 	    			if(current_floor == destination_floor){ // If already here drop off either way
 					/** Delivery complete, report this to the simulator! */
-					delivery.deliver(deliveryItem);
+					delivery.deliver(tube.pop());
 					deliveryCounter++;
 					if(deliveryCounter > tube.getMaxCapacity()){  // Implies a simulation bug
 						throw new ExcessiveDeliveryException();
@@ -136,15 +136,14 @@ public abstract class Robot {
      */
     private void setRoute() throws ItemTooHeavyException, FragileItemBrokenException {
         /** Pop the item from the StorageUnit */
-        deliveryItem = tube.pop();
-        if (!strong && deliveryItem.getWeight() > 2000) {
+        if (!strong && tube.peek().getWeight() > MyMailPool.MAX_WEIGHT) {
         		throw new ItemTooHeavyException(); 
         }
-        if (!careful && deliveryItem.getFragile()) {
+        if (!careful && tube.peek().getFragile()) {
         		throw new FragileItemBrokenException();
         }
         /** Set the destination floor */
-        destination_floor = deliveryItem.getDestFloor();
+        destination_floor = tube.peek().getDestFloor();
     }
 
     /**
@@ -182,7 +181,7 @@ public abstract class Robot {
 	    	}
 	    	current_state = nextState;
 	    	if(nextState == RobotState.DELIVERING){
-	        System.out.printf("T: %3d > %7s-> [%s]%n", Clock.Time(), getIdTube(), deliveryItem.toString());
+	        System.out.printf("T: %3d > %7s-> [%s]%n", Clock.Time(), getIdTube(), tube.peek().toString());
 	    	}
     }
 
