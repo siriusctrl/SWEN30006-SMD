@@ -14,9 +14,9 @@ import java.util.TreeMap;
  */
 public abstract class Robot {
 
-	private StorageTube tube;
+    private StorageTube tube;
     private IMailDelivery delivery;
-    protected final String id;
+    private final String id;
     
     /** Possible states the robot can be in */
     public enum RobotState { DELIVERING, WAITING, RETURNING }
@@ -47,9 +47,9 @@ public abstract class Robot {
      * @param capacity is the size of storage tube
      */
     public Robot(IMailDelivery delivery, IMailPool mailPool, boolean strong, boolean careful, int capacity){
-    		id = "R" + hashCode();
-    		//current_state = RobotState.WAITING;
-    		current_state = RobotState.RETURNING;
+	id = "R" + hashCode();
+	//current_state = RobotState.WAITING;
+	current_state = RobotState.RETURNING;
         current_floor = Building.MAILROOM_LOCATION;
         tube = new StorageTube(capacity);
         this.delivery = delivery;

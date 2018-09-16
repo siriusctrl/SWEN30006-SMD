@@ -27,6 +27,9 @@ public class Simulation {
     /** Constant for the mail generator */
     private static int MAIL_TO_CREATE;
     
+    private static MailGenerator mailGenerator;
+    private static Automail automail;
+    private static IMailPool mailPool;
 
     private static ArrayList<MailItem> MAIL_DELIVERED;
     private static double total_score = 0;
@@ -54,7 +57,7 @@ public class Simulation {
 		}
 		// MailPool
 		String mailPoolName = automailProperties.getProperty("MailPool");
-		IMailPool mailPool = (IMailPool) Class.forName(mailPoolName).newInstance();
+		mailPool = (IMailPool) Class.forName(mailPoolName).newInstance();
 		//Seed
 		String seedProp = automailProperties.getProperty("Seed");
 		// Floors
@@ -94,14 +97,14 @@ public class Simulation {
         }
         Integer seed = seedMap.get(true);
         System.out.printf("Seed: %s%n", seed == null ? "null" : seed.toString());
-        Automail automail = new Automail(mailPool, new ReportDelivery(), robotTypes);
-        MailGenerator mailGenerator = new MailGenerator(MAIL_TO_CREATE, automail.mailPool, seedMap, fragile);
+        automail = new Automail(mailPool, new ReportDelivery(), robotTypes);
+        mailGenerator = new MailGenerator(MAIL_TO_CREATE, seedMap, fragile);
         
         /** Initiate all the mail */
         mailGenerator.generateAllMail();
         // PriorityMailItem priority;  // Not used in this version
         while(MAIL_DELIVERED.size() != mailGenerator.MAIL_TO_CREATE) {
-            /* priority = */ mailGenerator.step();
+            step();
             try {
                 automail.mailPool.step();
 				for (Robot i : automail.robots) {
@@ -154,4 +157,23 @@ public class Simulation {
         System.out.println("Final Delivery time: "+Clock.Time());
         System.out.printf("Final Score: %.2f%n", total_score);
     }
+    
+    /**
+     * While there are steps left, create a new mail item to deliver
+     * @return Priority
+     * @throws FragileItemBrokenException 
+     */
+    public static PriorityMailItem step() throws FragileItemBrokenException{
+    	PriorityMailItem priority = null;
+    	// Check if there are any mail to create
+        if(mailGenerator.getAllMail().containsKey(Clock.Time())){
+            for(MailItem mailItem : mailGenerator.getAllMail().get(Clock.Time())){
+	            	if (mailItem instanceof PriorityMailItem) priority = ((PriorityMailItem) mailItem);
+	                System.out.printf("T: %3d > new addToPool [%s]%n", Clock.Time(), mailItem.toString());
+	                mailPool.addToPool(mailItem);
+            }
+        }
+        return priority;
+    }
+    
 }
