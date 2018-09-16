@@ -11,7 +11,6 @@ public class WeakRobot extends Robot {
 	/**
      * Constructor for a weak robot
      * @param delivery governs the final delivery
-     * @param mailPool is the source of mail items
      */
 	public WeakRobot(IMailDelivery delivery) {
 		super(delivery, false, false, WEAK_CAPACITY);

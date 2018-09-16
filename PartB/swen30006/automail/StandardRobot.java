@@ -11,7 +11,6 @@ public class StandardRobot extends Robot {
 	/**
      * Constructor for a standard robot
      * @param delivery governs the final delivery
-     * @param mailPool is the source of mail items
      */
 	public StandardRobot(IMailDelivery delivery) {
 		super(delivery, true, false, STANDARD_CAPACITY);

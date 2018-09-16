@@ -12,7 +12,6 @@ public class CarefulRobot extends Robot {
 	/**
      * Constructor for a careful robot
      * @param delivery governs the final delivery
-     * @param mailPool is the source of mail items
      */
 	public CarefulRobot(IMailDelivery delivery) {
 		super(delivery, true, true, CAREFUL_APACITY);

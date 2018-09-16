@@ -11,7 +11,6 @@ public class BigRobot extends Robot {
 	/**
      * Constructor for a big robot
      * @param delivery governs the final delivery
-     * @param mailPool is the source of mail items
      */
 	public BigRobot(IMailDelivery delivery) {
 		super(delivery, true, false, BIG_CAPACITY);
