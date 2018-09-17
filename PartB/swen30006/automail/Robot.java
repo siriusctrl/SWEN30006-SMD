@@ -91,7 +91,10 @@ public abstract class Robot {
 		                changeState(RobotState.WAITING);
 		            } else {
 		                	/** If the robot is not at the mailroom floor yet, then move towards it! */
-		                	moveTowards(Building.MAILROOM_LOCATION);
+		            		if (!careful || carefulStop) {
+		            			moveTowards(Building.MAILROOM_LOCATION);
+		            		}
+		            		carefulStop = !carefulStop;
 		                	break;
 	                }
 	    		case WAITING:
@@ -104,29 +107,34 @@ public abstract class Robot {
 	                	changeState(RobotState.DELIVERING);
                 }
                 break;
-	    		case DELIVERING:
-	    			if(current_floor == destination_floor){ // If already here drop off either way
-					/** Delivery complete, report this to the simulator! */
-					delivery.deliver(tube.pop());
-					deliveryCounter++;
-					if(deliveryCounter > tube.getMaxCapacity()){  // Implies a simulation bug
-						throw new ExcessiveDeliveryException();
-					}
-					/** Check if want to return, i.e. if there are no more items in the tube*/
-					if(tube.isEmpty()){
-						changeState(RobotState.RETURNING);
-					}
-					else{
-					    /** If there are more items, set the robot's route to the location to deliver the item */
-					    setRoute();
-					    changeState(RobotState.DELIVERING);
-					}
-	    			} else {
-		        		/** The robot is not at the destination yet, move towards it! */
-	    				moveTowards(destination_floor);
-	    			}
-	            break;
-	    	}
+		case DELIVERING:
+			if(current_floor == destination_floor){ // If already here drop off either way
+				/** Delivery complete, report this to the simulator! */
+				delivery.deliver(tube.pop());
+				deliveryCounter++;
+				if(deliveryCounter > tube.getMaxCapacity()){  // Implies a simulation bug
+					throw new ExcessiveDeliveryException();
+				}
+				/** Check if want to return, i.e. if there are no more items in the tube*/
+				if(tube.isEmpty()){
+					changeState(RobotState.RETURNING);
+				}
+				else{
+				    /** If there are more items, set the robot's route to the location to deliver the item */
+				    setRoute();
+				    changeState(RobotState.DELIVERING);
+				}
+			} else {
+				/** The robot is not at the destination yet, move towards it! */
+				if (!careful || carefulStop) {
+					// Not careful robot, or careful robot but needs to move
+					moveTowards(destination_floor);
+				}
+				// change state for careful robot
+			carefulStop = !carefulStop;
+			}
+	    	break;
+	}
     }
 
     /**
@@ -149,24 +157,16 @@ public abstract class Robot {
      * @param destination the floor towards which the robot is moving
      */
     private void moveTowards(int destination) {
-    		// Not careful robot, or careful robot but needs to move
-    		boolean shouldMove = !careful || carefulStop;
-		
-    		if (shouldMove) {
-    			if (current_floor < destination) {
-    	            current_floor++;
-    	        }
-    	        else {
-    	            current_floor--;
-    	        }
-    		}
-        
-        // change state for careful robot
-        carefulStop = !carefulStop;
+	if(current_floor < destination){
+            current_floor++;
+        }
+        else{
+            current_floor--;
+        }
     }
     
     private String getIdTube() {
-    		return String.format("%s(%1d/%1d)", id, tube.getSize(), tube.getMaxCapacity());
+	return String.format("%s(%1d/%1d)", id, tube.getSize(), tube.getMaxCapacity());
     }
     
     /**
@@ -174,13 +174,13 @@ public abstract class Robot {
      * @param nextState the state to which the robot is transitioning
      */
     private void changeState(RobotState nextState){
-	    	if (current_state != nextState) {
-	        System.out.printf("T: %3d > %7s changed from %s to %s%n", Clock.Time(), getIdTube(), current_state, nextState);
-	    	}
-	    	current_state = nextState;
-	    	if(nextState == RobotState.DELIVERING){
-	        System.out.printf("T: %3d > %7s-> [%s]%n", Clock.Time(), getIdTube(), tube.peek().toString());
-	    	}
+	if (current_state != nextState) {
+	System.out.printf("T: %3d > %7s changed from %s to %s%n", Clock.Time(), getIdTube(), current_state, nextState);
+	}
+	current_state = nextState;
+	if(nextState == RobotState.DELIVERING){
+	System.out.printf("T: %3d > %7s-> [%s]%n", Clock.Time(), getIdTube(), tube.peek().toString());
+	}
     }
 
 	public StorageTube getTube() {
