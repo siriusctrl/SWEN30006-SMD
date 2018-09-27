@@ -70,7 +70,7 @@ public class Simulation extends ApplicationAdapter implements InputProcessor {
 		drivingProperties.setProperty("RunSpeed", "2");
 		drivingProperties.setProperty("Controller", "controller.ManualController");
 		
-		try (FileReader inStream = new FileReader("Driving.Properties")) {
+		try (FileReader inStream = new FileReader("assets/Driving.Properties")) {
 			drivingProperties.load(inStream);
 		} catch (IOException e) {
 			e.printStackTrace();
