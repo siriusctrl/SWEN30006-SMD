@@ -3,7 +3,7 @@ package world;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.TreeSet;
 import java.lang.reflect.Constructor;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -68,9 +68,10 @@ public class World {
 		}
 	}
 	
-	private int initializeMap(TiledMap map2) {  // Returns max(key in map) + 1
+	private int initializeMap(TiledMap map2) {  // Returns max(key in map)
 		// Need to check that the keys are a sequence
-		ArrayList<Integer> keys = new ArrayList<Integer>();
+		// ArrayList<Integer> keys = new ArrayList<Integer>();
+		TreeSet<Integer> keys = new TreeSet<Integer>();
 		// Iterate through all layer names
 		for(String layerName : LAYER_NAME){
 			// Set the layer
@@ -127,11 +128,11 @@ public class World {
 			}
 		}
 		// Check that keys are a sequence
-		Collections.sort(keys);
-		for (int i = 0; i < keys.size(); i++) assert(keys.get(i) == i+1);
+		assert(keys.last()==keys.size());
+		// System.out.println("keys: "+keys);
 		assert(null != start);
 		assert(finish.size() > 0);
-		return keys.size(); // the number of keys
+		return keys.size(); // the number of unique keys
 	}
 
 	public void update(float delta){
