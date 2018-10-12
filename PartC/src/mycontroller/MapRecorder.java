@@ -51,8 +51,7 @@ public class MapRecorder {
 			mapTiles[c.x][c.y] = t;
 			
 			if (t.getType() == MapTile.Type.START) {
-				start.x = c.x;
-				start.y = c.y;
+				start = new Coordinate(c.x, c.y);
 			}
 		}
 		
