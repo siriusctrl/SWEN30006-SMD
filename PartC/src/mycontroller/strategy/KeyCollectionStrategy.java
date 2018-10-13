@@ -1,5 +1,6 @@
 package mycontroller.strategy;
 
+import mycontroller.MapRecorder;
 import mycontroller.MyAIController;
 import utilities.Coordinate;
 
@@ -13,7 +14,7 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 	@Override
 	public Coordinate findDestination(MyAIController myAIController) {
 		// ???
-		HashMap<Integer, ArrayList<Coordinate>> keys = myAIController.mapRecorder.keysLocations;
+		HashMap<Integer, ArrayList<Coordinate>> keys = MapRecorder.keysLocations;
 		Set<Integer> got = myAIController.getKeys();
 		
 		return null;
