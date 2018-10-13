@@ -1,5 +1,6 @@
 package mycontroller.strategy;
 
+import mycontroller.MapRecorder;
 import mycontroller.MyAIController;
 import utilities.Coordinate;
 
@@ -11,7 +12,7 @@ public class HealStrategy implements IEscapeStrategy {
 
 	@Override
 	public Coordinate findDestination(MyAIController myAIController) {
-		return evaluateBest(myAIController.mapRecorder.healthLocations);
+		return evaluateBest(MapRecorder.healthLocations);
 	}
 	
 	private Coordinate evaluateBest(ArrayList<Coordinate> coords) {

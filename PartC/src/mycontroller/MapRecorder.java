@@ -18,29 +18,13 @@ public class MapRecorder {
 	public static ArrayList<Coordinate> healthLocations = new ArrayList<>();
 	// record the locations for finish states
 	public static ArrayList<Coordinate> finishLocations = new ArrayList<>();
-	
-	/**
-	 * Constructor
-	 * 
-	 * @param mapHashMap A hash table which contains the map information
-	 * @param numOfKeys Total number of keys
-	 */
-	public MapRecorder(HashMap<Coordinate, MapTile> mapHashMap) {
-		Coordinate start = null; 
 		
-		start = loadMap(mapHashMap);
-		
-		traverseMap(start.x, start.y);
-	}
-	
-	
 	/**
 	 * Load the map from a HashMap into a 2D array
 	 * 
 	 * @param mapHashMap A hash table which contains the map information
-	 * @return The starting point of the car
 	 */
-	private static Coordinate loadMap(HashMap<Coordinate, MapTile> mapHashMap) {
+	public static void loadMap(HashMap<Coordinate, MapTile> mapHashMap) {
 		Iterator<Coordinate> keys = mapHashMap.keySet().iterator();
 		Coordinate start = null;
 		
@@ -59,7 +43,7 @@ public class MapRecorder {
 			}
 		}
 		
-		return start;
+		traverseMap(start.x, start.y);
 	}
 	
 	private static void traverseMap(int x, int y) {

@@ -7,15 +7,13 @@ import mycontroller.strategy.StrategyManager;
 
 public class MyAIController extends CarController{
 	
-	public MapRecorder mapRecorder;
-	
 	private StrategyManager stManager;
 	
 	private Coordinate nextDest;
 
 	public MyAIController(Car car) {
 		super(car);
-		mapRecorder = new MapRecorder(this.getMap());
+		MapRecorder.loadMap(super.getMap());
 		stManager = new StrategyManager();
 	}
 
@@ -23,7 +21,7 @@ public class MyAIController extends CarController{
 	public void update() {
 		
 		// may check if the car moves first?
-		mapRecorder.updateCarView(super.getView());
+		MapRecorder.updateCarView(super.getView());
 		
 		boolean targetChanged = stManager.update(this);
 
