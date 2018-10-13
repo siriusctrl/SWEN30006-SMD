@@ -16,6 +16,8 @@ public class HealStrategy implements IEscapeStrategy {
 	
 	private Coordinate evaluateBest(ArrayList<Coordinate> coords) {
 		// normally using a star to find a nearest
+		
+		// check if now is on the health tile
 		if(coords.size() > 0) {
 			return coords.get(0);
 		}

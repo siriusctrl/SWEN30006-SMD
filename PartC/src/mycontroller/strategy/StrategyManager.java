@@ -22,7 +22,6 @@ public class StrategyManager {
 	
 	public StrategyManager() {
 		initialize();
-		currentStrategy = strategies.get(DEFAULT_ST);
 	}
 	
 	public void initialize() {
