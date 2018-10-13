@@ -1,9 +1,9 @@
 package mycontroller.pipeline;
 
 /**
- * A step interface as a implementation of pipeline strategy
+ * A step interface as an implementation of pipeline strategy
  * reference to "https://stackoverflow.com/questions/39947155/pipeline-design-pattern-implementation" 
- * with some minor modification
+ * with some modification
  * @param <I> the Input value type
  * @param <O> the output value type
  */
@@ -21,8 +21,8 @@ public interface Step<I, O> {
      * @param step the step that will be executed after the current step
      * @return the wrapped step, has more than more method will be executed.
      */
-    default <A> Step<I,A> add(Step<O,A> step){
-    	return input -> step.execute(execute(input));
+    default <A> Step<I,A> add(Step<O,A> step) {
+    		return input -> step.execute(execute(input));
     }
     
     /**
@@ -31,6 +31,6 @@ public interface Step<I, O> {
      * @return step
      */
     static <I,O> Step<I,O> of(Step<I,O> step){
-    	return step;
+    		return step;
     }
 }

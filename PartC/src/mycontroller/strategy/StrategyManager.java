@@ -12,7 +12,7 @@ public class StrategyManager {
 	
 	private IEscapeStrategy currentStrategy = null;
 	private Map<String, IEscapeStrategy> strategies;
-	
+
 	public static final String EXIT_ST_NAME = "Exit";
 	public static final String HEAL_ST_NAME = "Heal";
 	public static final String KEY_ST_NAME = "KeyCollection";

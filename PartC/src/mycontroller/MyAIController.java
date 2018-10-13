@@ -1,7 +1,5 @@
 package mycontroller;
 
-
-
 import mycontroller.Pathway;
 import controller.CarController;
 import world.Car;
@@ -16,6 +14,10 @@ public class MyAIController extends CarController{
 	
 	private Coordinate lastPosition;
 
+	/**
+	 * constructor for MyAIController
+	 * @param car Car object
+	 */
 	public MyAIController(Car car) {
 		super(car);
 		MapRecorder.loadMap(super.getMap());
@@ -28,17 +30,15 @@ public class MyAIController extends CarController{
 		// may check if the car moves first?
 		MapRecorder.updateCarView(super.getView());
 		
-		
 		if(checkUpdateManager()) {
 			pathway = stManager.findNewPathway(this);
 		}
 		
 		// when pathway.desti is (-1, -1), stays the same
 		// only appears when standing in health area
-		
-		if(Pathway.STAYS.equals(pathway.desti)) {
+		if(Pathway.STAYS.equals(pathway.getDesti())) {
 			// stays
-		}else {
+		} else {
 			drive();
 		}
 		
@@ -46,8 +46,8 @@ public class MyAIController extends CarController{
 		// consider the situation when target hasn't changed
 	}
 	
-	public boolean checkUpdateManager() {
-		return pathway.path.size() == 0 || stManager.checkAndTakeover(this);
+	private boolean checkUpdateManager() {
+		return pathway.getPath().size() == 0 || stManager.checkAndTakeover(this);
 	}
 	
 	public void drive() {
