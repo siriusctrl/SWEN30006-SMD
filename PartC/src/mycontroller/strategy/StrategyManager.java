@@ -87,6 +87,7 @@ public class StrategyManager {
 	private boolean checkHealTakeover(MyAIController myAIController) {
 
 		boolean needHeal = true;
+		needHeal = needHeal && myAIController.mapRecorder.healthLocations.size() > 0;
 		needHeal = needHeal && myAIController.getHealth() < HealStrategy.HEALTH_THRESHOLD;
 		
 		// a star

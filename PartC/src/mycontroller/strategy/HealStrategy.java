@@ -3,13 +3,22 @@ package mycontroller.strategy;
 import mycontroller.MyAIController;
 import utilities.Coordinate;
 
+import java.util.ArrayList;
+
 public class HealStrategy implements IEscapeStrategy {
 	
 	public static final int HEALTH_THRESHOLD = 75;
 
 	@Override
 	public Coordinate findDestination(MyAIController myAIController) {
-		// TODO Auto-generated method stub
+		return evaluateBest(myAIController.mapRecorder.healthLocations);
+	}
+	
+	private Coordinate evaluateBest(ArrayList<Coordinate> coords) {
+		// normally using a star to find a nearest
+		if(coords.size() > 0) {
+			return coords.get(0);
+		}
 		return null;
 	}
 
