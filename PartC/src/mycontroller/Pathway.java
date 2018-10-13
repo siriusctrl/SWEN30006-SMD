@@ -21,7 +21,7 @@ public class Pathway {
 			return false;
 		}
 	
-		return desti.x == p.getDesti().x && desti.y == p.getDesti().y;
+		return p.getDesti().equals(desti);
 	}
 
 	/**
