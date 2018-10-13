@@ -47,6 +47,8 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 	
 	public Pathway evaluateBest(ArrayList<Coordinate> coords) {
 		// calculate distance
+		
+		// deal with maximum costs, interpreting unreachable keys
 		return Dijkstra.findShortestPath();
 	}
 	

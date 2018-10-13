@@ -28,6 +28,7 @@ public class MyAIController extends CarController{
 		// may check if the car moves first?
 		MapRecorder.updateCarView(super.getView());
 		
+		
 		if(checkUpdateManager()) {
 			pathway = stManager.findNewPathway(this);
 		}
@@ -35,7 +36,11 @@ public class MyAIController extends CarController{
 		// when pathway.desti is (-1, -1), stays the same
 		// only appears when standing in health area
 		
-		
+		if(Pathway.STAYS.equals(pathway.desti)) {
+			// stays
+		}else {
+			drive();
+		}
 		
 		// use pipeline to decide path.. drive on path..
 		// consider the situation when target hasn't changed
@@ -43,6 +48,10 @@ public class MyAIController extends CarController{
 	
 	public boolean checkUpdateManager() {
 		return pathway.path.size() == 0 || stManager.checkAndTakeover(this);
+	}
+	
+	public void drive() {
+		
 	}
 
 }
