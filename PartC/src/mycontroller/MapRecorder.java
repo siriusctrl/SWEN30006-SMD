@@ -64,8 +64,6 @@ public class MapRecorder {
 		
 	}
 	
-	
-	
 	private void traverseMap(int x, int y) {
 		if (x < 0 || x >= World.MAP_WIDTH || y < 0 || y > World.MAP_HEIGHT) {
 			return;
