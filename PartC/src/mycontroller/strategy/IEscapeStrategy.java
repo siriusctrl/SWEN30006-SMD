@@ -20,5 +20,5 @@ public interface IEscapeStrategy {
 	/**
 	 * Check if this strategy needs to takeover the control.
 	 * */
-	boolean isTakeover(MyAIController myAIController);
+	default boolean isTakeover(MyAIController myAIController) {return false;};
 }

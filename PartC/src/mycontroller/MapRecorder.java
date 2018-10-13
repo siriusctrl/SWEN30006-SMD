@@ -8,16 +8,16 @@ import java.util.*;
 public class MapRecorder {
 	
 	// record all the Tiles of the map
-	public MapTile[][] mapTiles = new MapTile[World.MAP_HEIGHT][World.MAP_WIDTH];
+	public static MapTile[][] mapTiles = new MapTile[World.MAP_HEIGHT][World.MAP_WIDTH];
 	// record the status for each tile
-	public TileStatus[][] mapStatus = new TileStatus[World.MAP_HEIGHT][World.MAP_WIDTH];
+	public static TileStatus[][] mapStatus = new TileStatus[World.MAP_HEIGHT][World.MAP_WIDTH];
 	
 	// record the locations for all the keys
-	public ArrayList<Coordinate> keysLocations = new ArrayList<>();
+	public static HashMap<Integer,ArrayList<Coordinate>> keysLocations = new HashMap<>();
 	// record the locations for all the health point
-	public ArrayList<Coordinate> healthLocations = new ArrayList<>();
+	public static ArrayList<Coordinate> healthLocations = new ArrayList<>();
 	// record the locations for finish states
-	public ArrayList<Coordinate> finishLocations = new ArrayList<>();
+	public static ArrayList<Coordinate> finishLocations = new ArrayList<>();
 	
 	/**
 	 * Constructor
@@ -31,7 +31,6 @@ public class MapRecorder {
 		start = loadMap(mapHashMap);
 		
 		traverseMap(start.x, start.y);
-		
 	}
 	
 	
@@ -41,7 +40,7 @@ public class MapRecorder {
 	 * @param mapHashMap A hash table which contains the map information
 	 * @return The starting point of the car
 	 */
-	private Coordinate loadMap(HashMap<Coordinate, MapTile> mapHashMap) {
+	private static Coordinate loadMap(HashMap<Coordinate, MapTile> mapHashMap) {
 		Iterator<Coordinate> keys = mapHashMap.keySet().iterator();
 		Coordinate start = null;
 		
@@ -61,10 +60,9 @@ public class MapRecorder {
 		}
 		
 		return start;
-		
 	}
 	
-	private void traverseMap(int x, int y) {
+	private static void traverseMap(int x, int y) {
 		if (x < 0 || x >= World.MAP_WIDTH || y < 0 || y > World.MAP_HEIGHT) {
 			return;
 		} else if(mapStatus[x][y] != null) {
@@ -92,7 +90,7 @@ public class MapRecorder {
 	 * 
 	 * @param mapHashMap 9*9 grid around car
 	 */
-	public void updateCarView(HashMap<Coordinate, MapTile> mapHashMap) {
+	public static void updateCarView(HashMap<Coordinate, MapTile> mapHashMap) {
 		Iterator<Coordinate> keys = mapHashMap.keySet().iterator();
 		
 		while(keys.hasNext()) {
@@ -105,7 +103,10 @@ public class MapRecorder {
 			if (m instanceof LavaTrap) {
 				LavaTrap trap = (LavaTrap) m;
 				if(trap.getKey() > 0) {
-					keysLocations.add(c);
+					if(!keysLocations.containsKey(trap.getKey())) {
+						keysLocations.put(trap.getKey(), new ArrayList<>());
+					}
+					keysLocations.get(trap.getKey()).add(c);
 				}
 			} else if(m instanceof HealthTrap){
 				healthLocations.add(c);
