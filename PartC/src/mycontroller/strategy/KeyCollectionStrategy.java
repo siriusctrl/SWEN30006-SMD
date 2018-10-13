@@ -3,11 +3,19 @@ package mycontroller.strategy;
 import mycontroller.MyAIController;
 import utilities.Coordinate;
 
+import java.util.ArrayList;
+
+import java.util.Set;
+import java.util.HashMap;
+
 public class KeyCollectionStrategy implements IEscapeStrategy {
 
 	@Override
 	public Coordinate findDestination(MyAIController myAIController) {
-		// TODO Auto-generated method stub
+		// ???
+		HashMap<Integer, ArrayList<Coordinate>> keys = myAIController.mapRecorder.keysLocations;
+		Set<Integer> got = myAIController.getKeys();
+		
 		return null;
 	}
 
