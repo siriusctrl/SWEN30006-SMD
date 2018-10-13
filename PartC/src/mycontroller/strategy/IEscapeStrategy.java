@@ -2,6 +2,9 @@ package mycontroller.strategy;
 
 import mycontroller.MyAIController;
 import utilities.Coordinate;
+import mycontroller.Pathway;
+
+import java.util.Queue;
 
 public interface IEscapeStrategy {
 	
@@ -9,7 +12,7 @@ public interface IEscapeStrategy {
 	 * Get the moving destination for the car based on the strategy
 	 * @return a Coordinate object which indicate the destination of moving
 	 */
-	Coordinate findDestination(MyAIController myAIController);
+	Pathway findDestination(MyAIController myAIController);
 	
 	/**
 	 * Check whether the strategy has finished it's work

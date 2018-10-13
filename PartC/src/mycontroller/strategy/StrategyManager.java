@@ -6,6 +6,8 @@ import mycontroller.MapRecorder;
 import mycontroller.MyAIController;
 import utilities.Coordinate;
 
+import mycontroller.Pathway;
+
 public class StrategyManager {
 	
 	private IEscapeStrategy currentStrategy = null;
@@ -19,7 +21,7 @@ public class StrategyManager {
 	
 	public static final String DEFAULT_ST = KEY_ST_NAME;
 	
-	private Coordinate curTarget = null;
+	private Pathway curPathway = null;
 	
 	
 	public StrategyManager() {
@@ -36,13 +38,13 @@ public class StrategyManager {
 	 * Update strategy
 	 * 
 	 * @param myAIController MyAIController.
-	 * @return isTargetChanged true if the target changes.
+	 * @return isTargetChanged true if the destination changes.
 	 * */
 	public boolean update(MyAIController myAIController) {
 		checkAndTakeover(myAIController);
-		Coordinate newTarget = currentStrategy.findDestination(myAIController);
-		if(curTarget == null || !newTarget.equals(curTarget)) {
-			curTarget = newTarget;
+		Pathway newPathway = currentStrategy.findDestination(myAIController);
+		curPathway = newPathway;
+		if(curPathway == null || !newPathway.isSameDesti(curPathway)) {
 			return true;
 		}
 		
@@ -81,8 +83,8 @@ public class StrategyManager {
 		return true;
 	}
 	
-	public Coordinate getTarget() {
-		return curTarget;
+	public Pathway getPathway() {
+		return curPathway;
 	}
 	
 	private boolean checkHealTakeover(MyAIController myAIController) {

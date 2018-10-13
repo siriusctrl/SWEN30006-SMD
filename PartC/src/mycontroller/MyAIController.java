@@ -1,5 +1,8 @@
 package mycontroller;
 
+
+
+import mycontroller.Pathway;
 import controller.CarController;
 import world.Car;
 import utilities.Coordinate;
@@ -9,7 +12,7 @@ public class MyAIController extends CarController{
 	
 	private StrategyManager stManager;
 	
-	private Coordinate nextDest;
+	private Pathway pathway;
 
 	public MyAIController(Car car) {
 		super(car);
@@ -26,8 +29,12 @@ public class MyAIController extends CarController{
 		boolean targetChanged = stManager.update(this);
 
 		if(targetChanged) {
-			nextDest = stManager.getTarget();
+			pathway = stManager.getPathway();
 		}
+		
+		// 
+		
+		
 		
 		// use pipeline to decide path.. drive on path..
 		// consider the situation when target hasn't changed

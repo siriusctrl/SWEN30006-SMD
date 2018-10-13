@@ -3,22 +3,22 @@ package mycontroller.strategy;
 import mycontroller.MapRecorder;
 import mycontroller.MyAIController;
 import utilities.Coordinate;
+import mycontroller.Pathway;
+import mycontroller.pipeline.Dijkstra;
 
 import java.util.ArrayList;
+import java.util.Queue;
 
 public class ExitStrategy implements IEscapeStrategy {
 
 	@Override
-	public Coordinate findDestination(MyAIController myAIController) {
+	public Pathway findDestination(MyAIController myAIController) {
 		ArrayList<Coordinate> finishCoords = MapRecorder.finishLocations;
 		return evaluateBest(finishCoords);
 	}
 	
-	private Coordinate evaluateBest(ArrayList<Coordinate> coords) {
-		if(coords.size() > 0) {
-			return coords.get(0);
-		}
-		return null;
+	private Pathway evaluateBest(ArrayList<Coordinate> coords) {
+		return Dijkstra.findShortestPath();
 	}
 
 	@Override

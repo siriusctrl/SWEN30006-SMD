@@ -3,26 +3,25 @@ package mycontroller.strategy;
 import mycontroller.MapRecorder;
 import mycontroller.MyAIController;
 import utilities.Coordinate;
+import mycontroller.Pathway;
 
 import java.util.ArrayList;
+import java.util.Queue;
 
 public class HealStrategy implements IEscapeStrategy {
 	
 	public static final int HEALTH_THRESHOLD = 75;
 
 	@Override
-	public Coordinate findDestination(MyAIController myAIController) {
+	public Pathway findDestination(MyAIController myAIController) {
 		return evaluateBest(MapRecorder.healthLocations);
 	}
 	
-	private Coordinate evaluateBest(ArrayList<Coordinate> coords) {
+	private Pathway evaluateBest(ArrayList<Coordinate> coords) {
 		// normally using a star to find a nearest
 		
 		// check if now is on the health tile
-		if(coords.size() > 0) {
-			return coords.get(0);
-		}
-		return null;
+		return new Pathway();
 	}
 
 	@Override
