@@ -21,8 +21,6 @@ public class StrategyManager {
 	
 	public static final String DEFAULT_ST = KEY_ST_NAME;
 	
-	private Pathway curPathway = null;
-	
 	
 	public StrategyManager() {
 		initialize();
@@ -38,17 +36,11 @@ public class StrategyManager {
 	 * Update strategy
 	 * 
 	 * @param myAIController MyAIController.
-	 * @return isTargetChanged true if the destination changes.
+	 * @return newPathway new pathway to get to the destination
 	 * */
-	public boolean update(MyAIController myAIController) {
-		checkAndTakeover(myAIController);
+	public Pathway findNewPathway(MyAIController myAIController) {
 		Pathway newPathway = currentStrategy.findDestination(myAIController);
-		curPathway = newPathway;
-		if(curPathway == null || !newPathway.isSameDesti(curPathway)) {
-			return true;
-		}
-		
-		return false;
+		return newPathway;
 	}
 	
 	
@@ -58,7 +50,7 @@ public class StrategyManager {
 	 * @param myAIController MyAIController.
 	 * @return isStrategyChanged true if strategy is changed
 	 * */
-	private boolean checkAndTakeover(MyAIController myAIController) {
+	public boolean checkAndTakeover(MyAIController myAIController) {
 		if(currentStrategy == null) {
 			return takeover(strategies.get(DEFAULT_ST));
 		}
@@ -81,10 +73,6 @@ public class StrategyManager {
 		}
 		currentStrategy = newStrategy;
 		return true;
-	}
-	
-	public Pathway getPathway() {
-		return curPathway;
 	}
 	
 	private boolean checkHealTakeover(MyAIController myAIController) {

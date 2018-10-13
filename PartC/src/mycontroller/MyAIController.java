@@ -26,10 +26,8 @@ public class MyAIController extends CarController{
 		// may check if the car moves first?
 		MapRecorder.updateCarView(super.getView());
 		
-		boolean targetChanged = stManager.update(this);
-
-		if(targetChanged) {
-			pathway = stManager.getPathway();
+		if(checkUpdateManager()) {
+			pathway = stManager.findNewPathway(this);
 		}
 		
 		// 
@@ -38,6 +36,10 @@ public class MyAIController extends CarController{
 		
 		// use pipeline to decide path.. drive on path..
 		// consider the situation when target hasn't changed
+	}
+	
+	public boolean checkUpdateManager() {
+		return pathway.path.size() == 0 || stManager.checkAndTakeover(this);
 	}
 
 }
