@@ -9,6 +9,8 @@ public class Pathway {
 	public int cost;
 	public Coordinate desti;
 	
+	public static final Coordinate STAYS = new Coordinate(-1, -1);
+	
 	public boolean isSameDesti(Pathway p) {
 		if(p == null) {
 			return false;

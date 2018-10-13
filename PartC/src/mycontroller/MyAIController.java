@@ -13,6 +13,8 @@ public class MyAIController extends CarController{
 	private StrategyManager stManager;
 	
 	private Pathway pathway;
+	
+	private Coordinate lastPosition;
 
 	public MyAIController(Car car) {
 		super(car);
@@ -30,7 +32,8 @@ public class MyAIController extends CarController{
 			pathway = stManager.findNewPathway(this);
 		}
 		
-		// 
+		// when pathway.desti is (-1, -1), stays the same
+		// only appears when standing in health area
 		
 		
 		
