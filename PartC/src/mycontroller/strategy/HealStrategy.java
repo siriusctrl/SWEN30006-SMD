@@ -30,4 +30,9 @@ public class HealStrategy implements IEscapeStrategy {
 		return false;
 	}
 	
+	@Override
+	public boolean isTakeover(MyAIController myAIController) {
+		return false;
+	}
+	
 }
