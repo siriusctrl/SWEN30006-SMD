@@ -24,5 +24,10 @@ public class ExitStrategy implements IEscapeStrategy {
 	public boolean isFinished(MyAIController myAIController) {
 		return false;
 	}
+	
+	@Override
+	public boolean isTakeover(MyAIController myAIController) {
+		return false;
+	}
 
 }

@@ -16,4 +16,9 @@ public interface IEscapeStrategy {
 	 * @return whether the strategy is finished 
 	 */
 	boolean isFinished(MyAIController myAIController);
+	
+	/**
+	 * Check if this strategy needs to takeover the control.
+	 * */
+	boolean isTakeover(MyAIController myAIController);
 }

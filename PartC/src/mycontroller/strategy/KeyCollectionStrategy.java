@@ -16,5 +16,10 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	@Override
+	public boolean isTakeover(MyAIController myAIController) {
+		return false;
+	}
 
 }
