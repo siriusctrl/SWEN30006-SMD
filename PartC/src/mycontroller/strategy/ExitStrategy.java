@@ -9,7 +9,7 @@ public class ExitStrategy implements IEscapeStrategy {
 
 	@Override
 	public Coordinate findDestination(MyAIController myAIController) {
-		ArrayList<Coordinate> finishCoords = myAIController.mapRecorder.finishLocations;
+		ArrayList<Coordinate> finishCoords = myAIController.map.finishLocations;
 		return evaluateBest(finishCoords);
 	}
 	
