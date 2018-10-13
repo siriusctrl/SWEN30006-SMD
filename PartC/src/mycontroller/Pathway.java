@@ -15,6 +15,7 @@ public class Pathway {
 		if(p == null) {
 			return false;
 		}
+	
 		return desti.equals(p);
 	}
 
