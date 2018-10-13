@@ -6,11 +6,26 @@ import world.World;
 import java.util.*;
 
 public class MapRecorder {
+	// cost to get through a normal road
+	public static final int ROAD_COST = 1;
+	// cost to get through a lava
+	public static final int LAVA_COST = 3;
+	// cost to get through a grass
+	public static final int GRASS_COST = 10;
+	// cost to get through a mud
+	public static final int MUD_COST = Integer.MAX_VALUE;
+	//cost to get through a wall
+	public static final int WALL_COST = Integer.MAX_VALUE;
+	//cost to get through a unexplored road
+	public static final int UNEXPLORED_COST = -1;
+	
 	
 	// record all the Tiles of the map
 	public static MapTile[][] mapTiles = new MapTile[World.MAP_HEIGHT][World.MAP_WIDTH];
 	// record the status for each tile
 	public static TileStatus[][] mapStatus = new TileStatus[World.MAP_HEIGHT][World.MAP_WIDTH];
+	//the cost to go through each point
+	public static Integer[][] cost = new Integer[World.MAP_HEIGHT][World.MAP_WIDTH];
 	
 	// record the locations for all the keys
 	public static HashMap<Integer,ArrayList<Coordinate>> keysLocations = new HashMap<>();
@@ -53,13 +68,17 @@ public class MapRecorder {
 			return;
 		} else if(mapTiles[x][y].getType() == MapTile.Type.WALL) {
 			mapStatus[x][y] = TileStatus.UNREACHABLE;
+			cost[x][y] = WALL_COST;
 			return;
 		} else if(mapTiles[x][y].getType() == MapTile.Type.START) {
-			mapStatus[x][y] = TileStatus.REACHED;
+			mapStatus[x][y] = TileStatus.EXPLORED;
+			cost[x][y] = ROAD_COST;
 		} else if(mapTiles[x][y].getType() == MapTile.Type.FINISH) {
-			mapStatus[x][y] = TileStatus.REACHED;
+			mapStatus[x][y] = TileStatus.EXPLORED;
+			cost[x][y] = ROAD_COST;
 		} else {
-			mapStatus[x][y] = TileStatus.UNREACHED;
+			mapStatus[x][y] = TileStatus.UNEXPLORED;
+			cost[x][y] = UNEXPLORED_COST;
 		}
 		
 		// recursion
@@ -82,7 +101,7 @@ public class MapRecorder {
 			MapTile m = mapHashMap.get(c);
 			
 			mapTiles[c.x][c.y] = m;
-			mapStatus[c.x][c.y] = TileStatus.REACHED;
+			mapStatus[c.x][c.y] = TileStatus.EXPLORED;
 			
 			if (m instanceof LavaTrap) {
 				LavaTrap trap = (LavaTrap) m;
