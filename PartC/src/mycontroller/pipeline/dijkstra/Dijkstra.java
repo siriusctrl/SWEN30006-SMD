@@ -17,7 +17,7 @@ public class Dijkstra {
 		Pathway path = new Pathway();
 		
 		// construct nodes for every tile
-		Node[][] nodes = new Node[World.MAP_HEIGHT][World.MAP_WIDTH];
+		Node[][] nodes = new Node[World.MAP_WIDTH][World.MAP_HEIGHT];
 		for (int i = 0; i < World.MAP_WIDTH; i++) {
 			for (int j = 0; j < World.MAP_HEIGHT; j++) {
 				nodes[i][j] = new Node(i, j);
@@ -80,18 +80,18 @@ public class Dijkstra {
 		for (int i = 0; i < World.MAP_WIDTH; i++) {
 			for (int j = 0; j < World.MAP_HEIGHT; j++) {
 				// edge to four directions if not out of bound
-				Node curr = nodes[i][j];
+				System.out.println(nodes[i][j].getCoordinate().toString());
 				if (i < World.MAP_WIDTH - 1) {
-					curr.addToNeighbours(new Edge(new Node(i + 1, j), MapRecorder.cost[i + 1][j]));
+					nodes[i][j].addToNeighbours(new Edge(new Node(i + 1, j), MapRecorder.cost[i + 1][j]));
 				}
 				if (i > 0) {
-					curr.addToNeighbours(new Edge(new Node(i - 1, j), MapRecorder.cost[i - 1][j]));
+					nodes[i][j].addToNeighbours(new Edge(new Node(i - 1, j), MapRecorder.cost[i - 1][j]));
 				}
 				if (j < World.MAP_HEIGHT - 1) {
-					curr.addToNeighbours(new Edge(new Node(i, j + 1), MapRecorder.cost[i][j + 1]));
+					nodes[i][j].addToNeighbours(new Edge(new Node(i, j + 1), MapRecorder.cost[i][j + 1]));
 				}
 				if (j > 0) {
-					curr.addToNeighbours(new Edge(new Node(i, j - 1), MapRecorder.cost[i][j - 1]));
+					nodes[i][j].addToNeighbours(new Edge(new Node(i, j - 1), MapRecorder.cost[i][j - 1]));
 				}
 			}
 		}
