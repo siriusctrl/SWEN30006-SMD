@@ -81,6 +81,7 @@ public class Dijkstra {
 			for (int j = 0; j < World.MAP_HEIGHT; j++) {
 				// edge to four directions if not out of bound
 				System.out.println(nodes[i][j].getCoordinate().toString());
+
 				if (i < World.MAP_WIDTH - 1) {
 					nodes[i][j].addToNeighbours(new Edge(new Node(i + 1, j), MapRecorder.cost[i + 1][j]));
 				}

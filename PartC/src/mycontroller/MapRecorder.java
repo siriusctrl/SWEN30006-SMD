@@ -40,6 +40,12 @@ public class MapRecorder {
 		Iterator<Coordinate> keys = mapHashMap.keySet().iterator();
 		Coordinate start = null;
 		
+		for (int i = 0; i < World.MAP_WIDTH; i++) {
+			for (int j = 0; j < World.MAP_HEIGHT; j++) {
+				cost[i][j] = UNEXPLORED_COST;
+			}
+		}
+		
 		// a loop to load the map
 		while(keys.hasNext()) {
 			Coordinate c = keys.next();
@@ -67,15 +73,12 @@ public class MapRecorder {
 			mapStatus[x][y] = TileStatus.UNREACHABLE;
 			cost[x][y] = WALL_COST;
 			return;
-		} else if (mapTiles[x][y].getType() == MapTile.Type.START) {
-			mapStatus[x][y] = TileStatus.EXPLORED;
-			cost[x][y] = ROAD_COST;
-		} else if (mapTiles[x][y].getType() == MapTile.Type.FINISH) {
+		} else if (mapTiles[x][y].getType() == MapTile.Type.START ||
+				mapTiles[x][y].getType() == MapTile.Type.FINISH) {
 			mapStatus[x][y] = TileStatus.EXPLORED;
 			cost[x][y] = ROAD_COST;
 		} else {
 			mapStatus[x][y] = TileStatus.UNEXPLORED;
-			cost[x][y] = UNEXPLORED_COST;
 		}
 		
 		// recursion
