@@ -75,10 +75,10 @@ public class Pathway {
 	}
 	
 	public Coordinate pollNext() {
-		return path.poll();
+		return path.poll().getCoordinate();
 	}
 
 	public Coordinate peekNext() {
-		return path.peek();
+		return path.peek().getCoordinate();
 	}
 }
