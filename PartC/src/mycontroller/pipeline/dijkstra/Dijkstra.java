@@ -28,7 +28,7 @@ public class Dijkstra {
 		nodes = constructNeighbours(nodes);
 		
 		calculatePath(start);
-		PriorityQueue<Node> queue = getPathTowards(end);
+		PriorityQueue<Node> queue = getPathTowards(start, end);
 		path.setPath(queue);
 		path.setCost(nodes[end.getCoordinate().x][end.getCoordinate().y].getMinCost());
 		path.setDesti(end);
@@ -64,13 +64,14 @@ public class Dijkstra {
 	}
 	
 	// get path towards target
-	private static PriorityQueue<Node> getPathTowards(Node target) {
+	private static PriorityQueue<Node> getPathTowards(Node start, Node target) {
 		
 	    PriorityQueue<Node> queue = new PriorityQueue<>();
-	    for (Node v = target; v != null; v = v.getPrevNode()) {
+	    for (Node v = target; v != null && v != start; v = v.getPrevNode()) {
 	    		// add to queue
 	    		queue.add(v);
 	    }
+	    queue.add(start);
 	    return queue;
 	}
 	
@@ -80,8 +81,6 @@ public class Dijkstra {
 		for (int i = 0; i < World.MAP_WIDTH; i++) {
 			for (int j = 0; j < World.MAP_HEIGHT; j++) {
 				// edge to four directions if not out of bound
-				System.out.println(nodes[i][j].getCoordinate().toString());
-
 				if (i < World.MAP_WIDTH - 1) {
 					nodes[i][j].addToNeighbours(new Edge(new Node(i + 1, j), MapRecorder.cost[i + 1][j]));
 				}
