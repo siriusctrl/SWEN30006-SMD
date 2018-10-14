@@ -47,5 +47,12 @@ public class Pathway {
 	public Coordinate getDesti() {
 		return desti;
 	}
-
+	
+	public Coordinate pollNext() {
+		return path.poll();
+	}
+	
+	public Coordinate peekNext() {
+		return path.peek();
+	}
 }
