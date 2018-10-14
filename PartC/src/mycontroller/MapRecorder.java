@@ -17,13 +17,12 @@ public class MapRecorder {
 	public static final int WALL_COST = 99999;
 	public static final int UNEXPLORED_COST = 99999;
 	
-	
 	// record all the Tiles of the map
-	public static MapTile[][] mapTiles = new MapTile[World.MAP_HEIGHT][World.MAP_WIDTH];
+	public static MapTile[][] mapTiles = new MapTile[World.MAP_WIDTH][World.MAP_HEIGHT];
 	// record the status for each tile
-	public static TileStatus[][] mapStatus = new TileStatus[World.MAP_HEIGHT][World.MAP_WIDTH];
+	public static TileStatus[][] mapStatus = new TileStatus[World.MAP_WIDTH][World.MAP_HEIGHT];
 	// the cost to go through each point
-	public static Integer[][] cost = new Integer[World.MAP_HEIGHT][World.MAP_WIDTH];
+	public static Integer[][] cost = new Integer[World.MAP_WIDTH][World.MAP_HEIGHT];
 	
 	// record the locations for all the keys
 	public static HashMap<Integer,ArrayList<Coordinate>> keysLocations = new HashMap<>();
@@ -60,7 +59,7 @@ public class MapRecorder {
 	}
 	
 	private static void traverseMap(int x, int y) {
-		if (x < 0 || x >= World.MAP_WIDTH || y < 0 || y > World.MAP_HEIGHT) {
+		if (x < 0 || x >= World.MAP_WIDTH || y < 0 || y >= World.MAP_HEIGHT) {
 			return;
 		} else if (mapStatus[x][y] != null) {
 			return;
