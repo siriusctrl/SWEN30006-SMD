@@ -5,7 +5,7 @@ import java.util.*;
 import mycontroller.pipeline.dijkstra.Node;
 import utilities.Coordinate;
 
-public class Pathway {
+public class Pathway implements Comparable<Pathway>{
 	
 	private PriorityQueue<Node> path = new PriorityQueue<>();
 	private int cost;
@@ -24,6 +24,10 @@ public class Pathway {
 		}
 	
 		return p.getDesti().getCoordinate().equals(desti.getCoordinate());
+	}
+	
+	public int compareTo(Pathway pathway) {
+		return cost - pathway.cost;
 	}
 
 	/**
