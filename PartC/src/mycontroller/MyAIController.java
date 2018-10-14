@@ -99,28 +99,28 @@ public class MyAIController extends CarController{
 	private void turn() {
 		WorldSpatial.Direction Ori = super.getOrientation();
 		
-		if(nextDest.x - currPos.x > 0) {
-			if(Ori == WorldSpatial.Direction.NORTH) {
+		if (nextDest.x - currPos.x > 0) {
+			if (Ori == WorldSpatial.Direction.NORTH) {
 				super.turnRight();
-			}else {
+			} else if (Ori == WorldSpatial.Direction.SOUTH) {
 				super.turnLeft();
 			}
-		}else if (nextDest.x - currPos.x < 0) {
-			if(Ori == WorldSpatial.Direction.NORTH) {
+		} else if (nextDest.x - currPos.x < 0) {
+			if (Ori == WorldSpatial.Direction.NORTH) {
 				super.turnLeft();
-			}else {
+			} else if (Ori == WorldSpatial.Direction.SOUTH) {
 				super.turnRight();
 			}
-		}else if (nextDest.y - currPos.y > 0) {
-			if(Ori == WorldSpatial.Direction.WEST) {
+		} else if (nextDest.y - currPos.y > 0) {
+			if (Ori == WorldSpatial.Direction.WEST) {
+				super.turnRight();
+			} else if (Ori == WorldSpatial.Direction.EAST) {
 				super.turnLeft();
-			}else {
-				super.turnRight();
 			}
-		}else if (nextDest.y - currPos.y < 0) {
-			if(Ori == WorldSpatial.Direction.WEST) {
+		} else if (nextDest.y - currPos.y < 0) {
+			if (Ori == WorldSpatial.Direction.EAST) {
 				super.turnRight();
-			}else {
+			} else if (Ori == WorldSpatial.Direction.WEST) {
 				super.turnLeft();
 			}
 		}
@@ -132,23 +132,23 @@ public class MyAIController extends CarController{
 	private void startMoving() {
 		WorldSpatial.Direction Ori = super.getOrientation();
 		
-		if((nextDest.x - currPos.x < 0)) {
-			if(Ori == WorldSpatial.Direction.EAST) {
+		if ((nextDest.x - currPos.x < 0)) {
+			if (Ori == WorldSpatial.Direction.EAST) {
 				super.applyReverseAcceleration();
 			}
-		}else if ((nextDest.x - currPos.x > 0)) {
-			if(Ori == WorldSpatial.Direction.WEST) {
+		} else if ((nextDest.x - currPos.x > 0)) {
+			if (Ori == WorldSpatial.Direction.WEST) {
 				super.applyReverseAcceleration();
 			}	
-		}else if((nextDest.y - currPos.y < 0)) {
-			if(Ori == WorldSpatial.Direction.SOUTH) {
+		} else if ((nextDest.y - currPos.y < 0)) {
+			if (Ori == WorldSpatial.Direction.NORTH) {
 				super.applyReverseAcceleration();
 			}
-		}else if((nextDest.x - currPos.x > 0)) {
-			if(Ori == WorldSpatial.Direction.NORTH) {
+		} else if ((nextDest.y - currPos.y > 0)) {
+			if (Ori == WorldSpatial.Direction.SOUTH) {
 				super.applyReverseAcceleration();
 			}
-		}else {
+		} else {
 			super.applyForwardAcceleration();
 		}
 	}
