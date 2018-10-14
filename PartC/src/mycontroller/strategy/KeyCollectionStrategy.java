@@ -77,11 +77,13 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 		
 		for(int x = 0; x < World.MAP_WIDTH; x ++) {
 			for(int y = 0; y < World.MAP_HEIGHT; y ++) {
-				if(tileStatus[x][y] == TileStatus.EXPLORED && mapTiles[x][y].getType() == MapTile.Type.ROAD) {
-					exactRoads.add(new Coordinate(x,y));
-				}
-				if(mapTiles[x][y].getType() == MapTile.Type.ROAD) {
-					roadsMaybe.add(new Coordinate(x,y));
+				if(x != myCr.x && y != myCr.y) {
+					if(tileStatus[x][y] == TileStatus.EXPLORED && mapTiles[x][y].getType() == MapTile.Type.ROAD) {
+						exactRoads.add(new Coordinate(x,y));
+					}
+					if(mapTiles[x][y].getType() == MapTile.Type.ROAD) {
+						roadsMaybe.add(new Coordinate(x,y));
+					}
 				}
 			}
 		}
