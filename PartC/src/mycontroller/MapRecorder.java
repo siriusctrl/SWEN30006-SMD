@@ -89,7 +89,7 @@ public class MapRecorder {
 	}
 	
 	/**
-	 * Update the surrounding condition which capture by the car sensor
+	 * Update the surrounding condition which capture by the car sensor also update the cost
 	 * 
 	 * @param mapHashMap 9*9 grid around car
 	 */
@@ -105,14 +105,21 @@ public class MapRecorder {
 			
 			if (m instanceof LavaTrap) {
 				LavaTrap trap = (LavaTrap) m;
+				cost[c.x][c.y] = LAVA_COST;
 				if(trap.getKey() > 0) {
 					if(!keysLocations.containsKey(trap.getKey())) {
 						keysLocations.put(trap.getKey(), new ArrayList<>());
 					}
 					keysLocations.get(trap.getKey()).add(c);
 				}
+				cost[c.x][c.y] = ROAD_COST;
 			} else if(m instanceof HealthTrap){
 				healthLocations.add(c);
+				cost[c.x][c.y] = ROAD_COST;
+			} else if(m instanceof GrassTrap) {
+				cost[c.x][c.y] = GRASS_COST;
+			} else if (m instanceof MudTrap) {
+				cost[c.x][c.y] = MUD_COST;
 			}
 		}
 	}
