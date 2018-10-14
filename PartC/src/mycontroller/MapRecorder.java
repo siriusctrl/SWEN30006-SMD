@@ -12,19 +12,17 @@ public class MapRecorder {
 	public static final int LAVA_COST = 3;
 	// cost to get through a grass
 	public static final int GRASS_COST = 10;
-	// cost to get through a mud
-	public static final int MUD_COST = Integer.MAX_VALUE;
-	//cost to get through a wall
-	public static final int WALL_COST = Integer.MAX_VALUE;
-	//cost to get through a unexplored road
-	public static final int UNEXPLORED_COST = -1;
+	// cost to get through a mud, wall or unexplored road is too high to go through
+	public static final int MUD_COST = 99999;
+	public static final int WALL_COST = 99999;
+	public static final int UNEXPLORED_COST = 99999;
 	
 	
 	// record all the Tiles of the map
 	public static MapTile[][] mapTiles = new MapTile[World.MAP_HEIGHT][World.MAP_WIDTH];
 	// record the status for each tile
 	public static TileStatus[][] mapStatus = new TileStatus[World.MAP_HEIGHT][World.MAP_WIDTH];
-	//the cost to go through each point
+	// the cost to go through each point
 	public static Integer[][] cost = new Integer[World.MAP_HEIGHT][World.MAP_WIDTH];
 	
 	// record the locations for all the keys
@@ -64,16 +62,16 @@ public class MapRecorder {
 	private static void traverseMap(int x, int y) {
 		if (x < 0 || x >= World.MAP_WIDTH || y < 0 || y > World.MAP_HEIGHT) {
 			return;
-		} else if(mapStatus[x][y] != null) {
+		} else if (mapStatus[x][y] != null) {
 			return;
-		} else if(mapTiles[x][y].getType() == MapTile.Type.WALL) {
+		} else if (mapTiles[x][y].getType() == MapTile.Type.WALL) {
 			mapStatus[x][y] = TileStatus.UNREACHABLE;
 			cost[x][y] = WALL_COST;
 			return;
-		} else if(mapTiles[x][y].getType() == MapTile.Type.START) {
+		} else if (mapTiles[x][y].getType() == MapTile.Type.START) {
 			mapStatus[x][y] = TileStatus.EXPLORED;
 			cost[x][y] = ROAD_COST;
-		} else if(mapTiles[x][y].getType() == MapTile.Type.FINISH) {
+		} else if (mapTiles[x][y].getType() == MapTile.Type.FINISH) {
 			mapStatus[x][y] = TileStatus.EXPLORED;
 			cost[x][y] = ROAD_COST;
 		} else {
@@ -106,17 +104,17 @@ public class MapRecorder {
 			if (m instanceof LavaTrap) {
 				LavaTrap trap = (LavaTrap) m;
 				cost[c.x][c.y] = LAVA_COST;
-				if(trap.getKey() > 0) {
-					if(!keysLocations.containsKey(trap.getKey())) {
+				if (trap.getKey() > 0) {
+					if (!keysLocations.containsKey(trap.getKey())) {
 						keysLocations.put(trap.getKey(), new ArrayList<>());
 					}
 					keysLocations.get(trap.getKey()).add(c);
 				}
 				cost[c.x][c.y] = ROAD_COST;
-			} else if(m instanceof HealthTrap){
+			} else if (m instanceof HealthTrap){
 				healthLocations.add(c);
 				cost[c.x][c.y] = ROAD_COST;
-			} else if(m instanceof GrassTrap) {
+			} else if (m instanceof GrassTrap) {
 				cost[c.x][c.y] = GRASS_COST;
 			} else if (m instanceof MudTrap) {
 				cost[c.x][c.y] = MUD_COST;
