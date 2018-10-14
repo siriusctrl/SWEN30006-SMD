@@ -3,13 +3,16 @@ package mycontroller.strategy;
 import mycontroller.MapRecorder;
 import mycontroller.MyAIController;
 import utilities.Coordinate;
+import world.Car;
 import world.World;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Set;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import mycontroller.Pathway;
 import mycontroller.pipeline.dijkstra.Dijkstra;
@@ -18,6 +21,8 @@ import tiles.MapTile;
 import mycontroller.TileStatus;
 
 public class KeyCollectionStrategy implements IEscapeStrategy {
+	
+	public static final int MAX_EXPLORE = 5;
 	
 	public KeyCollectionStrategy() {
 		
@@ -53,7 +58,7 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 		return null;
 	}
 	
-	public Pathway evaluateBest(ArrayList<Coordinate> coords, MyAIController myAIController) {
+	public Pathway evaluateBest(List<Coordinate> coords, MyAIController myAIController) {
 		// calculate distance
 		
 		// deal with maximum costs, interpreting unreachable keys
@@ -78,9 +83,14 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 		for(int x = 0; x < World.MAP_WIDTH; x ++) {
 			for(int y = 0; y < World.MAP_HEIGHT; y ++) {
 				if(x != myCr.x && y != myCr.y) {
+					/*if(tileStatus[x][y] == TileStatus.EXPLORED && mapTiles[x][y].getType() == MapTile.Type.ROAD) {
+						exactRoads.add(new Coordinate(x,y));
+					}*/
+					
 					if(tileStatus[x][y] == TileStatus.EXPLORED && mapTiles[x][y].getType() == MapTile.Type.ROAD) {
 						exactRoads.add(new Coordinate(x,y));
 					}
+
 					if(mapTiles[x][y].getType() == MapTile.Type.ROAD) {
 						roadsMaybe.add(new Coordinate(x,y));
 					}
@@ -96,7 +106,33 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 			currentEvaluating = roadsMaybe;
 		}
 		
-		return evaluateBest(currentEvaluating, myAIController);
+		Collections.sort(currentEvaluating, new Comparator<Coordinate>() {
+			public int compare(Coordinate cr1, Coordinate cr2) {
+				return findExploreCount(cr2) - findExploreCount(cr1);
+			}
+		});
+		
+		System.out.println(currentEvaluating);
+		
+		return evaluateBest(currentEvaluating.subList(0, MAX_EXPLORE), myAIController);
+		
+	}
+	
+	public int findExploreCount(Coordinate cr){
+		MapTile[][] mapTiles = MapRecorder.mapTiles;
+		TileStatus[][] tileStatus = MapRecorder.mapStatus;
+		
+		int itCount = 0;
+		
+		for(int x = cr.x - Car.VIEW_SQUARE; x <= cr.x + Car.VIEW_SQUARE; x ++) {
+			for(int y = cr.y - Car.VIEW_SQUARE; y <= cr.y + Car.VIEW_SQUARE; y ++) {
+				if(MapRecorder.xyInBound(x, y) && tileStatus[x][y] == TileStatus.UNEXPLORED) {
+					itCount += 1;
+				}
+			}
+		}
+		
+		return itCount;
 		
 	}
 
