@@ -6,7 +6,6 @@ import java.util.HashMap;
 
 import mycontroller.MapRecorder;
 import mycontroller.MyAIController;
-import utilities.Coordinate;
 
 import mycontroller.Pathway;
 
@@ -25,13 +24,13 @@ public class StrategyManager {
 	
 	
 	public StrategyManager() {
-		strategies = new HashMap();
+		strategies = new HashMap<String, IEscapeStrategy>();
 		initialize();
 	}
 	
 	public void initialize() {
 		for(String name: strategyNames) {
-			strategies.put(name, EscapeStrategyFactory.getInstance().getStrategy(name));
+			strategies.put(name, (IEscapeStrategy) EscapeStrategyFactory.getInstance().getStrategy(name));
 		}
 		
 		takeover(strategies.get(DEFAULT_ST));

@@ -13,7 +13,7 @@ public class Node implements Comparable<Node> {
 	
 	private Coordinate coordinate;
 	private ArrayList<Edge> neighbours = new ArrayList<>();
-	private int minCost = Integer.MAX_VALUE;
+	private int minCost = 9999;
 	private Node prevNode;
 	
 	/**

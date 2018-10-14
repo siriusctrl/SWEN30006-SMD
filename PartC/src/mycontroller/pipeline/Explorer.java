@@ -4,7 +4,7 @@ import utilities.Coordinate;
 
 public class Explorer {
 	
-	public static Coordinate NextCoorToExplore() {
+	public static Coordinate nextCoordinateToExplore() {
 		
 		return null;
 	}

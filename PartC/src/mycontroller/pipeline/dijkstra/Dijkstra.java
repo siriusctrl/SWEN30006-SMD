@@ -46,12 +46,13 @@ public class Dijkstra {
         while (!queue.isEmpty()) {
         		// get node
             Node node = queue.poll();
-            
+
             // Visit each edge from u
             for (Edge e : node.getNeighbours()) {
                 Node target = e.getTarget();
                 int weight = e.getWeight();
                 int dTarget = node.getMinCost() + weight; // distance to target
+                System.out.println(dTarget);
                 if (dTarget < target.getMinCost()) {
                 		// update
 					queue.remove(target);

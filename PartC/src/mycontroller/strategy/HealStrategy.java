@@ -6,7 +6,6 @@ import utilities.Coordinate;
 import mycontroller.Pathway;
 
 import java.util.ArrayList;
-import java.util.Queue;
 
 public class HealStrategy implements IEscapeStrategy {
 	

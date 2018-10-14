@@ -5,7 +5,7 @@ import java.util.*;
 import mycontroller.pipeline.dijkstra.Node;
 import utilities.Coordinate;
 
-public class Pathway implements Comparable<Pathway>{
+public class Pathway implements Comparable<Pathway> {
 	
 	private PriorityQueue<Node> path = new PriorityQueue<>();
 	private int cost;

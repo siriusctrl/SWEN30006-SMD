@@ -1,6 +1,7 @@
 package mycontroller;
 
 import mycontroller.Pathway;
+import mycontroller.pipeline.dijkstra.Node;
 
 import java.util.Queue;
 
@@ -46,7 +47,9 @@ public class MyAIController extends CarController{
 		}
 		
 		if(pathway != null) {
-			System.out.println(getPosition() + "|.|" + pathway.getDesti().getCoordinate());
+			for (Node o : pathway.getPath()) {
+				System.out.println(o.getCoordinate().toString());
+			}
 		}
 		
 		// when pathway.desti is (-1, -1), stays the same
