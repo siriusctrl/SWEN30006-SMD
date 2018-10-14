@@ -2,6 +2,8 @@ package mycontroller.strategy;
 
 import java.util.Map;
 
+import java.util.HashMap;
+
 import mycontroller.MapRecorder;
 import mycontroller.MyAIController;
 import utilities.Coordinate;
@@ -17,12 +19,13 @@ public class StrategyManager {
 	public static final String HEAL_ST_NAME = "Heal";
 	public static final String KEY_ST_NAME = "KeyCollection";
 	
-	public static final String[] strategyNames = new String[] {EXIT_ST_NAME, HEAL_ST_NAME, KEY_ST_NAME};
+	public static final String[] strategyNames = new String[] {HEAL_ST_NAME, KEY_ST_NAME, EXIT_ST_NAME};
 	
 	public static final String DEFAULT_ST = KEY_ST_NAME;
 	
 	
 	public StrategyManager() {
+		strategies = new HashMap();
 		initialize();
 	}
 	
@@ -30,6 +33,8 @@ public class StrategyManager {
 		for(String name: strategyNames) {
 			strategies.put(name, EscapeStrategyFactory.getInstance().getStrategy(name));
 		}
+		
+		takeover(strategies.get(DEFAULT_ST));
 	}
 	
 	/**

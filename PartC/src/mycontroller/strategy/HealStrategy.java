@@ -11,6 +11,10 @@ import java.util.Queue;
 public class HealStrategy implements IEscapeStrategy {
 	
 	public static final int HEALTH_THRESHOLD = 75;
+	
+	public HealStrategy() {
+		
+	}
 
 	@Override
 	public Pathway findDestination(MyAIController myAIController) {

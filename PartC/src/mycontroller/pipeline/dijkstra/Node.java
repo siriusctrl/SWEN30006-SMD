@@ -35,6 +35,18 @@ public class Node implements Comparable<Node> {
         this.coordinate = new Coordinate(x, y);
     }
 
+    public boolean equals(Node other) {
+    	if(this == other) {
+    		return true;
+    	}
+    	
+    	if(other == null) {
+    		return false;
+    	}
+    	
+    	return this.coordinate.equals(other.coordinate);
+    }
+    
     /**
      * Compare function
      *

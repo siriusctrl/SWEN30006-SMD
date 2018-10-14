@@ -11,7 +11,7 @@ public class Pathway implements Comparable<Pathway>{
 	private int cost;
 	private Node desti;
 	
-	public static final Coordinate STAYS = new Coordinate(-1, -1);
+	public static final Node STAYS = new Node(new Coordinate(-1, -1));
 	
 	/**
 	 * see if two destinations are the same.

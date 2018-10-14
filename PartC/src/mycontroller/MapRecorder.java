@@ -65,7 +65,7 @@ public class MapRecorder {
 	}
 	
 	private static void traverseMap(int x, int y) {
-		if (x < 0 || x >= World.MAP_WIDTH || y < 0 || y >= World.MAP_HEIGHT) {
+		if (!xyInBound(x, y)) {
 			return;
 		} else if (mapStatus[x][y] != null) {
 			return;
@@ -100,28 +100,37 @@ public class MapRecorder {
 			Coordinate c = keys.next();
 			MapTile m = mapHashMap.get(c);
 			
-			mapTiles[c.x][c.y] = m;
-			mapStatus[c.x][c.y] = TileStatus.EXPLORED;
-			
-			if (m instanceof LavaTrap) {
-				LavaTrap trap = (LavaTrap) m;
-				cost[c.x][c.y] = LAVA_COST;
-				if (trap.getKey() > 0) {
-					if (!keysLocations.containsKey(trap.getKey())) {
-						keysLocations.put(trap.getKey(), new ArrayList<>());
+			if(xyInBound(c.x, c.y)) {
+				mapTiles[c.x][c.y] = m;
+				mapStatus[c.x][c.y] = TileStatus.EXPLORED;
+				
+				if (m instanceof LavaTrap) {
+					LavaTrap trap = (LavaTrap) m;
+					cost[c.x][c.y] = LAVA_COST;
+					if (trap.getKey() > 0) {
+						if (!keysLocations.containsKey(trap.getKey())) {
+							keysLocations.put(trap.getKey(), new ArrayList<>());
+						}
+						keysLocations.get(trap.getKey()).add(c);
 					}
-					keysLocations.get(trap.getKey()).add(c);
+					cost[c.x][c.y] = ROAD_COST;
+				} else if (m instanceof HealthTrap){
+					healthLocations.add(c);
+					cost[c.x][c.y] = ROAD_COST;
+				} else if (m instanceof GrassTrap) {
+					cost[c.x][c.y] = GRASS_COST;
+				} else if (m instanceof MudTrap) {
+					cost[c.x][c.y] = MUD_COST;
 				}
-				cost[c.x][c.y] = ROAD_COST;
-			} else if (m instanceof HealthTrap){
-				healthLocations.add(c);
-				cost[c.x][c.y] = ROAD_COST;
-			} else if (m instanceof GrassTrap) {
-				cost[c.x][c.y] = GRASS_COST;
-			} else if (m instanceof MudTrap) {
-				cost[c.x][c.y] = MUD_COST;
 			}
 		}
+	}
+	
+	public static boolean xyInBound(int x, int y) {
+		if (x < 0 || x >= World.MAP_WIDTH || y < 0 || y >= World.MAP_HEIGHT) {
+			return false;
+		}
+		return true;
 	}
 
 }

@@ -22,7 +22,8 @@ public class EscapeStrategyFactory {
 	public IEscapeStrategy getStrategy(String name) {
 		IEscapeStrategy strategy = null;
 		try {
-			strategy = (IEscapeStrategy) Class.forName(name + "Strategy").newInstance();
+			System.out.println(name + "Strategy");
+			strategy = (IEscapeStrategy) Class.forName("mycontroller.strategy." + name + "Strategy").newInstance();
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}

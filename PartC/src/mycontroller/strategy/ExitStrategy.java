@@ -12,6 +12,10 @@ import java.util.Queue;
 import java.util.Collections;
 
 public class ExitStrategy implements IEscapeStrategy {
+	
+	public ExitStrategy() {
+		
+	}
 
 	@Override
 	public Pathway findDestination(MyAIController myAIController) {

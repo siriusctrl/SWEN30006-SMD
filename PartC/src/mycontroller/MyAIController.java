@@ -45,11 +45,15 @@ public class MyAIController extends CarController{
 			pathway = stManager.findNewPathway(this);
 		}
 		
+		if(pathway != null) {
+			System.out.println(getPosition() + "|.|" + pathway.getDesti().getCoordinate());
+		}
+		
 		// when pathway.desti is (-1, -1), stays the same
 		// only appears when standing in health area
-		if(Pathway.STAYS.equals(pathway.getDesti())) {
+		if(pathway != null && Pathway.STAYS.equals(pathway.getDesti())) {
 			// stays
-		} else {
+		} else if(pathway != null) {
 			navigation();
 		}
 		
@@ -58,7 +62,7 @@ public class MyAIController extends CarController{
 	}
 	
 	private boolean checkUpdateManager() {
-		return pathway.getPath().size() == 0 || stManager.checkAndTakeover(this);
+		return pathway == null || stManager.checkAndTakeover(this) || pathway.getPath().size() == 0;
 	}
 	
 	/**
