@@ -1,4 +1,4 @@
-package mycontroller.pipeline;
+package mycontroller.pipeline.Dijkstra;
 
 import java.util.*;
 import world.World;

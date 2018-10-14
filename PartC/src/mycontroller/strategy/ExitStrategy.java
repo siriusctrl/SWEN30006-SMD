@@ -4,7 +4,7 @@ import mycontroller.MapRecorder;
 import mycontroller.MyAIController;
 import utilities.Coordinate;
 import mycontroller.Pathway;
-import mycontroller.pipeline.Dijkstra;
+import mycontroller.pipeline.Dijkstra.Dijkstra;
 
 import java.util.ArrayList;
 import java.util.Queue;

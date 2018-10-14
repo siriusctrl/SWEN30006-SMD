@@ -1,4 +1,4 @@
-package mycontroller.pipeline;
+package mycontroller.pipeline.Dijkstra;
 
 /**
  * A class for directed edge from one node to another.

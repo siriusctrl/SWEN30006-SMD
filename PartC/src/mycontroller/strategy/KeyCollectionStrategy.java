@@ -10,8 +10,8 @@ import java.util.Set;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import mycontroller.pipeline.Dijkstra;
 import mycontroller.Pathway;
+import mycontroller.pipeline.Dijkstra.Dijkstra;
 
 public class KeyCollectionStrategy implements IEscapeStrategy {
 

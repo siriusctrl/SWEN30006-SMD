@@ -2,7 +2,7 @@ package mycontroller;
 
 import java.util.*;
 
-import mycontroller.pipeline.Node;
+import mycontroller.pipeline.Dijkstra.Node;
 import utilities.Coordinate;
 
 public class Pathway {

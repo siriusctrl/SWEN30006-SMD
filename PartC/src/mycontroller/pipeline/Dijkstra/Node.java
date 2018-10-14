@@ -1,8 +1,8 @@
-package mycontroller.pipeline;
+package mycontroller.pipeline.Dijkstra;
 
 import java.util.ArrayList;
 
-import mycontroller.pipeline.Edge;
+import mycontroller.pipeline.Dijkstra.Edge;
 import utilities.Coordinate;
 
 /**
