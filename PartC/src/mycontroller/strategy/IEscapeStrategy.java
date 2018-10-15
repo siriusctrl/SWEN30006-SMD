@@ -32,11 +32,12 @@ public interface IEscapeStrategy {
 	default boolean isTakeover(MyAIController myAIController) {return false;};
 	
 	default Pathway evaluateBest(List<Coordinate> coords, MyAIController myAIController) {
-		// calculate distance
 		
-		// deal with maximum costs, interpreting unreachable keys
+		// all pathways
 		ArrayList<Pathway> pathways = new ArrayList<>();
 		Node startNode = new Node(new Coordinate(myAIController.getPosition()));
+		
+		// for all coordinates, find their shortest path to current car
 		for(Coordinate cr: coords) {
 			Pathway nodePath = Dijkstra.findShortestPath(startNode, new Node(cr));
 			System.out.println(nodePath.getCost());
@@ -45,6 +46,7 @@ public interface IEscapeStrategy {
 		
 		Pathway minPath = Collections.min(pathways);
 		
+		// if the shortest path's cost is more than the max cost, then the path is unreachable now.
 		if(minPath.getCost() >= MapRecorder.UNEXPLORED_COST) {
 			minPath = Pathway.getUnabletoReach();
 		}

@@ -34,10 +34,13 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 	@Override
 	public Pathway findDestination(MyAIController myAIController) {
 		
-		//
+		// explored keys' location
 		HashMap<Integer, ArrayList<Coordinate>> keys = MapRecorder.keysLocations;
+		
+		// keys got
 		Set<Integer> got = myAIController.getKeys();
 		
+		// keys haven't got
 		Set<Integer> notYet = new HashSet<Integer>();
 		
 		for(int key: keys.keySet()) {
@@ -46,6 +49,7 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 			}
 		}
 		
+		// if there's any key that is explored but not yet gotten
 		if(notYet.size() > 0) {
 			ArrayList<Coordinate> allCoords = new ArrayList<>();
 			for(int cordKey: notYet) {
@@ -53,11 +57,13 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 			}
 			Pathway bestOne = evaluateBest(allCoords, myAIController);
 			
+			// if the there's a way to the key
 			if(!Pathway.getUnabletoReach().equals(bestOne)) {
 				return bestOne;
 			}
 		}
 		
+		// if there's no key availble (including unreachable), explore vertices
 		return explore.findDestination(myAIController);
 	}
 	
