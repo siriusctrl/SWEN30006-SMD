@@ -57,8 +57,12 @@ public class Pathway implements Comparable<Pathway> {
 		if (p == null || desti == null) {
 			return false;
 		}
+		
+		if(p.getDesti() == null) {
+			return desti == null;
+		}
 	
-		return p.getDesti().getCoordinate().equals(desti.getCoordinate());
+		return desti.getCoordinate().equals(p.getDesti().getCoordinate());
 	}
 	
 	public int compareTo(Pathway pathway) {
