@@ -23,15 +23,18 @@ import mycontroller.TileStatus;
 public class KeyCollectionStrategy implements IEscapeStrategy {
 	
 	public static final int MAX_EXPLORE = 5;
+	
+	// explore strategy
 	private IEscapeStrategy explore;
 	
 	public KeyCollectionStrategy() {
 		explore = EscapeStrategyFactory.getInstance().getStrategy(StrategyManager.EXPL_ST_NAME);
 	}
-
+	
 	@Override
 	public Pathway findDestination(MyAIController myAIController) {
-		// ???
+		
+		//
 		HashMap<Integer, ArrayList<Coordinate>> keys = MapRecorder.keysLocations;
 		Set<Integer> got = myAIController.getKeys();
 		

@@ -38,7 +38,9 @@ public interface IEscapeStrategy {
 		ArrayList<Pathway> pathways = new ArrayList<>();
 		Node startNode = new Node(new Coordinate(myAIController.getPosition()));
 		for(Coordinate cr: coords) {
-			pathways.add(Dijkstra.findShortestPath(startNode, new Node(cr)));
+			Pathway nodePath = Dijkstra.findShortestPath(startNode, new Node(cr));
+			System.out.println(nodePath.getCost());
+			pathways.add(nodePath);
 		}
 		
 		Pathway minPath = Collections.min(pathways);
@@ -46,6 +48,7 @@ public interface IEscapeStrategy {
 		if(minPath.getCost() >= MapRecorder.UNEXPLORED_COST) {
 			minPath = Pathway.getUnabletoReach();
 		}
+		
 		return minPath;
 	}
 }
