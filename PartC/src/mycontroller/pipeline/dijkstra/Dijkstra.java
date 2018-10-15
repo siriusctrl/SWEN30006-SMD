@@ -39,7 +39,7 @@ public class Dijkstra {
 	private static void calculatePath(Node start) {
 		
 		start.setMinCost(0);
-		PriorityQueue<Node> queue = new PriorityQueue<Node>();
+		PriorityQueue<Node> queue = new PriorityQueue<>();
         queue.add(start);
 
         // Dijkstra implementation
@@ -52,7 +52,6 @@ public class Dijkstra {
                 Node target = e.getTarget();
                 int weight = e.getWeight();
                 int dTarget = node.getMinCost() + weight; // distance to target
-                System.out.println(dTarget);
                 if (dTarget < target.getMinCost()) {
                 		// update
 					queue.remove(target);

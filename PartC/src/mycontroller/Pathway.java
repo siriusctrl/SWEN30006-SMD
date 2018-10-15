@@ -7,7 +7,7 @@ import utilities.Coordinate;
 
 public class Pathway implements Comparable<Pathway> {
 	
-	private PriorityQueue<Node> path = new PriorityQueue<>();
+	private Stack<Node> path = new Stack<>();
 	private int cost;
 	private Node desti;
 	
@@ -34,7 +34,7 @@ public class Pathway implements Comparable<Pathway> {
 	 * getter for path
 	 * @return a queue of path coordinates
 	 */
-	public PriorityQueue<Node> getPath() {
+	public Stack<Node> getPath() {
 		return path;
 	}
 
@@ -66,8 +66,8 @@ public class Pathway implements Comparable<Pathway> {
 	 * setter for destination
 	 * @param desti the desti to set
 	 */
-	public void setPath(PriorityQueue<Node> queue) {
-		this.path = queue;
+	public void setPath(Stack<Node> stack) {
+		this.path = stack;
 	}
 	
 	/**

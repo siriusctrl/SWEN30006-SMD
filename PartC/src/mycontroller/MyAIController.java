@@ -2,8 +2,7 @@ package mycontroller;
 
 import mycontroller.Pathway;
 import mycontroller.pipeline.dijkstra.Node;
-
-import java.util.Queue;
+import mycontroller.pipeline.dijkstra.TestDijkstra;
 
 import controller.CarController;
 import world.Car;
@@ -32,6 +31,7 @@ public class MyAIController extends CarController{
 		super(car);
 
 		MapRecorder.loadMap(super.getMap());
+		TestDijkstra.testDijkstra();
 
 		stManager = new StrategyManager();
 	}
