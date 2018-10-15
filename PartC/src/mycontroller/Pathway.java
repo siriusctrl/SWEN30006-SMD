@@ -85,4 +85,13 @@ public class Pathway implements Comparable<Pathway> {
 	public Coordinate getNext() {
 		return path.peek().getCoordinate();
 	}
+	
+	public String toString() {
+		Iterator<Node> nodes = path.iterator();
+		String res = "path = ";
+		while(nodes.hasNext()) {
+			res += nodes.next().toString() + " ";
+		}
+		return res+"\n";
+	}
 }

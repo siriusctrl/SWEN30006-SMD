@@ -33,6 +33,8 @@ public class Dijkstra {
 		path.setCost(nodes[end.getCoordinate().x][end.getCoordinate().y].getMinCost());
 		path.setDesti(end);
 		
+		
+		System.out.println(path.toString());
 		return path;
 	}
 	

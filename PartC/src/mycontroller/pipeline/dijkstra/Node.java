@@ -125,5 +125,7 @@ public class Node implements Comparable<Node> {
 		this.prevNode = prevNode;
 	}
     
-	
+	public String toString() {
+		return "("+coordinate.toString() + ")";
+	}
 }
