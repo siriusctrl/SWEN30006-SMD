@@ -65,6 +65,7 @@ public class ExploreStrategy implements IEscapeStrategy{
 		Pathway minPath = Pathway.getUnabletoReach();
 		
 		int startIndex = 0, endIndex = MAX_EXPLORE;
+		System.out.println("me: "+MAX_EXPLORE);
 		while(startIndex < currentEvaluating.size() || !Pathway.getUnabletoReach().equals(minPath)) {
 			minPath = evaluateBest(currentEvaluating.subList(startIndex, endIndex), myAIController);
 			startIndex += MAX_EXPLORE;

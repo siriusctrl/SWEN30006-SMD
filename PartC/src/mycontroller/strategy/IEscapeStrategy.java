@@ -29,7 +29,7 @@ public interface IEscapeStrategy {
 	/**
 	 * Check if this strategy needs to takeover the control.
 	 * */
-	default boolean isTakeover(MyAIController myAIController) {return false;};
+	default boolean isTakeover(MyAIController myAIController) {return false;}
 	
 	default Pathway evaluateBest(List<Coordinate> coords, MyAIController myAIController) {
 		

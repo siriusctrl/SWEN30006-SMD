@@ -50,7 +50,9 @@ public class Dijkstra {
         // Dijkstra implementation
         while (!queue.isEmpty()) {
         		// get node
-            Node node = queue.poll();
+        	System.out.println(queue);
+        	Node node = queue.poll();
+        	System.out.println(node.getNeighbours().size());
 
             // Visit each edge from node
             for (Edge e : node.getNeighbours()) {
@@ -58,11 +60,11 @@ public class Dijkstra {
                 int weight = e.getWeight();
                 int dTarget = node.getMinCost() + weight; // distance to target
                 if (dTarget < target.getMinCost()) {
-                		// update
-					queue.remove(target);
-					target.setMinCost(dTarget);
-					target.setPrevNode(node);
-					queue.add(target);
+					queue.remove(nodes[target.getCoordinate().x][target.getCoordinate().y]);
+                	System.out.println("cor ="+target.getCoordinate());
+                	nodes[target.getCoordinate().x][target.getCoordinate().y].setMinCost(dTarget);
+                	nodes[target.getCoordinate().x][target.getCoordinate().y].setPrevNode(node);
+					queue.add(nodes[target.getCoordinate().x][target.getCoordinate().y]);
                 }
             }
         }
