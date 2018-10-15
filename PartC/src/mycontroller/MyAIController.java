@@ -75,13 +75,13 @@ public class MyAIController extends CarController{
 		currPos = new Coordinate(super.getPosition());
 		
 		if(nextDest == null) {
-			nextDest = pathway.peekNext();
+			nextDest = pathway.getNext();
 			startMoving();
 		}
 		
 		if(distance(nextDest) == 0) {
-			pathway.pollNext();
-			if((nextDest = pathway.peekNext()) != null) {
+			pathway.removeNext();
+			if((nextDest = pathway.getNext()) != null) {
 				turn();
 			}else {
 				super.applyReverseAcceleration();

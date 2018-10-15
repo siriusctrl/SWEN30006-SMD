@@ -78,11 +78,11 @@ public class Pathway implements Comparable<Pathway> {
 		desti = o;
 	}
 	
-	public Coordinate pollNext() {
-		return path.poll().getCoordinate();
+	public Coordinate removeNext() {
+		return path.pop().getCoordinate();
 	}
 
-	public Coordinate peekNext() {
+	public Coordinate getNext() {
 		return path.peek().getCoordinate();
 	}
 }
