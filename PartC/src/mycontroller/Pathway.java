@@ -12,6 +12,32 @@ public class Pathway implements Comparable<Pathway> {
 	private Node desti;
 	
 	public static final Node STAYS = new Node(new Coordinate(-1, -1));
+	private static Pathway cannot_reach_now;
+
+	
+	public static Pathway getUnabletoReach() {
+		if(cannot_reach_now == null) {
+			cannot_reach_now = new Pathway();
+			cannot_reach_now.cost = -1;
+		}
+		return cannot_reach_now;
+	}
+	
+	public boolean equals(Object o) {
+		if(o == null) {
+			return false;
+		}
+		
+		if(o instanceof Pathway) {
+			if(this == o) {
+				return true;
+			}
+			
+			return isSameDesti((Pathway)o) && cost == ((Pathway)o).cost;
+		}
+		
+		return false;
+	}
 	
 	/**
 	 * see if two destinations are the same.

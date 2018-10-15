@@ -35,7 +35,8 @@ public class Node implements Comparable<Node> {
         this.coordinate = new Coordinate(x, y);
     }
 
-    public boolean equals(Node other) {
+    @Override
+    public boolean equals(Object other) {
     	if(this == other) {
     		return true;
     	}
@@ -44,7 +45,11 @@ public class Node implements Comparable<Node> {
     		return false;
     	}
     	
-    	return this.coordinate.equals(other.coordinate);
+    	if(other instanceof Node) {
+    		return this.coordinate.equals(((Node)other).coordinate);
+    	}
+    	
+    	return false;
     }
     
     /**

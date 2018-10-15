@@ -18,6 +18,8 @@ public class StrategyManager {
 	public static final String HEAL_ST_NAME = "Heal";
 	public static final String KEY_ST_NAME = "KeyCollection";
 	
+	public static final String EXPL_ST_NAME = "Explore";
+	
 	public static final String[] strategyNames = new String[] {HEAL_ST_NAME, KEY_ST_NAME, EXIT_ST_NAME};
 	
 	public static final String DEFAULT_ST = KEY_ST_NAME;
@@ -44,6 +46,13 @@ public class StrategyManager {
 	 * */
 	public Pathway findNewPathway(MyAIController myAIController) {
 		Pathway newPathway = currentStrategy.findDestination(myAIController);
+		
+		// in case of no available pathway, get new path way from default strategy
+		// normally will be the explore one
+		if(newPathway.equals(Pathway.getUnabletoReach())) {
+			takeover(strategies.get(DEFAULT_ST));
+			newPathway = currentStrategy.findDestination(myAIController);
+		}
 		return newPathway;
 	}
 	
@@ -65,7 +74,7 @@ public class StrategyManager {
 		
 		if(myAIController.getKeys().size() == myAIController.numKeys()) {
 			return takeover(strategies.get(EXIT_ST_NAME));
-		}else {
+		}else{
 			return takeover(strategies.get(KEY_ST_NAME));
 		}
 

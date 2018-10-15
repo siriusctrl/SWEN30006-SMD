@@ -17,14 +17,7 @@ public class HealStrategy implements IEscapeStrategy {
 
 	@Override
 	public Pathway findDestination(MyAIController myAIController) {
-		return evaluateBest(MapRecorder.healthLocations);
-	}
-	
-	private Pathway evaluateBest(ArrayList<Coordinate> coords) {
-		// normally using a star to find a nearest
-		
-		// check if now is on the health tile
-		return new Pathway();
+		return evaluateBest(MapRecorder.healthLocations, myAIController);
 	}
 
 	@Override
