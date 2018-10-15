@@ -120,6 +120,8 @@ public class MapRecorder {
 					cost[c.x][c.y] = GRASS_COST;
 				} else if (m instanceof MudTrap) {
 					cost[c.x][c.y] = MUD_COST;
+				} else if (m.getType().equals(MapTile.Type.WALL)) {
+					cost[c.x][c.y] = WALL_COST;
 				} else {
 					cost[c.x][c.y] = ROAD_COST;
 				}

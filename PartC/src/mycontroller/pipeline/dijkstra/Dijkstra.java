@@ -23,11 +23,9 @@ public class Dijkstra {
 		for (int i = 0; i < World.MAP_WIDTH; i++) {
 			for (int j = 0; j < World.MAP_HEIGHT; j++) {
 				nodes[i][j] = new Node(i, j);
-				System.out.print(MapRecorder.cost[i][j] + " ");
 			}
-			System.out.print("\n");
 		}
-		
+
 		constructNeighbours();
 		
 		calculatePath(start);
