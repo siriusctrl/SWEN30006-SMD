@@ -32,7 +32,7 @@ public class Pathway implements Comparable<Pathway> {
 
 	/**
 	 * getter for path
-	 * @return a queue of path coordinates
+	 * @return a stack of path coordinates
 	 */
 	public Stack<Node> getPath() {
 		return path;

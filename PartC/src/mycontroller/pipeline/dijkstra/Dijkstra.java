@@ -7,27 +7,29 @@ import mycontroller.Pathway;
 
 public class Dijkstra {
 	
+	public static Node[][] nodes = new Node[World.MAP_WIDTH][World.MAP_HEIGHT];
+	
 	/**
 	 * Dijkstra algorithm to find pathway between start and end coordinate.
 	 * @param start start node
 	 * @param end end node
-	 * @return
+	 * @return pathway from start to end
 	 */
 	public static Pathway findShortestPath(Node start, Node end){
 		Pathway path = new Pathway();
 		
 		// construct nodes for every tile
-		Node[][] nodes = new Node[World.MAP_WIDTH][World.MAP_HEIGHT];
 		for (int i = 0; i < World.MAP_WIDTH; i++) {
 			for (int j = 0; j < World.MAP_HEIGHT; j++) {
 				nodes[i][j] = new Node(i, j);
 			}
 		}
 		
-		// construct neighbours
-		nodes = constructNeighbours(nodes);
+		constructNeighbours();
 		
 		calculatePath(start);
+		
+		// set path
 		Stack<Node> st = getPathTowards(start, end);
 		path.setPath(st);
 		path.setCost(nodes[end.getCoordinate().x][end.getCoordinate().y].getMinCost());
@@ -40,16 +42,16 @@ public class Dijkstra {
 	
 	private static void calculatePath(Node start) {
 		
-		start.setMinCost(0);
+		nodes[start.getCoordinate().x][start.getCoordinate().y].setMinCost(0);
 		PriorityQueue<Node> queue = new PriorityQueue<>();
-        queue.add(start);
+        queue.add(nodes[start.getCoordinate().x][start.getCoordinate().y]);
 
         // Dijkstra implementation
         while (!queue.isEmpty()) {
         		// get node
             Node node = queue.poll();
 
-            // Visit each edge from u
+            // Visit each edge from node
             for (Edge e : node.getNeighbours()) {
                 Node target = e.getTarget();
                 int weight = e.getWeight();
@@ -78,7 +80,7 @@ public class Dijkstra {
 	}
 	
 	// construct neighbours
-	private static Node[][] constructNeighbours(Node[][] nodes) {
+	private static void constructNeighbours() {
 		
 		for (int i = 0; i < World.MAP_WIDTH; i++) {
 			for (int j = 0; j < World.MAP_HEIGHT; j++) {
@@ -97,7 +99,6 @@ public class Dijkstra {
 				}
 			}
 		}
-		
-		return nodes;
+
 	}
 }
