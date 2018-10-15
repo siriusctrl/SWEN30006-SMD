@@ -54,7 +54,7 @@ public class Pathway implements Comparable<Pathway> {
 	 * @return true if two destinations have the same coordinate
 	 */
 	public boolean isSameDesti(Pathway p) {
-		if (p == null) {
+		if (p == null || desti == null) {
 			return false;
 		}
 	

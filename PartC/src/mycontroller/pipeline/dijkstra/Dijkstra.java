@@ -43,29 +43,33 @@ public class Dijkstra {
 	
 	private static void calculatePath(Node start) {
 		
+		HashSet<Node> visited = new HashSet<>();
+		
 		nodes[start.getCoordinate().x][start.getCoordinate().y].setMinCost(0);
 		PriorityQueue<Node> queue = new PriorityQueue<>();
         queue.add(nodes[start.getCoordinate().x][start.getCoordinate().y]);
 
         // Dijkstra implementation
         while (!queue.isEmpty()) {
-        		// get node
-        	System.out.println(queue);
-        	Node node = queue.poll();
-        	System.out.println(node.getNeighbours().size());
+	        	System.out.println(queue);
+	        	Node node = queue.poll();
+	        	visited.add(node);
+	        	System.out.println(node.getNeighbours().size());
 
             // Visit each edge from node
             for (Edge e : node.getNeighbours()) {
-                Node target = e.getTarget();
-                int weight = e.getWeight();
-                int dTarget = node.getMinCost() + weight; // distance to target
-                if (dTarget < target.getMinCost()) {
+				Node target = e.getTarget();
+				int weight = e.getWeight();
+				int dTarget = node.getMinCost() + weight; // distance to target
+				if (dTarget < target.getMinCost()) {
 					queue.remove(nodes[target.getCoordinate().x][target.getCoordinate().y]);
-                	System.out.println("cor ="+target.getCoordinate());
-                	nodes[target.getCoordinate().x][target.getCoordinate().y].setMinCost(dTarget);
-                	nodes[target.getCoordinate().x][target.getCoordinate().y].setPrevNode(node);
-					queue.add(nodes[target.getCoordinate().x][target.getCoordinate().y]);
-                }
+					System.out.println("cor ="+target.getCoordinate());
+					nodes[target.getCoordinate().x][target.getCoordinate().y].setMinCost(dTarget);
+					nodes[target.getCoordinate().x][target.getCoordinate().y].setPrevNode(node);
+					if (!visited.contains(nodes[target.getCoordinate().x][target.getCoordinate().y])) {
+						queue.add(nodes[target.getCoordinate().x][target.getCoordinate().y]);
+					}
+				}
             }
         }
 	}
