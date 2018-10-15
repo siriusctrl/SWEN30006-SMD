@@ -113,7 +113,6 @@ public class MapRecorder {
 						}
 						keysLocations.get(trap.getKey()).add(c);
 					}
-					cost[c.x][c.y] = ROAD_COST;
 				} else if (m instanceof HealthTrap){
 					healthLocations.add(c);
 					cost[c.x][c.y] = ROAD_COST;
@@ -121,6 +120,8 @@ public class MapRecorder {
 					cost[c.x][c.y] = GRASS_COST;
 				} else if (m instanceof MudTrap) {
 					cost[c.x][c.y] = MUD_COST;
+				} else {
+					cost[c.x][c.y] = ROAD_COST;
 				}
 			}
 		}

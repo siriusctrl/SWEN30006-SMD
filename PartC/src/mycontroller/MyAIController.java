@@ -31,7 +31,6 @@ public class MyAIController extends CarController{
 		super(car);
 
 		MapRecorder.loadMap(super.getMap());
-		TestDijkstra.testDijkstra();
 
 		stManager = new StrategyManager();
 	}

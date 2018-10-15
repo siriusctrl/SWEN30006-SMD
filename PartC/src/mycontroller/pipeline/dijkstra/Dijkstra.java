@@ -16,13 +16,16 @@ public class Dijkstra {
 	 * @return pathway from start to end
 	 */
 	public static Pathway findShortestPath(Node start, Node end){
+		
 		Pathway path = new Pathway();
 		
 		// construct nodes for every tile
 		for (int i = 0; i < World.MAP_WIDTH; i++) {
 			for (int j = 0; j < World.MAP_HEIGHT; j++) {
 				nodes[i][j] = new Node(i, j);
+				System.out.print(MapRecorder.cost[i][j] + " ");
 			}
+			System.out.print("\n");
 		}
 		
 		constructNeighbours();
