@@ -28,8 +28,8 @@ public class Dijkstra {
 		nodes = constructNeighbours(nodes);
 		
 		calculatePath(start);
-		PriorityQueue<Node> queue = getPathTowards(start, end);
-		path.setPath(queue);
+		Stack<Node> st = getPathTowards(start, end);
+		path.setPath(st);
 		path.setCost(nodes[end.getCoordinate().x][end.getCoordinate().y].getMinCost());
 		path.setDesti(end);
 		
@@ -64,15 +64,15 @@ public class Dijkstra {
 	}
 	
 	// get path towards target
-	private static PriorityQueue<Node> getPathTowards(Node start, Node target) {
+	private static Stack<Node> getPathTowards(Node start, Node target) {
 		
-	    PriorityQueue<Node> queue = new PriorityQueue<>();
+	    Stack<Node> st = new Stack<>();
 	    for (Node v = target; v != null && v != start; v = v.getPrevNode()) {
 	    		// add to queue
-	    		queue.add(v);
+	    		st.push(v);
 	    }
-	    queue.add(start);
-	    return queue;
+	    st.push(start);
+	    return st;
 	}
 	
 	// construct neighbours

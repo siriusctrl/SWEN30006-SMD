@@ -1,6 +1,6 @@
 package mycontroller.pipeline.dijkstra;
 
-import java.util.PriorityQueue;
+import java.util.*;
 
 import mycontroller.MapRecorder;
 import mycontroller.Pathway;
@@ -22,8 +22,8 @@ public class TestDijkstra {
 		}
 		
 		Pathway p = Dijkstra.findShortestPath(new Node(2, 3), new Node(3, 5));
-		PriorityQueue<Node> q = p.getPath();
-		for (Node o : q) {
+		Stack<Node> st = p.getPath();
+		for (Node o : st) {
 			System.out.println(o.getCoordinate().toString());
 		}
 		
