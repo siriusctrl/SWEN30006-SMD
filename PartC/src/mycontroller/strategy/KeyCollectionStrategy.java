@@ -15,10 +15,11 @@ import java.util.HashSet;
 import java.util.List;
 
 import mycontroller.Pathway;
-import mycontroller.pipeline.dijkstra.Dijkstra;
-import mycontroller.pipeline.dijkstra.Node;
 import tiles.MapTile;
 import mycontroller.TileStatus;
+import mycontroller.pipeline.SimplifyPath;
+import mycontroller.pipeline.Step;
+import mycontroller.pipeline.astar.AStar;
 
 public class KeyCollectionStrategy implements IEscapeStrategy {
 	
@@ -42,6 +43,10 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 		
 		// keys haven't got
 		Set<Integer> notYet = new HashSet<Integer>();
+		
+		//initialise pipeline
+		Step<Coordinate[], Pathway> findRoute = Step.of(AStar::findShortestPath);
+		Step<Coordinate[], Pathway> simpleRoute = findRoute.add(SimplifyPath::simplifyPath); 
 		
 		for(int key: keys.keySet()) {
 			if(!got.contains(key)) {
