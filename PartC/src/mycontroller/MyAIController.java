@@ -46,7 +46,7 @@ public class MyAIController extends CarController{
 		}
 		
 		if(pathway != null) {
-			for (Node o : pathway.getPath()) {
+			for (Coordinate o : pathway.getPath()) {
 				System.out.println(o.getCoordinate().toString());
 			}
 		}

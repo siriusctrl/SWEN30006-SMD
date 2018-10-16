@@ -2,19 +2,17 @@ package mycontroller;
 
 import java.util.*;
 
-import mycontroller.pipeline.dijkstra.Node;
 import utilities.Coordinate;
 
 public class Pathway implements Comparable<Pathway> {
 	
-	private Stack<Node> path = new Stack<>();
+	private Stack<Coordinate> path = new Stack<>();
 	private int cost;
-	private Node desti;
+	private Coordinate desti;
 	
-	public static final Node STAYS = new Node(new Coordinate(-1, -1));
+	//public static final Node STAYS = new Node(new Coordinate(-1, -1));
 	private static Pathway cannot_reach_now;
-	private static Pathway stays_now;
-
+	//private static Pathway stays_now;
 	
 	public static Pathway getUnabletoReach() {
 		if(cannot_reach_now == null) {
@@ -24,13 +22,14 @@ public class Pathway implements Comparable<Pathway> {
 		return cannot_reach_now;
 	}
 	
+	/*
 	public static Pathway getStays() {
 		if(stays_now == null) {
 			stays_now = new Pathway();
 			stays_now.desti = STAYS;
 		}
 		return stays_now;
-	}
+	}*/
 	
 	public boolean equals(Object o) {
 		if(o == null) {
@@ -62,7 +61,7 @@ public class Pathway implements Comparable<Pathway> {
 			return desti == null;
 		}
 	
-		return desti.getCoordinate().equals(p.getDesti().getCoordinate());
+		return desti.equals(p.getDesti());
 	}
 	
 	public int compareTo(Pathway pathway) {
@@ -73,7 +72,7 @@ public class Pathway implements Comparable<Pathway> {
 	 * getter for path
 	 * @return a stack of path coordinates
 	 */
-	public Stack<Node> getPath() {
+	public Stack<Coordinate> getPath() {
 		return path;
 	}
 
@@ -89,7 +88,7 @@ public class Pathway implements Comparable<Pathway> {
 	 * getter for destination
 	 * @return destination coordinate
 	 */
-	public Node getDesti() {
+	public Coordinate getDesti() {
 		return desti;
 	}
 
@@ -102,34 +101,34 @@ public class Pathway implements Comparable<Pathway> {
 	}
 
 	/**
-	 * setter for destination
-	 * @param desti the desti to set
+	 * setter for path
+	 * @param stack the path to set
 	 */
-	public void setPath(Stack<Node> stack) {
-		this.path = stack;
+	public void setPath(Stack<Coordinate> coord) {
+		this.path = coord;
 	}
 	
 	/**
 	 * setter for destination
 	 * @return destination coordinate
 	 */
-	public void setDesti(Node o) {
+	public void setDesti(Coordinate o) {
 		desti = o;
 	}
 	
 	public Coordinate removeNext() {
-		return path.pop().getCoordinate();
+		return path.pop();
 	}
 
 	public Coordinate getNext() {
-		return path.peek().getCoordinate();
+		return path.peek();
 	}
 	
 	public String toString() {
-		Iterator<Node> nodes = path.iterator();
+		Iterator<Coordinate> coord = path.iterator();
 		String res = "path = ";
-		while(nodes.hasNext()) {
-			res += nodes.next().toString() + " ";
+		while(coord.hasNext()) {
+			res += coord.next().toString() + " ";
 		}
 		return res+"\n";
 	}

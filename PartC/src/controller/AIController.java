@@ -3,7 +3,7 @@ package controller;
 import java.util.HashMap;
 
 import mycontroller.MapRecorder;
-import mycontroller.pipeline.dijkstra.TestDijkstra;
+import mycontroller.pipeline.astar.TestA;
 import tiles.MapTile;
 import utilities.Coordinate;
 import world.Car;
@@ -22,7 +22,7 @@ public class AIController extends CarController {
 	public AIController(Car car) {
 		super(car);
 		MapRecorder.loadMap(super.getMap());
-		TestDijkstra.testDijkstra();
+		TestA.testA();
 	}
 	
 	// Coordinate initialGuess;
