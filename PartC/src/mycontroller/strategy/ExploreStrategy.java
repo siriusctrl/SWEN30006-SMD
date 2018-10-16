@@ -31,6 +31,10 @@ public class ExploreStrategy implements IEscapeStrategy{
 		ArrayList<Coordinate> exactRoads = new ArrayList<>();
 		ArrayList<Coordinate> roadsMaybe = new ArrayList<>();
 		
+		//initialise pipeline
+		Step<Coordinate[], Pathway> findRoute = Step.of(AStar::findShortestPath);
+		Step<Coordinate[], Pathway> simpleRoute = findRoute.add(SimplifyPath::simplifyPath); 
+		
 		for(int x = 0; x < World.MAP_WIDTH; x ++) {
 			for(int y = 0; y < World.MAP_HEIGHT; y ++) {
 				if(x != myCr.x && y != myCr.y) {

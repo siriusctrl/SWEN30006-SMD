@@ -4,8 +4,11 @@ import mycontroller.MapRecorder;
 import mycontroller.MyAIController;
 import utilities.Coordinate;
 import mycontroller.Pathway;
+<<<<<<< HEAD
 import mycontroller.pipeline.Step;
 
+=======
+>>>>>>> f5c17f5196ce67cf12552f6d7e34a1e8f6a3e672
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
