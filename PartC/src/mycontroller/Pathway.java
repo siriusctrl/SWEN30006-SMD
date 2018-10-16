@@ -12,7 +12,7 @@ public class Pathway implements Comparable<Pathway> {
 	
 	//public static final Node STAYS = new Node(new Coordinate(-1, -1));
 	private static Pathway cannot_reach_now;
-	//private static Pathway stays_now;
+	private static Pathway stays_now;
 	
 	public static Pathway getUnabletoReach() {
 		if(cannot_reach_now == null) {
