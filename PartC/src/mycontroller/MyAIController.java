@@ -1,14 +1,14 @@
 package mycontroller;
 
 import mycontroller.Pathway;
-import mycontroller.pipeline.dijkstra.Node;
-import mycontroller.pipeline.dijkstra.TestDijkstra;
 
 import controller.CarController;
 import world.Car;
 import world.WorldSpatial;
 import utilities.Coordinate;
 import mycontroller.strategy.StrategyManager;
+
+import java.util.HashMap;
 
 public class MyAIController extends CarController{
 	
@@ -22,6 +22,22 @@ public class MyAIController extends CarController{
 	//current position
 	private Coordinate currPos;
 	
+	private static HashMap<WorldSpatial.Direction, String[]> turnInfo;
+	
+	public static final String LEFT_TURN = "lft";
+	public static final String RIGHT_TURN = "rgt";
+	public static final String FORWARD_MOVE = "fw";
+	public static final String BKWARD_MOVE = "bw";
+	
+	
+	public static final String[] NORTH_TURN = new String[] {RIGHT_TURN, LEFT_TURN, FORWARD_MOVE, BKWARD_MOVE};
+	public static final String[] SOUTH_TURN = new String[] {LEFT_TURN, RIGHT_TURN, BKWARD_MOVE, FORWARD_MOVE};
+	public static final String[] WEST_TURN = new String[] {BKWARD_MOVE, FORWARD_MOVE, RIGHT_TURN, LEFT_TURN};
+	public static final String[] EAST_TURN = new String[] {FORWARD_MOVE, BKWARD_MOVE, LEFT_TURN, RIGHT_TURN,};
+	
+	
+	
+	
 
 	/**
 	 * constructor for MyAIController
@@ -33,10 +49,22 @@ public class MyAIController extends CarController{
 		MapRecorder.loadMap(super.getMap());
 
 		stManager = new StrategyManager();
+		
+		
+		turnInfo = new HashMap<>();
+		
+		turnInfo.put(WorldSpatial.Direction.NORTH, NORTH_TURN);
+		turnInfo.put(WorldSpatial.Direction.SOUTH, SOUTH_TURN);
+		turnInfo.put(WorldSpatial.Direction.WEST, WEST_TURN);
+		turnInfo.put(WorldSpatial.Direction.EAST, EAST_TURN);
+		
 	}
 
 	@Override
 	public void update() {
+		
+		/* super.turnLeft();
+		super.applyForwardAcceleration(); */
 		
 		// may check if the car moves first?
 		MapRecorder.updateCarView(super.getView());
@@ -45,15 +73,15 @@ public class MyAIController extends CarController{
 			pathway = stManager.findNewPathway(this);
 		}
 		
-		if(pathway != null) {
-			for (Coordinate o : pathway.getPath()) {
-				System.out.println(o.getCoordinate().toString());
+		/* if(pathway != null) {
+			for (Node o : pathway.getPath()) {
+				System.out.println("wor" + o.getCoordinate().toString());
 			}
-		}
+		} */
 		
 		// when pathway.desti is (-1, -1), stays the same
 		// only appears when standing in health area
-		if(pathway != null && Pathway.STAYS.equals(pathway.getDesti())) {
+		if(pathway == null || Pathway.getStays().getDesti().equals(pathway.getDesti())) {
 			// stays
 		} else if(pathway != null) {
 			navigation();
@@ -73,18 +101,62 @@ public class MyAIController extends CarController{
 	public void navigation() {
 		currPos = new Coordinate(super.getPosition());
 		
-		if(nextDest == null) {
-			nextDest = pathway.getNext();
-			startMoving();
-		}
-		
-		if(distance(nextDest) == 0) {
+		/* if(nextDest.equals(new Coordinate(getPosition()))) {
 			pathway.removeNext();
 			if((nextDest = pathway.getNext()) != null) {
 				turn();
 			}else {
 				super.applyReverseAcceleration();
 				nextDest = null;
+			}
+		} */
+		
+		if(nextDest == null) {
+			nextDest = pathway.getNext();
+			moveTo(nextDest);
+			// startMoving();
+		}else {
+			moveTo(nextDest);
+		}
+		
+		if(nextDest.equals(new Coordinate(getPosition()))) {
+			pathway.removeNext();
+			nextDest = null;
+		}
+		
+		
+	}
+	
+	public void moveTo(Coordinate nextDest) {
+		Coordinate nowPos = new Coordinate(getPosition());
+		
+		int deltaX = nextDest.x - nowPos.x;
+		int deltaY = nextDest.y - nowPos.y;
+		
+		WorldSpatial.Direction Ori = super.getOrientation();
+		System.out.println("now position: " + nowPos);
+		System.out.println(nextDest);
+		String[] turningInfo = turnInfo.get(Ori);
+		boolean[] conditions = new boolean[] {deltaX > 0, deltaX < 0, deltaY > 0, deltaY < 0};
+		for(int index = 0; index < conditions.length; index ++) {
+			if(conditions[index]) {
+				doTurnInfo(turningInfo[index]);
+				break;
+			}
+		}
+		super.applyForwardAcceleration();
+		
+	}
+	
+	public void doTurnInfo(String info) {
+		if(info == BKWARD_MOVE) {
+			super.turnLeft();
+			super.turnLeft();
+		}else {
+			if(info == LEFT_TURN) {
+				super.turnLeft();
+			}else {
+				super.turnRight();
 			}
 		}
 	}
@@ -134,7 +206,7 @@ public class MyAIController extends CarController{
 	private void startMoving() {
 		WorldSpatial.Direction Ori = super.getOrientation();
 		
-		if ((nextDest.x - currPos.x < 0)) {
+		/*if ((nextDest.x - currPos.x < 0)) {
 			if (Ori == WorldSpatial.Direction.EAST) {
 				super.applyReverseAcceleration();
 			}
@@ -152,7 +224,7 @@ public class MyAIController extends CarController{
 			}
 		} else {
 			super.applyForwardAcceleration();
-		}
+		}*/
 	}
 
 }

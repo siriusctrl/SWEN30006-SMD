@@ -7,7 +7,6 @@ import mycontroller.Pathway;
 import mycontroller.pipeline.SimplifyPath;
 import mycontroller.pipeline.Step;
 import mycontroller.pipeline.astar.AStar;
-import mycontroller.pipeline.dijkstra.Node;
 
 import java.util.ArrayList;
 
@@ -25,11 +24,11 @@ public class HealStrategy implements IEscapeStrategy {
 	
 	@Override
 	public Pathway findDestination(MyAIController myAIController) {
-		Pathway newBest = evaluateBest(MapRecorder.healthLocations, myAIController);
-		if(newBest.getDesti().equals(new Node(new Coordinate(myAIController.getPosition())))) {
+		Pathway newBest = evaluateBest(MapRecorder.healthLocations, myAIController, simpleRoute);
+		if(newBest.getDesti().equals(new Coordinate(myAIController.getPosition()))) {
 			return Pathway.getStays();
 		}
-		return evaluateBest(MapRecorder.healthLocations, myAIController);
+		return newBest;
 	}
 
 	@Override

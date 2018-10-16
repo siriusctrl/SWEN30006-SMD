@@ -9,8 +9,9 @@ import mycontroller.MapRecorder;
 import mycontroller.MyAIController;
 import mycontroller.Pathway;
 import mycontroller.TileStatus;
-import mycontroller.pipeline.dijkstra.Dijkstra;
-import mycontroller.pipeline.dijkstra.Node;
+import mycontroller.pipeline.SimplifyPath;
+import mycontroller.pipeline.Step;
+import mycontroller.pipeline.astar.AStar;
 import tiles.MapTile;
 import utilities.Coordinate;
 import world.Car;
@@ -19,6 +20,8 @@ import world.World;
 public class ExploreStrategy implements IEscapeStrategy{
 	
 	public static final int MAX_EXPLORE = 10;
+	Step<Coordinate[], Pathway> findRoute = Step.of(AStar::findShortestPath);
+	Step<Coordinate[], Pathway> simpleRoute = findRoute.add(SimplifyPath::simplifyPath); 
 	
 	public Pathway findDestination(MyAIController myAIController) {
 		MapTile[][] mapTiles = MapRecorder.mapTiles;
@@ -67,7 +70,7 @@ public class ExploreStrategy implements IEscapeStrategy{
 		int startIndex = 0, endIndex = MAX_EXPLORE;
 		System.out.println("me: "+MAX_EXPLORE);
 		while(startIndex < currentEvaluating.size() || !Pathway.getUnabletoReach().equals(minPath)) {
-			minPath = evaluateBest(currentEvaluating.subList(startIndex, endIndex), myAIController);
+			minPath = evaluateBest(currentEvaluating.subList(startIndex, endIndex), myAIController, simpleRoute);
 			startIndex += MAX_EXPLORE;
 			if(startIndex > currentEvaluating.size()) {
 				break;

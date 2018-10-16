@@ -28,6 +28,9 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 	// explore strategy
 	private IEscapeStrategy explore;
 	
+	Step<Coordinate[], Pathway> findRoute = Step.of(AStar::findShortestPath);
+	Step<Coordinate[], Pathway> simpleRoute = findRoute.add(SimplifyPath::simplifyPath);
+	
 	public KeyCollectionStrategy() {
 		explore = EscapeStrategyFactory.getInstance().getStrategy(StrategyManager.EXPL_ST_NAME);
 	}
@@ -60,7 +63,7 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 			for(int cordKey: notYet) {
 				allCoords.addAll(keys.get(cordKey));
 			}
-			Pathway bestOne = evaluateBest(allCoords, myAIController);
+			Pathway bestOne = evaluateBest(allCoords, myAIController, simpleRoute);
 			
 			// if the there's a way to the key
 			if(!Pathway.getUnabletoReach().equals(bestOne)) {

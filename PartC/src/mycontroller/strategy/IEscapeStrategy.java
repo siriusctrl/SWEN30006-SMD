@@ -4,8 +4,7 @@ import mycontroller.MapRecorder;
 import mycontroller.MyAIController;
 import utilities.Coordinate;
 import mycontroller.Pathway;
-import mycontroller.pipeline.dijkstra.Dijkstra;
-import mycontroller.pipeline.dijkstra.Node;
+import mycontroller.pipeline.Step;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,15 +30,15 @@ public interface IEscapeStrategy {
 	 * */
 	default boolean isTakeover(MyAIController myAIController) {return false;}
 	
-	default Pathway evaluateBest(List<Coordinate> coords, MyAIController myAIController) {
+	default Pathway evaluateBest(List<Coordinate> coords, MyAIController myAIController, Step<Coordinate[], Pathway> simplePath) {
 		
 		// all pathways
 		ArrayList<Pathway> pathways = new ArrayList<>();
-		Node startNode = new Node(new Coordinate(myAIController.getPosition()));
+		Coordinate startNode = new Coordinate(myAIController.getPosition());
 		
 		// for all coordinates, find their shortest path to current car
 		for(Coordinate cr: coords) {
-			Pathway nodePath = Dijkstra.findShortestPath(startNode, new Node(cr));
+			Pathway nodePath = simplePath.execute(new Coordinate[] {startNode, cr});
 			System.out.println(nodePath.getCost());
 			pathways.add(nodePath);
 		}

@@ -10,7 +10,7 @@ public class Pathway implements Comparable<Pathway> {
 	private int cost;
 	private Coordinate desti;
 	
-	//public static final Node STAYS = new Node(new Coordinate(-1, -1));
+	public static final Coordinate STAYS = new Coordinate(-1, -1);
 	private static Pathway cannot_reach_now;
 	private static Pathway stays_now;
 	
@@ -22,14 +22,14 @@ public class Pathway implements Comparable<Pathway> {
 		return cannot_reach_now;
 	}
 	
-	/*
+	
 	public static Pathway getStays() {
 		if(stays_now == null) {
 			stays_now = new Pathway();
 			stays_now.desti = STAYS;
 		}
 		return stays_now;
-	}*/
+	}
 	
 	public boolean equals(Object o) {
 		if(o == null) {
