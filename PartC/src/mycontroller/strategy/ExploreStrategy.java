@@ -9,8 +9,9 @@ import mycontroller.MapRecorder;
 import mycontroller.MyAIController;
 import mycontroller.Pathway;
 import mycontroller.TileStatus;
-import mycontroller.pipeline.dijkstra.Dijkstra;
-import mycontroller.pipeline.dijkstra.Node;
+import mycontroller.pipeline.SimplifyPath;
+import mycontroller.pipeline.Step;
+import mycontroller.pipeline.astar.AStar;
 import tiles.MapTile;
 import utilities.Coordinate;
 import world.Car;
@@ -27,6 +28,10 @@ public class ExploreStrategy implements IEscapeStrategy{
 		
 		ArrayList<Coordinate> exactRoads = new ArrayList<>();
 		ArrayList<Coordinate> roadsMaybe = new ArrayList<>();
+		
+		//initialise pipeline
+		Step<Coordinate[], Pathway> findRoute = Step.of(AStar::findShortestPath);
+		Step<Coordinate[], Pathway> simpleRoute = findRoute.add(SimplifyPath::simplifyPath); 
 		
 		for(int x = 0; x < World.MAP_WIDTH; x ++) {
 			for(int y = 0; y < World.MAP_HEIGHT; y ++) {

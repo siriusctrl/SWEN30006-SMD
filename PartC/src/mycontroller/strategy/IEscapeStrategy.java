@@ -4,9 +4,6 @@ import mycontroller.MapRecorder;
 import mycontroller.MyAIController;
 import utilities.Coordinate;
 import mycontroller.Pathway;
-import mycontroller.pipeline.dijkstra.Dijkstra;
-import mycontroller.pipeline.dijkstra.Node;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

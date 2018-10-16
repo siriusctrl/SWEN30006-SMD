@@ -7,7 +7,6 @@ import mycontroller.Pathway;
 import mycontroller.pipeline.SimplifyPath;
 import mycontroller.pipeline.Step;
 import mycontroller.pipeline.astar.AStar;
-import mycontroller.pipeline.dijkstra.Node;
 
 import java.util.ArrayList;
 

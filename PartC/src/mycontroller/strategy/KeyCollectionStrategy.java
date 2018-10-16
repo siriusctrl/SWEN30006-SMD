@@ -46,7 +46,7 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 		
 		//initialise pipeline
 		Step<Coordinate[], Pathway> findRoute = Step.of(AStar::findShortestPath);
-		Step<Coordinate[], Pathway> simpleRoute = findRoute.add(SimplifyPath::simplifyPath); 
+		Step<Coordinate[], Pathway> simpleRoute = findRoute.add(SimplifyPath::simplifyPath);
 		
 		for(int key: keys.keySet()) {
 			if(!got.contains(key)) {
