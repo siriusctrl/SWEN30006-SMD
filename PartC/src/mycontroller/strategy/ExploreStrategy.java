@@ -60,7 +60,7 @@ public class ExploreStrategy implements IEscapeStrategy{
 			}
 		});
 		
-		System.out.println(currentEvaluating);
+		// System.out.println(currentEvaluating);
 		
 		Pathway minPath = Pathway.getUnabletoReach();
 		
@@ -80,7 +80,7 @@ public class ExploreStrategy implements IEscapeStrategy{
 			}
 		}
 		
-		System.out.println("explore");
+		// System.out.println("explore");
 		return minPath;
 	}
 	

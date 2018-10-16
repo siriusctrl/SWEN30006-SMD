@@ -40,11 +40,13 @@ public interface IEscapeStrategy {
 		// for all coordinates, find their shortest path to current car
 		for(Coordinate cr: coords) {
 			Pathway nodePath = Dijkstra.findShortestPath(startNode, new Node(cr));
-			System.out.println(nodePath.getCost());
+			// System.out.println(nodePath.getCost());
 			pathways.add(nodePath);
 		}
 		
 		Pathway minPath = Collections.min(pathways);
+		
+		System.out.println(minPath.getPath());
 		
 		// if the shortest path's cost is more than the max cost, then the path is unreachable now.
 		if(minPath.getCost() >= MapRecorder.UNEXPLORED_COST) {

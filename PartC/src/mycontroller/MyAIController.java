@@ -47,7 +47,7 @@ public class MyAIController extends CarController{
 		
 		if(pathway != null) {
 			for (Node o : pathway.getPath()) {
-				System.out.println(o.getCoordinate().toString());
+				System.out.println("wor" + o.getCoordinate().toString());
 			}
 		}
 		
@@ -73,12 +73,12 @@ public class MyAIController extends CarController{
 	public void navigation() {
 		currPos = new Coordinate(super.getPosition());
 		
-		if(nextDest == null) {
+		/*if(nextDest == null) {
 			nextDest = pathway.getNext();
 			startMoving();
-		}
-		
-		if(distance(nextDest) == 0) {
+		}*/
+
+		/*if(nextDest.equals(new Coordinate(getPosition()))) {
 			pathway.removeNext();
 			if((nextDest = pathway.getNext()) != null) {
 				turn();
@@ -86,7 +86,9 @@ public class MyAIController extends CarController{
 				super.applyReverseAcceleration();
 				nextDest = null;
 			}
-		}
+		}*/
+		
+		
 	}
 	
 	/**
@@ -134,7 +136,7 @@ public class MyAIController extends CarController{
 	private void startMoving() {
 		WorldSpatial.Direction Ori = super.getOrientation();
 		
-		if ((nextDest.x - currPos.x < 0)) {
+		/*if ((nextDest.x - currPos.x < 0)) {
 			if (Ori == WorldSpatial.Direction.EAST) {
 				super.applyReverseAcceleration();
 			}
@@ -152,7 +154,7 @@ public class MyAIController extends CarController{
 			}
 		} else {
 			super.applyForwardAcceleration();
-		}
+		}*/
 	}
 
 }

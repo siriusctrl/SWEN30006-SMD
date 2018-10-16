@@ -32,13 +32,13 @@ public class Dijkstra {
 		
 		// set path
 		Stack<Node> st = getPathTowards(start, end);
-		System.out.println("st = "+st);
+		// System.out.println("st = "+st);
 		path.setPath(st);
 		path.setCost(nodes[end.getCoordinate().x][end.getCoordinate().y].getMinCost());
 		path.setDesti(end);
 		
 		
-		System.out.println(path.toString());
+		// System.out.println(path.toString());
 		return path;
 	}
 	
@@ -59,17 +59,17 @@ public class Dijkstra {
 
             // Visit each edge from node
             for (Edge e : node.getNeighbours()) {
-				Node target = e.getTarget();
-				int weight = e.getWeight();
-				int dTarget = node.getMinCost() + weight; // distance to target
-				if (dTarget < target.getMinCost()) {
-					queue.remove(nodes[target.getCoordinate().x][target.getCoordinate().y]);
-					//System.out.println("cor ="+target.getCoordinate());
-					nodes[target.getCoordinate().x][target.getCoordinate().y].setMinCost(dTarget);
-					nodes[target.getCoordinate().x][target.getCoordinate().y].setPrevNode(nodes[node.getCoordinate().x][node.getCoordinate().y]);
-					if (!visited.contains(nodes[target.getCoordinate().x][target.getCoordinate().y])) {
-						queue.add(nodes[target.getCoordinate().x][target.getCoordinate().y]);
-					}
+            	Node target = e.getTarget();
+            	if (!visited.contains(nodes[target.getCoordinate().x][target.getCoordinate().y])) {
+            		int weight = e.getWeight();
+    				int dTarget = node.getMinCost() + weight; // distance to target
+    				if (dTarget < target.getMinCost()) {
+    					queue.remove(nodes[target.getCoordinate().x][target.getCoordinate().y]);
+    					//System.out.println("cor ="+target.getCoordinate());
+    					nodes[target.getCoordinate().x][target.getCoordinate().y].setMinCost(dTarget);
+    					nodes[target.getCoordinate().x][target.getCoordinate().y].setPrevNode(nodes[node.getCoordinate().x][node.getCoordinate().y]);
+    					queue.add(nodes[target.getCoordinate().x][target.getCoordinate().y]);
+    				}
 				}
             }
         }
@@ -79,13 +79,12 @@ public class Dijkstra {
 	private static Stack<Node> getPathTowards(Node start, Node target) {
 	    Stack<Node> st = new Stack<>();
 	    for (Node v = nodes[target.getCoordinate().x][target.getCoordinate().y]; v != null && v != start; v = v.getPrevNode()) {
-			System.out.println("v = "+v);
+			/* System.out.println("v = "+v);
 			System.out.println("previous= "+ v.getPrevNode());
-			System.out.println("cost= " + v.getMinCost());
+			System.out.println("cost= " + v.getMinCost()); */
 	    	// add to queue
 	    	st.push(v);
 	    }
-	    st.push(start);
 	    return st;
 	}
 	
