@@ -95,6 +95,8 @@ public class AStar {
             currentNode = currentNode.parent;
         }
         
+        path.add(start);
+        
         return path;
 	}
 	

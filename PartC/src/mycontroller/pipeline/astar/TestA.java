@@ -14,8 +14,15 @@ public class TestA {
 				MapRecorder.cost[i][j] = 1;
 			}
 		}
-		MapRecorder.cost[2][4] = 9999;
-		Pathway p = AStar.findShortestPath(new Coordinate(2, 3), new Coordinate(3, 5));
+		MapRecorder.cost[1][0] = 999;
+		MapRecorder.cost[1][1] = 999;
+		MapRecorder.cost[1][2] = 999;
+		MapRecorder.cost[1][3] = 999;
+		MapRecorder.cost[1][4] = 999;
+		MapRecorder.cost[3][3] = 999;
+		MapRecorder.cost[3][4] = 999;
+		MapRecorder.cost[3][5] = 999;
+		Pathway p = AStar.findShortestPath(new Coordinate(0, 0), new Coordinate(4, 1));
 		Stack<Coordinate> st = p.getPath();
 		while (!st.isEmpty()) {
 			System.out.println(st.pop());
