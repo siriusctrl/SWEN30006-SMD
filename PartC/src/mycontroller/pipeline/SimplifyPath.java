@@ -7,7 +7,12 @@ import utilities.Coordinate;
 public class SimplifyPath {
 
 	public static Pathway simplifyPath(Pathway path) {
+		if(path == null || path.getPath().size() == 0) {
+			return path;
+		}
+		
 		Coordinate[] coors = new Coordinate[path.getPath().size()];
+		System.out.println(path.getPath().size());
 		Stack<Coordinate> newPath = new Stack<>();
 		int pos = 0;
 		int now = 0;
