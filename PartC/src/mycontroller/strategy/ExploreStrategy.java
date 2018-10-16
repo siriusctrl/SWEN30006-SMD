@@ -67,13 +67,14 @@ public class ExploreStrategy implements IEscapeStrategy{
 			}
 		});
 		
-		System.out.println(currentEvaluating);
+		System.out.println("current: " + currentEvaluating);
 		
 		Pathway minPath = Pathway.getUnabletoReach();
 		
 		int startIndex = 0, endIndex = MAX_EXPLORE;
-		System.out.println("me: "+MAX_EXPLORE);
+		// System.out.println("me: "+MAX_EXPLORE);
 		while(startIndex < currentEvaluating.size() || !Pathway.getUnabletoReach().equals(minPath)) {
+			System.out.println(currentEvaluating.subList(startIndex, endIndex));
 			minPath = evaluateBest(currentEvaluating.subList(startIndex, endIndex), myAIController, simpleRoute);
 			startIndex += MAX_EXPLORE;
 			if(startIndex > currentEvaluating.size()) {

@@ -113,11 +113,10 @@ public class MyAIController extends CarController{
 		
 		if(nextDest == null) {
 			nextDest = pathway.getNext();
-			moveTo(nextDest);
 			// startMoving();
-		}else {
-			moveTo(nextDest);
 		}
+		
+		moveTo(nextDest);
 		
 		if(nextDest.equals(new Coordinate(getPosition()))) {
 			pathway.removeNext();
@@ -144,20 +143,23 @@ public class MyAIController extends CarController{
 				break;
 			}
 		}
-		super.applyForwardAcceleration();
 		
 	}
 	
 	public void doTurnInfo(String info) {
 		if(info == BKWARD_MOVE) {
-			super.turnLeft();
-			super.turnLeft();
-		}else {
+			applyReverseAcceleration();
+		}else if(info != FORWARD_MOVE) {
 			if(info == LEFT_TURN) {
 				super.turnLeft();
+				applyForwardAcceleration();
 			}else {
 				super.turnRight();
+				System.out.println("right fuck");
+				applyForwardAcceleration();
 			}
+		}else {
+			applyForwardAcceleration();
 		}
 	}
 	
