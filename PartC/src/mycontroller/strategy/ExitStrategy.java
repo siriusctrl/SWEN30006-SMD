@@ -4,8 +4,9 @@ import mycontroller.MapRecorder;
 import mycontroller.MyAIController;
 import utilities.Coordinate;
 import mycontroller.Pathway;
-import mycontroller.pipeline.dijkstra.Dijkstra;
-import mycontroller.pipeline.dijkstra.Node;
+import mycontroller.pipeline.SimplifyPath;
+import mycontroller.pipeline.Step;
+import mycontroller.pipeline.astar.AStar;
 
 import java.util.ArrayList;
 import java.util.Queue;
@@ -16,7 +17,11 @@ public class ExitStrategy implements IEscapeStrategy {
 	public ExitStrategy() {
 		
 	}
-
+	
+	// initialise the pipeline
+	Step<Coordinate[], Pathway> findRoute = Step.of(AStar::findShortestPath);
+	Step<Coordinate[], Pathway> simpleRoute = findRoute.add(SimplifyPath::simplifyPath); 
+	
 	@Override
 	public Pathway findDestination(MyAIController myAIController) {
 		ArrayList<Coordinate> finishCoords = MapRecorder.finishLocations;

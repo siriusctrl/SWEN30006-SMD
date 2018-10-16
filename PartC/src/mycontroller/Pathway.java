@@ -104,8 +104,8 @@ public class Pathway implements Comparable<Pathway> {
 	 * setter for path
 	 * @param stack the path to set
 	 */
-	public void setPath(Stack<Coordinate> coord) {
-		this.path = coord;
+	public void setPath(Stack<Coordinate> coords) {
+		this.path = coords;
 	}
 	
 	/**
