@@ -22,7 +22,9 @@ public class AStar {
 	 * @param end end coordinate
 	 * @return pathway from start to end
 	 */
-	public static Pathway findShortestPath(Coordinate start, Coordinate end){
+	public static Pathway findShortestPath(Coordinate[] coors){
+		Coordinate start = coors[0];
+		Coordinate end = coors[1];
 		
 		Pathway path = new Pathway();
 		

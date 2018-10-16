@@ -22,7 +22,7 @@ public class TestA {
 		MapRecorder.cost[3][3] = 999;
 		MapRecorder.cost[3][4] = 999;
 		MapRecorder.cost[3][5] = 999;
-		Pathway p = AStar.findShortestPath(new Coordinate(0, 0), new Coordinate(4, 1));
+		Pathway p = AStar.findShortestPath(new Coordinate[] {new Coordinate(0, 0),new Coordinate(4, 1)});
 		Stack<Coordinate> st = p.getPath();
 		while (!st.isEmpty()) {
 			System.out.println(st.pop());
