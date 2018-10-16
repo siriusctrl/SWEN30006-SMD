@@ -10,7 +10,6 @@ import world.World;
 /**
  * Class for A* Algorithm implementation.
  * The task is to find the best pathway between two points on the map.
- * Implementation modified from pseudo-code online.
  */
 public class AStar {
 	
@@ -70,7 +69,7 @@ public class AStar {
 		    for (Node neighbour : neighbours) {
 		        if (neighbour.walkCost == MapRecorder.WALL_COST || closeSet.contains(neighbour)) continue;
 		
-		        int newCost = curr.gCost + calcH(curr, neighbour) ;
+		        int newCost = curr.gCost + calcH(curr, neighbour) + curr.walkCost;
 		        if (newCost < neighbour.gCost || !openQueue.contains(neighbour)) {
 		        		// update
 		            neighbour.gCost = newCost;
