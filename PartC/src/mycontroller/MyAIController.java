@@ -111,17 +111,15 @@ public class MyAIController extends CarController{
 			}
 		} */
 		
-		if(nextDest == null) {
-			nextDest = pathway.getNext();
-			// startMoving();
+		if(nextDest == null || nextDest.equals(new Coordinate(getPosition()))) {
+			pathway.removeNext();
+			if(pathway.getPath().size() > 0) {
+				nextDest = pathway.getNext();
+			}
+			applyBrake();
 		}
 		
 		moveTo(nextDest);
-		
-		if(nextDest.equals(new Coordinate(getPosition()))) {
-			pathway.removeNext();
-			nextDest = null;
-		}
 		
 		
 	}

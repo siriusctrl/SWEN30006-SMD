@@ -50,7 +50,7 @@ public interface IEscapeStrategy {
 		Pathway minPath = Collections.min(pathways);
 		
 		// if the shortest path's cost is more than the max cost, then the path is unreachable now.
-		if(minPath.getCost() >= MapRecorder.UNEXPLORED_COST) {
+		if(minPath == null || minPath.getCost() >= MapRecorder.UNEXPLORED_COST || minPath.getPath().size() == 0) {
 			minPath = Pathway.getUnabletoReach();
 		}
 		
