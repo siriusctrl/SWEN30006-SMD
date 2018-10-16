@@ -9,9 +9,9 @@ public class MapRecorder {
 	// cost to get through a normal road
 	public static final int ROAD_COST = 1;
 	// cost to get through a lava
-	public static final int LAVA_COST = 3;
+	public static final int LAVA_COST = 50;
 	// cost to get through a grass
-	public static final int GRASS_COST = 10;
+	public static final int GRASS_COST = 50;
 	// cost to get through a mud, wall or unexplored road is too high to go through
 	public static final int MUD_COST = 9999;
 	public static final int WALL_COST = 9999;

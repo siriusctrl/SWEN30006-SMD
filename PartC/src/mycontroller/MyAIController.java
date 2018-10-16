@@ -1,8 +1,6 @@
 package mycontroller;
 
 import mycontroller.Pathway;
-import mycontroller.pipeline.dijkstra.Node;
-import mycontroller.pipeline.dijkstra.TestDijkstra;
 
 import controller.CarController;
 import world.Car;
@@ -65,6 +63,9 @@ public class MyAIController extends CarController{
 	@Override
 	public void update() {
 		
+		/* super.turnLeft();
+		super.applyForwardAcceleration(); */
+		
 		// may check if the car moves first?
 		MapRecorder.updateCarView(super.getView());
 		
@@ -80,7 +81,7 @@ public class MyAIController extends CarController{
 		
 		// when pathway.desti is (-1, -1), stays the same
 		// only appears when standing in health area
-		if(pathway != null && Pathway.STAYS.equals(pathway.getDesti())) {
+		if(pathway == null || Pathway.getStays().getDesti().equals(pathway.getDesti())) {
 			// stays
 		} else if(pathway != null) {
 			navigation();
@@ -110,16 +111,15 @@ public class MyAIController extends CarController{
 			}
 		} */
 		
-		if(nextDest == null) {
-			nextDest = pathway.getNext();
-			moveTo(nextDest);
-			// startMoving();
+		if(nextDest == null || nextDest.equals(new Coordinate(getPosition()))) {
+			pathway.removeNext();
+			if(pathway.getPath().size() > 0) {
+				nextDest = pathway.getNext();
+			}
+			applyBrake();
 		}
 		
-		if(nextDest.equals(new Coordinate(getPosition()))) {
-			pathway.removeNext();
-			nextDest = null;
-		}
+		moveTo(nextDest);
 		
 		
 	}
@@ -131,15 +131,13 @@ public class MyAIController extends CarController{
 		int deltaY = nextDest.y - nowPos.y;
 		
 		WorldSpatial.Direction Ori = super.getOrientation();
-		System.out.println(Ori);
+		System.out.println("now position: " + nowPos);
 		System.out.println(nextDest);
 		String[] turningInfo = turnInfo.get(Ori);
-		boolean[] conditions = new boolean[] {deltaX > 0, deltaX < 0, deltaY < 0, deltaY > 0};
+		boolean[] conditions = new boolean[] {deltaX > 0, deltaX < 0, deltaY > 0, deltaY < 0};
 		for(int index = 0; index < conditions.length; index ++) {
 			if(conditions[index]) {
-				System.out.println(index);
 				doTurnInfo(turningInfo[index]);
-				System.out.println(turningInfo[index]);
 				break;
 			}
 		}
@@ -148,16 +146,17 @@ public class MyAIController extends CarController{
 	
 	public void doTurnInfo(String info) {
 		if(info == BKWARD_MOVE) {
-			turnLeft();
-			turnLeft();
-			applyForwardAcceleration();
-		}else {
+			applyReverseAcceleration();
+		}else if(info != FORWARD_MOVE) {
 			if(info == LEFT_TURN) {
-				System.out.println(info);
-				turnLeft();
+				super.turnLeft();
+				applyForwardAcceleration();
 			}else {
-				turnRight();
+				super.turnRight();
+				System.out.println("right fuck");
+				applyForwardAcceleration();
 			}
+		}else {
 			applyForwardAcceleration();
 		}
 	}

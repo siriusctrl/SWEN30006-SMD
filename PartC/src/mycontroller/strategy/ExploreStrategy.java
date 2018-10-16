@@ -61,6 +61,8 @@ public class ExploreStrategy implements IEscapeStrategy{
 		});
 		
 		// System.out.println(currentEvaluating);
+		System.out.println(findExploreCount(currentEvaluating.get(0)));
+		System.out.println(findExploreCount(currentEvaluating.get(1)));
 		
 		Pathway minPath = Pathway.getUnabletoReach();
 		
@@ -93,7 +95,7 @@ public class ExploreStrategy implements IEscapeStrategy{
 		
 		for(int x = cr.x - Car.VIEW_SQUARE; x <= cr.x + Car.VIEW_SQUARE; x ++) {
 			for(int y = cr.y - Car.VIEW_SQUARE; y <= cr.y + Car.VIEW_SQUARE; y ++) {
-				if(MapRecorder.xyInBound(x, y) && tileStatus[x][y] == TileStatus.UNEXPLORED) {
+				if(MapRecorder.xyInBound(x, y) && tileStatus[x][y] == TileStatus.UNEXPLORED && tileStatus[x][y] != TileStatus.UNREACHABLE) {
 					itCount += 1;
 				}
 			}
