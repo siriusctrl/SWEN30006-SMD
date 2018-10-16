@@ -40,10 +40,10 @@ public interface IEscapeStrategy {
 		for(Coordinate cr: coords) {
 			System.out.println("startNode: " + startNode + "cr: " + cr);
 			Pathway nodePath = simplePath.execute(new Coordinate[] {startNode, cr});
-			System.out.println("--------------------------------");
+			/* System.out.println("--------------------------------");
 			System.out.println(nodePath.getPath());
 			System.out.println("--------------------------------");
-			System.out.println(nodePath.getCost());
+			System.out.println(nodePath.getCost()); */
 			pathways.add(nodePath);
 		}
 		

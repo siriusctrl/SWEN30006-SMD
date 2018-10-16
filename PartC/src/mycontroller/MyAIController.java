@@ -74,8 +74,9 @@ public class MyAIController extends CarController{
 		}
 		
 		/* if(pathway != null) {
-			for (Node o : pathway.getPath()) {
-				System.out.println("wor" + o.getCoordinate().toString());
+			for (Coordinate o : pathway.getPath()) {
+				
+				System.out.println(MapRecorder.mapTiles[o.x][o.y].getType());
 			}
 		} */
 		
@@ -121,6 +122,10 @@ public class MyAIController extends CarController{
 		
 		moveTo(nextDest);
 		
+		/* if(nextDest != null) {
+			moveTo(nextDest);
+		} */
+		
 		
 	}
 	
@@ -138,7 +143,6 @@ public class MyAIController extends CarController{
 		for(int index = 0; index < conditions.length; index ++) {
 			if(conditions[index]) {
 				doTurnInfo(turningInfo[index]);
-				break;
 			}
 		}
 		
@@ -150,6 +154,7 @@ public class MyAIController extends CarController{
 		}else if(info != FORWARD_MOVE) {
 			if(info == LEFT_TURN) {
 				super.turnLeft();
+				System.out.println("left hey");
 				applyForwardAcceleration();
 			}else {
 				super.turnRight();

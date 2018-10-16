@@ -8,11 +8,14 @@ import mycontroller.MapRecorder;
 import mycontroller.MyAIController;
 
 import mycontroller.Pathway;
+import utilities.Coordinate;
 
 public class StrategyManager {
 	
 	private IEscapeStrategy currentStrategy = null;
 	private Map<String, IEscapeStrategy> strategies;
+	
+	private Coordinate currentDest;
 
 	public static final String EXIT_ST_NAME = "Exit";
 	public static final String HEAL_ST_NAME = "Heal";
@@ -53,6 +56,17 @@ public class StrategyManager {
 			takeover(strategies.get(DEFAULT_ST));
 			newPathway = currentStrategy.findDestination(myAIController);
 		}
+		
+		/* System.out.println("newPath=");
+		if(newPathway != null) {
+			for (Coordinate o : newPathway.getPath()) {
+				System.out.println("---");
+				System.out.println("x:" + o.x + "y:" + o.y);
+				System.out.println(MapRecorder.mapTiles[o.x][o.y].getType());
+				System.out.println("---");
+			}
+		} 
+		System.out.println("="); */
 		return newPathway;
 	}
 	
@@ -92,7 +106,12 @@ public class StrategyManager {
 
 		boolean needHeal = true;
 		needHeal = needHeal && MapRecorder.healthLocations.size() > 0;
-		needHeal = needHeal && myAIController.getHealth() < HealStrategy.HEALTH_THRESHOLD;
+		// needHeal = needHeal && myAIController.getHealth() < HealStrategy.HEALTH_THRESHOLD;
+		if(currentStrategy == strategies.get(HEAL_ST_NAME)) {
+			needHeal = !(myAIController.getHealth() == HealStrategy.HEALTH_LEAVE_AT);
+		}else {
+			needHeal = needHeal && myAIController.getHealth() < HealStrategy.HEALTH_THRESHOLD;
+		}
 		
 		// a star
 		

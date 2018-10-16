@@ -12,7 +12,9 @@ import java.util.ArrayList;
 
 public class HealStrategy implements IEscapeStrategy {
 	
-	public static final int HEALTH_THRESHOLD = 75;
+	public static final int HEALTH_THRESHOLD = 50;
+	
+	public static final int HEALTH_LEAVE_AT = 100;
 	
 	public HealStrategy() {
 		
