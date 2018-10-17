@@ -70,7 +70,6 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 			
 			// if the there's a way to the key
 			if(!Pathway.getUnabletoReach().equals(bestOne)) {
-				System.out.println("unableToPath");
 				return bestOne;
 			}
 		}

@@ -26,6 +26,7 @@ public class MyAIController extends CarController{
 	private Coordinate currPos;
 	
 	private static HashMap<WorldSpatial.Direction, String[]> turnInfo;
+	private static HashMap<WorldSpatial.Direction, int[]> coordInfo;
 	
 	public static final String LEFT_TURN = "lft";
 	public static final String RIGHT_TURN = "rgt";
@@ -36,10 +37,12 @@ public class MyAIController extends CarController{
 	public static final String[] NORTH_TURN = new String[] {RIGHT_TURN, LEFT_TURN, FORWARD_MOVE, BKWARD_MOVE};
 	public static final String[] SOUTH_TURN = new String[] {LEFT_TURN, RIGHT_TURN, BKWARD_MOVE, FORWARD_MOVE};
 	public static final String[] WEST_TURN = new String[] {BKWARD_MOVE, FORWARD_MOVE, RIGHT_TURN, LEFT_TURN};
-	public static final String[] EAST_TURN = new String[] {FORWARD_MOVE, BKWARD_MOVE, LEFT_TURN, RIGHT_TURN,};
+	public static final String[] EAST_TURN = new String[] {FORWARD_MOVE, BKWARD_MOVE, LEFT_TURN, RIGHT_TURN};
 	
-	
-	
+	public static final int[] NORTH_AHEAD = new int[] {0, 1};
+	public static final int[] SOUTH_AHEAD = new int[] {0, -1};
+	public static final int[] WEST_AHEAD = new int[] {-1, 0};
+	public static final int[] EAST_AHEAD = new int[] {1, 0};
 	
 
 	/**
@@ -55,11 +58,17 @@ public class MyAIController extends CarController{
 		
 		
 		turnInfo = new HashMap<>();
+		coordInfo = new HashMap<>();
 		
 		turnInfo.put(WorldSpatial.Direction.NORTH, NORTH_TURN);
 		turnInfo.put(WorldSpatial.Direction.SOUTH, SOUTH_TURN);
 		turnInfo.put(WorldSpatial.Direction.WEST, WEST_TURN);
 		turnInfo.put(WorldSpatial.Direction.EAST, EAST_TURN);
+		
+		coordInfo.put(WorldSpatial.Direction.NORTH, NORTH_AHEAD);
+		coordInfo.put(WorldSpatial.Direction.SOUTH, SOUTH_AHEAD);
+		coordInfo.put(WorldSpatial.Direction.WEST, WEST_AHEAD);
+		coordInfo.put(WorldSpatial.Direction.EAST, EAST_AHEAD);
 		
 	}
 
@@ -157,7 +166,7 @@ public class MyAIController extends CarController{
 			applyReverseAcceleration();
 		}else if(info != FORWARD_MOVE) {
 			if(info == LEFT_TURN) {
-				if(checkWallAhead(super.getOrientation(), super.getView())) {
+				if(checkOriWallAhead(super.getOrientation(), super.getView())) {
 					applyReverseAcceleration();
 					
 				}else {
@@ -166,7 +175,7 @@ public class MyAIController extends CarController{
 				super.turnLeft();
 				// System.out.println("left hey");
 			}else {
-				if(checkWallAhead(super.getOrientation(), super.getView())) {
+				if(checkOriWallAhead(super.getOrientation(), super.getView())) {
 					applyReverseAcceleration();
 					
 				}else {
@@ -179,170 +188,17 @@ public class MyAIController extends CarController{
 			applyForwardAcceleration();
 		}
 	}
+
 	
-	/**
-	 * Check if you have a wall in front of you!
-	 * @param orientation the orientation we are in based on WorldSpatial
-	 * @param currentView what the car can currently see
-	 * @return
-	 */
-	private boolean checkWallAhead(WorldSpatial.Direction orientation, HashMap<Coordinate, MapTile> currentView){
-		switch(orientation){
-		case EAST:
-			return checkEast(currentView);
-		case NORTH:
-			return checkNorth(currentView);
-		case SOUTH:
-			return checkSouth(currentView);
-		case WEST:
-			return checkWest(currentView);
-		default:
-			return false;
+	public boolean checkOriWallAhead(WorldSpatial.Direction dre, HashMap<Coordinate, MapTile> currentView) {
+		Coordinate curPos = new Coordinate(getPosition());
+		int[] delta = coordInfo.get(dre);
+		MapTile tile = currentView.get(new Coordinate(curPos.x+delta[0], curPos.y+delta[1]));
+		if(tile.isType(MapTile.Type.WALL)){
+			return true;
 		}
-	}
-	
-	/**
-	 * Check if the wall is on your left hand side given your orientation
-	 * @param orientation
-	 * @param currentView
-	 * @return
-	 */
-	private boolean checkFollowingWall(WorldSpatial.Direction orientation, HashMap<Coordinate, MapTile> currentView) {
+		return false;
 		
-		switch(orientation){
-		case EAST:
-			return checkNorth(currentView);
-		case NORTH:
-			return checkWest(currentView);
-		case SOUTH:
-			return checkEast(currentView);
-		case WEST:
-			return checkSouth(currentView);
-		default:
-			return false;
-		}	
-	}
-	
-	/**
-	 * Method below just iterates through the list and check in the correct coordinates.
-	 * i.e. Given your current position is 10,10
-	 * checkEast will check up to wallSensitivity amount of tiles to the right.
-	 * checkWest will check up to wallSensitivity amount of tiles to the left.
-	 * checkNorth will check up to wallSensitivity amount of tiles to the top.
-	 * checkSouth will check up to wallSensitivity amount of tiles below.
-	 */
-	public boolean checkEast(HashMap<Coordinate, MapTile> currentView){
-		// Check tiles to my right
-		Coordinate currentPosition = new Coordinate(getPosition());
-		for(int i = 0; i <= wallSensitivity; i++){
-			MapTile tile = currentView.get(new Coordinate(currentPosition.x+i, currentPosition.y));
-			if(tile.isType(MapTile.Type.WALL)){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public boolean checkWest(HashMap<Coordinate,MapTile> currentView){
-		// Check tiles to my left
-		Coordinate currentPosition = new Coordinate(getPosition());
-		for(int i = 0; i <= wallSensitivity; i++){
-			MapTile tile = currentView.get(new Coordinate(currentPosition.x-i, currentPosition.y));
-			if(tile.isType(MapTile.Type.WALL)){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public boolean checkNorth(HashMap<Coordinate,MapTile> currentView){
-		// Check tiles to towards the top
-		Coordinate currentPosition = new Coordinate(getPosition());
-		for(int i = 0; i <= wallSensitivity; i++){
-			MapTile tile = currentView.get(new Coordinate(currentPosition.x, currentPosition.y+i));
-			if(tile.isType(MapTile.Type.WALL)){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public boolean checkSouth(HashMap<Coordinate,MapTile> currentView){
-		// Check tiles towards the bottom
-		Coordinate currentPosition = new Coordinate(getPosition());
-		for(int i = 0; i <= wallSensitivity; i++){
-			MapTile tile = currentView.get(new Coordinate(currentPosition.x, currentPosition.y-i));
-			if(tile.isType(MapTile.Type.WALL)){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Return the distance between current position and the target position
-	 * @param o other coordinate
-	 * @return the distance
-	 */
-	public int distance(Coordinate o) {
-		return Math.abs(o.x - currPos.x) + Math.abs(o.y - currPos.y); 
-	}
-	
-	private void turn() {
-		WorldSpatial.Direction Ori = super.getOrientation();
-		
-		if (nextDest.x - currPos.x > 0) {
-			if (Ori == WorldSpatial.Direction.NORTH) {
-				super.turnRight();
-			} else if (Ori == WorldSpatial.Direction.SOUTH) {
-				super.turnLeft();
-			}
-		} else if (nextDest.x - currPos.x < 0) {
-			if (Ori == WorldSpatial.Direction.NORTH) {
-				super.turnLeft();
-			} else if (Ori == WorldSpatial.Direction.SOUTH) {
-				super.turnRight();
-			}
-		} else if (nextDest.y - currPos.y > 0) {
-			if (Ori == WorldSpatial.Direction.WEST) {
-				super.turnRight();
-			} else if (Ori == WorldSpatial.Direction.EAST) {
-				super.turnLeft();
-			}
-		} else if (nextDest.y - currPos.y < 0) {
-			if (Ori == WorldSpatial.Direction.EAST) {
-				super.turnRight();
-			} else if (Ori == WorldSpatial.Direction.WEST) {
-				super.turnLeft();
-			}
-		}
-	}
-	
-	/**
-	 * Determine whether needs to go forward or backward
-	 */
-	private void startMoving() {
-		WorldSpatial.Direction Ori = super.getOrientation();
-		
-		/*if ((nextDest.x - currPos.x < 0)) {
-			if (Ori == WorldSpatial.Direction.EAST) {
-				super.applyReverseAcceleration();
-			}
-		} else if ((nextDest.x - currPos.x > 0)) {
-			if (Ori == WorldSpatial.Direction.WEST) {
-				super.applyReverseAcceleration();
-			}	
-		} else if ((nextDest.y - currPos.y < 0)) {
-			if (Ori == WorldSpatial.Direction.NORTH) {
-				super.applyReverseAcceleration();
-			}
-		} else if ((nextDest.y - currPos.y > 0)) {
-			if (Ori == WorldSpatial.Direction.SOUTH) {
-				super.applyReverseAcceleration();
-			}
-		} else {
-			super.applyForwardAcceleration();
-		}*/
 	}
 
 }
