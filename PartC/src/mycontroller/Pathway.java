@@ -17,7 +17,7 @@ public class Pathway implements Comparable<Pathway> {
 	public static Pathway getUnabletoReach() {
 		if(cannot_reach_now == null) {
 			cannot_reach_now = new Pathway();
-			cannot_reach_now.cost = -1;
+			cannot_reach_now.cost = 9999999;
 		}
 		return cannot_reach_now;
 	}
@@ -130,6 +130,7 @@ public class Pathway implements Comparable<Pathway> {
 		while(coord.hasNext()) {
 			res += coord.next().toString() + " ";
 		}
-		return res+"\n";
+		
+		return res;
 	}
 }

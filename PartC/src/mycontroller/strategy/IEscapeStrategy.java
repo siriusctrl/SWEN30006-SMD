@@ -38,7 +38,7 @@ public interface IEscapeStrategy {
 		
 		// for all coordinates, find their shortest path to current car
 		for(Coordinate cr: coords) {
-			System.out.println("startNode: " + startNode + "cr: " + cr);
+			// System.out.println("startNode: " + startNode + "cr: " + cr);
 			Pathway nodePath = simplePath.execute(new Coordinate[] {startNode, cr});
 			/* System.out.println("--------------------------------");
 			System.out.println(nodePath.getPath());
@@ -47,7 +47,16 @@ public interface IEscapeStrategy {
 			pathways.add(nodePath);
 		}
 		
-		Pathway minPath = Collections.min(pathways);
+		Collections.sort(pathways);
+		Pathway minPath = Pathway.getUnabletoReach();
+		if(pathways.size() > 0) {
+			minPath = pathways.get(pathways.size() - 1);
+		}
+		
+		
+		
+		System.out.println(pathways);
+		System.out.println(minPath);
 		
 		// if the shortest path's cost is more than the max cost, then the path is unreachable now.
 		if(minPath == null || minPath.getCost() >= MapRecorder.UNEXPLORED_COST || minPath.getPath().size() == 0) {

@@ -31,6 +31,8 @@ public class HealStrategy implements IEscapeStrategy {
 		/* if(myAIController.getKeys().size() == myAIController.numKeys()) {
 			AllLocations.addAll(MapRecorder.finishLocations);
 		} */
+		
+		// finish
 		Pathway newBest = evaluateBest(AllLocations, myAIController, simpleRoute);
 		if(!Pathway.getUnabletoReach().equals(newBest) && newBest.getDesti().equals(new Coordinate(myAIController.getPosition()))) {
 			return Pathway.getStays();

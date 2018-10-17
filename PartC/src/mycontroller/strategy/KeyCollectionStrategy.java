@@ -60,14 +60,17 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 		// if there's any key that is explored but not yet gotten
 		if(notYet.size() > 0) {
 			ArrayList<Coordinate> allCoords = new ArrayList<>();
+			
 			for(int cordKey: notYet) {
-				System.out.println("all:" + allCoords);
 				allCoords.addAll(keys.get(cordKey));
 			}
+			
+			System.out.println("all:" + allCoords);
 			Pathway bestOne = evaluateBest(allCoords, myAIController, simpleRoute);
 			
 			// if the there's a way to the key
 			if(!Pathway.getUnabletoReach().equals(bestOne)) {
+				System.out.println("unableToPath");
 				return bestOne;
 			}
 		}

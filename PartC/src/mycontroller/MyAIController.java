@@ -164,7 +164,7 @@ public class MyAIController extends CarController{
 					applyForwardAcceleration();
 				}
 				super.turnLeft();
-				System.out.println("left hey");
+				// System.out.println("left hey");
 			}else {
 				if(checkWallAhead(super.getOrientation(), super.getView())) {
 					applyReverseAcceleration();
@@ -173,7 +173,7 @@ public class MyAIController extends CarController{
 					applyForwardAcceleration();
 				}
 				super.turnRight();
-				System.out.println("right fuck");
+				// System.out.println("right fuck");
 			}
 		}else {
 			applyForwardAcceleration();

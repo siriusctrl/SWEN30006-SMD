@@ -67,7 +67,7 @@ public class ExploreStrategy implements IEscapeStrategy{
 			}
 		});
 		
-		System.out.println("current: " + currentEvaluating);
+		// System.out.println("current: " + currentEvaluating);
 		
 		Pathway minPath = Pathway.getUnabletoReach();
 		int startIndex = 0, endIndex = MAX_EXPLORE;

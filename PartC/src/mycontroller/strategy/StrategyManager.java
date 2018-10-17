@@ -38,7 +38,7 @@ public class StrategyManager {
 			strategies.put(name, (IEscapeStrategy) EscapeStrategyFactory.getInstance().getStrategy(name));
 		}
 		
-		takeover(strategies.get(DEFAULT_ST));
+		takeover(DEFAULT_ST);
 	}
 	
 	/**
@@ -53,7 +53,7 @@ public class StrategyManager {
 		// in case of no available pathway, get new path way from default strategy
 		// normally will be the explore one
 		if(newPathway.equals(Pathway.getUnabletoReach())) {
-			takeover(strategies.get(DEFAULT_ST));
+			takeover(DEFAULT_ST);
 			newPathway = currentStrategy.findDestination(myAIController);
 		}
 		
@@ -79,26 +79,28 @@ public class StrategyManager {
 	 * */
 	public boolean checkAndTakeover(MyAIController myAIController) {
 		if(currentStrategy == null) {
-			return takeover(strategies.get(DEFAULT_ST));
+			return takeover(DEFAULT_ST);
 		}
 		
 		if(checkHealTakeover(myAIController)) {
-			return takeover(strategies.get(HEAL_ST_NAME));
+			return takeover(HEAL_ST_NAME);
 		}
 		
 		if(myAIController.getKeys().size() == myAIController.numKeys()) {
-			return takeover(strategies.get(EXIT_ST_NAME));
+			return takeover(EXIT_ST_NAME);
 		}else{
-			return takeover(strategies.get(KEY_ST_NAME));
+			return takeover(KEY_ST_NAME);
 		}
 
 	}
 	
-	private boolean takeover(IEscapeStrategy newStrategy) {
+	private boolean takeover(String strategyName) {
+		IEscapeStrategy newStrategy = strategies.get(strategyName);
 		if(currentStrategy == newStrategy) {
 			return false;
 		}
 		currentStrategy = newStrategy;
+		System.out.println("Switch to " + strategyName);
 		return true;
 	}
 	

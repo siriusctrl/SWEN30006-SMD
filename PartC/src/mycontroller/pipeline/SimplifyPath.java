@@ -12,13 +12,13 @@ public class SimplifyPath {
 		}
 		
 		Coordinate[] coors = new Coordinate[path.getPath().size()];
-		System.out.println(path.getPath().size());
+		// System.out.println(path.getPath().size());
 		Stack<Coordinate> newPath = new Stack<>();
 		int pos = 0;
 		int now = 0;
 		
 		for(int i=0;i<coors.length;i++) {
-			System.out.println(path.getPath().get(i));
+			// System.out.println(path.getPath().get(i));
 			coors[i] = path.getPath().get(i);
 		}
 		
