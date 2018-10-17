@@ -13,9 +13,9 @@ public class MapRecorder {
 	// cost to get through a grass
 	public static final int GRASS_COST = 20;
 	// cost to get through a mud, wall or unexplored road is too high to go through
-	public static final int MUD_COST = 9999;
-	public static final int WALL_COST = 9999;
-	public static final int UNEXPLORED_COST = 9999;
+	public static final int MUD_COST = 99999999;
+	public static final int WALL_COST = 99999999;
+	public static final int UNEXPLORED_COST = 99999999;
 	
 	// record all the Tiles of the map
 	public static MapTile[][] mapTiles = new MapTile[World.MAP_WIDTH][World.MAP_HEIGHT];
@@ -25,7 +25,7 @@ public class MapRecorder {
 	public static Integer[][] cost = new Integer[World.MAP_WIDTH][World.MAP_HEIGHT];
 	
 	// record the locations for all the keys
-	public static HashMap<Integer,ArrayList<Coordinate>> keysLocations = new HashMap<>();
+	public static HashMap<Integer,HashSet<Coordinate>> keysLocations = new HashMap<>();
 	// record the locations for all the health point
 	public static ArrayList<Coordinate> healthLocations = new ArrayList<>();
 	// record the locations for finish states
@@ -109,7 +109,7 @@ public class MapRecorder {
 					cost[c.x][c.y] = LAVA_COST;
 					if (trap.getKey() > 0) {
 						if (!keysLocations.containsKey(trap.getKey())) {
-							keysLocations.put(trap.getKey(), new ArrayList<>());
+							keysLocations.put(trap.getKey(), new HashSet<>());
 						}
 						keysLocations.get(trap.getKey()).add(c);
 					}

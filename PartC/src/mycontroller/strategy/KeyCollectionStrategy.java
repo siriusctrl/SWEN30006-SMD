@@ -39,7 +39,7 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 	public Pathway findDestination(MyAIController myAIController) {
 		
 		// explored keys' location
-		HashMap<Integer, ArrayList<Coordinate>> keys = MapRecorder.keysLocations;
+		HashMap<Integer, HashSet<Coordinate>> keys = MapRecorder.keysLocations;
 		
 		// keys got
 		Set<Integer> got = myAIController.getKeys();
@@ -61,6 +61,7 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 		if(notYet.size() > 0) {
 			ArrayList<Coordinate> allCoords = new ArrayList<>();
 			for(int cordKey: notYet) {
+				System.out.println("all:" + allCoords);
 				allCoords.addAll(keys.get(cordKey));
 			}
 			Pathway bestOne = evaluateBest(allCoords, myAIController, simpleRoute);

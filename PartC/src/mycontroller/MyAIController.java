@@ -7,12 +7,15 @@ import world.Car;
 import world.WorldSpatial;
 import utilities.Coordinate;
 import mycontroller.strategy.StrategyManager;
+import tiles.MapTile;
 
 import java.util.HashMap;
 
 public class MyAIController extends CarController{
 	
 	private StrategyManager stManager;
+	
+	private int wallSensitivity = 1;
 	
 	private Pathway pathway;
 	
@@ -136,13 +139,14 @@ public class MyAIController extends CarController{
 		int deltaY = nextDest.y - nowPos.y;
 		
 		WorldSpatial.Direction Ori = super.getOrientation();
-		System.out.println("now position: " + nowPos);
-		System.out.println(nextDest);
+		// System.out.println("now position: " + nowPos);
+		// System.out.println(nextDest);
 		String[] turningInfo = turnInfo.get(Ori);
 		boolean[] conditions = new boolean[] {deltaX > 0, deltaX < 0, deltaY > 0, deltaY < 0};
 		for(int index = 0; index < conditions.length; index ++) {
 			if(conditions[index]) {
 				doTurnInfo(turningInfo[index]);
+				break;
 			}
 		}
 		
@@ -153,17 +157,126 @@ public class MyAIController extends CarController{
 			applyReverseAcceleration();
 		}else if(info != FORWARD_MOVE) {
 			if(info == LEFT_TURN) {
+				if(checkWallAhead(super.getOrientation(), super.getView())) {
+					applyReverseAcceleration();
+					
+				}else {
+					applyForwardAcceleration();
+				}
 				super.turnLeft();
 				System.out.println("left hey");
-				applyForwardAcceleration();
 			}else {
+				if(checkWallAhead(super.getOrientation(), super.getView())) {
+					applyReverseAcceleration();
+					
+				}else {
+					applyForwardAcceleration();
+				}
 				super.turnRight();
 				System.out.println("right fuck");
-				applyForwardAcceleration();
 			}
 		}else {
 			applyForwardAcceleration();
 		}
+	}
+	
+	/**
+	 * Check if you have a wall in front of you!
+	 * @param orientation the orientation we are in based on WorldSpatial
+	 * @param currentView what the car can currently see
+	 * @return
+	 */
+	private boolean checkWallAhead(WorldSpatial.Direction orientation, HashMap<Coordinate, MapTile> currentView){
+		switch(orientation){
+		case EAST:
+			return checkEast(currentView);
+		case NORTH:
+			return checkNorth(currentView);
+		case SOUTH:
+			return checkSouth(currentView);
+		case WEST:
+			return checkWest(currentView);
+		default:
+			return false;
+		}
+	}
+	
+	/**
+	 * Check if the wall is on your left hand side given your orientation
+	 * @param orientation
+	 * @param currentView
+	 * @return
+	 */
+	private boolean checkFollowingWall(WorldSpatial.Direction orientation, HashMap<Coordinate, MapTile> currentView) {
+		
+		switch(orientation){
+		case EAST:
+			return checkNorth(currentView);
+		case NORTH:
+			return checkWest(currentView);
+		case SOUTH:
+			return checkEast(currentView);
+		case WEST:
+			return checkSouth(currentView);
+		default:
+			return false;
+		}	
+	}
+	
+	/**
+	 * Method below just iterates through the list and check in the correct coordinates.
+	 * i.e. Given your current position is 10,10
+	 * checkEast will check up to wallSensitivity amount of tiles to the right.
+	 * checkWest will check up to wallSensitivity amount of tiles to the left.
+	 * checkNorth will check up to wallSensitivity amount of tiles to the top.
+	 * checkSouth will check up to wallSensitivity amount of tiles below.
+	 */
+	public boolean checkEast(HashMap<Coordinate, MapTile> currentView){
+		// Check tiles to my right
+		Coordinate currentPosition = new Coordinate(getPosition());
+		for(int i = 0; i <= wallSensitivity; i++){
+			MapTile tile = currentView.get(new Coordinate(currentPosition.x+i, currentPosition.y));
+			if(tile.isType(MapTile.Type.WALL)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean checkWest(HashMap<Coordinate,MapTile> currentView){
+		// Check tiles to my left
+		Coordinate currentPosition = new Coordinate(getPosition());
+		for(int i = 0; i <= wallSensitivity; i++){
+			MapTile tile = currentView.get(new Coordinate(currentPosition.x-i, currentPosition.y));
+			if(tile.isType(MapTile.Type.WALL)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean checkNorth(HashMap<Coordinate,MapTile> currentView){
+		// Check tiles to towards the top
+		Coordinate currentPosition = new Coordinate(getPosition());
+		for(int i = 0; i <= wallSensitivity; i++){
+			MapTile tile = currentView.get(new Coordinate(currentPosition.x, currentPosition.y+i));
+			if(tile.isType(MapTile.Type.WALL)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean checkSouth(HashMap<Coordinate,MapTile> currentView){
+		// Check tiles towards the bottom
+		Coordinate currentPosition = new Coordinate(getPosition());
+		for(int i = 0; i <= wallSensitivity; i++){
+			MapTile tile = currentView.get(new Coordinate(currentPosition.x, currentPosition.y-i));
+			if(tile.isType(MapTile.Type.WALL)){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
