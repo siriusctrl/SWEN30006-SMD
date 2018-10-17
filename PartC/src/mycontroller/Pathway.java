@@ -65,6 +65,16 @@ public class Pathway implements Comparable<Pathway> {
 	}
 	
 	public int compareTo(Pathway pathway) {
+		if(cost == pathway.cost) {
+			return 1-1;
+		}
+		
+		if(cost == Integer.MAX_VALUE) {
+			return 1;
+		}
+		if(pathway.cost == Integer.MAX_VALUE) {
+			return -1;
+		}
 		return cost - pathway.cost;
 	}
 

@@ -19,7 +19,8 @@ import world.World;
 
 public class ExploreStrategy implements IEscapeStrategy{
 	
-	public static final int MAX_EXPLORE = 1;
+	public static final int MAX_EXPLORE = 5;
+	public static final int UNEXPLORE_THRESHOLD_S = 10;
 	Step<Coordinate[], Pathway> findRoute = Step.of(AStar::findShortestPath);
 	Step<Coordinate[], Pathway> simpleRoute = findRoute.add(SimplifyPath::simplifyPath); 
 	
@@ -69,13 +70,27 @@ public class ExploreStrategy implements IEscapeStrategy{
 		
 		System.out.println("current: " + currentEvaluating);
 		
+		ArrayList<Pathway> allPathway = new ArrayList<>();
+		
 		Pathway minPath = Pathway.getUnabletoReach();
 		int startIndex = 0, endIndex = MAX_EXPLORE;
 		for(int index = 0; index < currentEvaluating.size(); index ++) {
-			minPath = evaluateBest(currentEvaluating.subList(index, index + 1), myAIController, simpleRoute);
-			if(!Pathway.getUnabletoReach().equals(minPath)) {
-				break;
+			if(findExploreCount(currentEvaluating.get(index)) > UNEXPLORE_THRESHOLD_S) {
+				minPath = evaluateBest(currentEvaluating.subList(index, index + 1), myAIController, simpleRoute);
+				if(!Pathway.getUnabletoReach().equals(minPath)) {
+					allPathway.add(minPath);
+				}
+			}else {
+				minPath = evaluateBest(currentEvaluating.subList(index, index + 1), myAIController, simpleRoute);
+				if(!Pathway.getUnabletoReach().equals(minPath)) {
+					break;
+				}
 			}
+		}
+		
+		if(allPathway.size() > 0) {
+			Collections.sort(allPathway);
+			minPath = allPathway.get(0);
 		}
 		
 		return minPath;

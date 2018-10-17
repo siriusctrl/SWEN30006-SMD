@@ -98,7 +98,7 @@ public class StrategyManager {
 			return false;
 		}
 		currentStrategy = newStrategy;
-		System.out.println("Switch to " + strategyName);
+		// System.out.println("Switch to " + strategyName);
 		return true;
 	}
 }

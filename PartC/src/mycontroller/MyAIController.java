@@ -162,31 +162,34 @@ public class MyAIController extends CarController{
 	}
 	
 	public void doTurnInfo(String info) {
+		applyForwardAcceleration();
 		if(info == BKWARD_MOVE) {
+			super.applyBrake();
 			applyReverseAcceleration();
+			// super.turnLeft();
+			// applyReverseAcceleration();
 		}else if(info != FORWARD_MOVE) {
 			if(info == LEFT_TURN) {
+				super.applyBrake();
 				if(checkOriWallAhead(super.getOrientation(), super.getView())) {
 					applyReverseAcceleration();
 					
-				}else {
-					applyForwardAcceleration();
 				}
 				super.turnLeft();
 				// System.out.println("left hey");
 			}else {
+				super.applyBrake();
 				if(checkOriWallAhead(super.getOrientation(), super.getView())) {
 					applyReverseAcceleration();
 					
-				}else {
-					applyForwardAcceleration();
 				}
 				super.turnRight();
 				// System.out.println("right fuck");
 			}
-		}else {
-			applyForwardAcceleration();
 		}
+		/* else {
+			applyForwardAcceleration();
+		} */
 	}
 
 	

@@ -44,13 +44,19 @@ public interface IEscapeStrategy {
 			System.out.println(nodePath.getPath());
 			System.out.println("--------------------------------");
 			System.out.println(nodePath.getCost()); */
-			pathways.add(nodePath);
+			if(nodePath != null && nodePath.getPath().size() > 0) {
+				pathways.add(nodePath);
+			}
 		}
 		
-		Collections.sort(pathways);
+		// Collections.sort(pathways);
 		Pathway minPath = Pathway.getUnabletoReach();
+		System.out.println("nimade" + pathways);
 		if(pathways.size() > 0) {
+			Collections.sort(pathways);
 			minPath = pathways.get(pathways.size() - 1);
+			System.out.println(minPath.getCost());
+			System.out.println(Pathway.getUnabletoReach().equals(minPath));
 		}
 		
 		
