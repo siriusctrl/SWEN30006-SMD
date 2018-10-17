@@ -9,13 +9,13 @@ public class MapRecorder {
 	// cost to get through a normal road
 	public static final int ROAD_COST = 1;
 	// cost to get through a lava
-	public static final int LAVA_COST = 1000;
+	public static final int LAVA_COST = 5000;
 	// cost to get through a grass
 	public static final int GRASS_COST = 20;
 	// cost to get through a mud, wall or unexplored road is too high to go through
-	public static final int MUD_COST = 99999999;
-	public static final int WALL_COST = 99999999;
-	public static final int UNEXPLORED_COST = 99999999;
+	public static final int MUD_COST = Integer.MAX_VALUE;
+	public static final int WALL_COST = Integer.MAX_VALUE;
+	public static final int UNEXPLORED_COST = Integer.MAX_VALUE;
 	
 	// record all the Tiles of the map
 	public static MapTile[][] mapTiles = new MapTile[World.MAP_WIDTH][World.MAP_HEIGHT];

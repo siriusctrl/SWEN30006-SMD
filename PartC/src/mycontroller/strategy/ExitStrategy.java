@@ -34,8 +34,12 @@ public class ExitStrategy implements IEscapeStrategy {
 	}
 	
 	@Override
-	public boolean isTakeover(MyAIController myAIController) {
-		return false;
+	public boolean checkTakeover(IEscapeStrategy st, MyAIController myAIController) {
+		boolean check = true;
+		check = check && myAIController.getKeys().size() == myAIController.numKeys();
+		Pathway shortestPath = findDestination(myAIController);
+		check = check && !Pathway.getUnabletoReach().equals(shortestPath);
+		return check;
 	}
 
 }

@@ -60,8 +60,19 @@ public class HealStrategy implements IEscapeStrategy {
 	}
 	
 	@Override
-	public boolean isTakeover(MyAIController myAIController) {
-		return false;
+	public boolean checkTakeover(IEscapeStrategy st, MyAIController myAIController) {
+		boolean needHeal = true;
+		needHeal = needHeal && MapRecorder.healthLocations.size() > 0;
+		// needHeal = needHeal && myAIController.getHealth() < HealStrategy.HEALTH_THRESHOLD;
+		if(st == this) {
+			needHeal = !(myAIController.getHealth() == HealStrategy.HEALTH_LEAVE_AT);
+		}else {
+			needHeal = needHeal && myAIController.getHealth() < HealStrategy.HEALTH_THRESHOLD;
+		}
+		
+		// a star
+		
+		return needHeal;
 	}
 	
 }

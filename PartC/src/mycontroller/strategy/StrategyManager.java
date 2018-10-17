@@ -23,7 +23,7 @@ public class StrategyManager {
 	
 	public static final String EXPL_ST_NAME = "Explore";
 	
-	public static final String[] strategyNames = new String[] {HEAL_ST_NAME, KEY_ST_NAME, EXIT_ST_NAME};
+	public static final String[] strategyNames = new String[] {HEAL_ST_NAME, EXIT_ST_NAME, KEY_ST_NAME};
 	
 	public static final String DEFAULT_ST = KEY_ST_NAME;
 	
@@ -82,15 +82,13 @@ public class StrategyManager {
 			return takeover(DEFAULT_ST);
 		}
 		
-		if(checkHealTakeover(myAIController)) {
-			return takeover(HEAL_ST_NAME);
+		for(int index = 0; index < strategyNames.length; index ++) {
+			if(strategies.get(strategyNames[index]).checkTakeover(currentStrategy, myAIController)) {
+				return takeover(strategyNames[index]);
+			}
 		}
 		
-		if(myAIController.getKeys().size() == myAIController.numKeys()) {
-			return takeover(EXIT_ST_NAME);
-		}else{
-			return takeover(KEY_ST_NAME);
-		}
+		return false;
 
 	}
 	
@@ -102,21 +100,5 @@ public class StrategyManager {
 		currentStrategy = newStrategy;
 		System.out.println("Switch to " + strategyName);
 		return true;
-	}
-	
-	private boolean checkHealTakeover(MyAIController myAIController) {
-
-		boolean needHeal = true;
-		needHeal = needHeal && MapRecorder.healthLocations.size() > 0;
-		// needHeal = needHeal && myAIController.getHealth() < HealStrategy.HEALTH_THRESHOLD;
-		if(currentStrategy == strategies.get(HEAL_ST_NAME)) {
-			needHeal = !(myAIController.getHealth() == HealStrategy.HEALTH_LEAVE_AT);
-		}else {
-			needHeal = needHeal && myAIController.getHealth() < HealStrategy.HEALTH_THRESHOLD;
-		}
-		
-		// a star
-		
-		return needHeal;
 	}
 }

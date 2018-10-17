@@ -86,8 +86,8 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 	}
 	
 	@Override
-	public boolean isTakeover(MyAIController myAIController) {
-		return false;
+	public boolean checkTakeover(IEscapeStrategy st, MyAIController myAIController) {
+		return true;
 	}
 
 }

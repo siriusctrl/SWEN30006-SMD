@@ -65,4 +65,6 @@ public interface IEscapeStrategy {
 		
 		return minPath;
 	}
+	
+	boolean checkTakeover(IEscapeStrategy st, MyAIController myAIController);
 }
