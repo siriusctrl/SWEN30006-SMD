@@ -25,7 +25,7 @@ public class Pathway implements Comparable<Pathway> {
 	public static Pathway getUnabletoReach() {
 		if (cannot_reach_now == null) {
 			cannot_reach_now = new Pathway();
-			cannot_reach_now.cost = Integer.MAX_VALUE;
+			cannot_reach_now.cost = 9999;
 		}
 		return cannot_reach_now;
 	}
@@ -88,11 +88,11 @@ public class Pathway implements Comparable<Pathway> {
 			return 0;
 		}
 		
-		if(cost == Integer.MAX_VALUE) {
+		if(cost == 9999) {
 			return 1;
 		}
 		
-		if (pathway.cost == Integer.MAX_VALUE) {
+		if (pathway.cost == 9999) {
 			return -1;
 		}
 		
