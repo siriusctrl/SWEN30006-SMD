@@ -13,15 +13,35 @@ public class StrategyManager {
 	
 	private IEscapeStrategy currentStrategy = null;
 	private Map<String, IEscapeStrategy> strategies;
-
+	
+	/**
+	 * EXIT_ST_NAME is the name of ExitStrategy
+	 * */
 	public static final String EXIT_ST_NAME = "Exit";
+	
+	/**
+	 * HEAL_ST_NAME is the name of HealStrategy
+	 * */
 	public static final String HEAL_ST_NAME = "Heal";
+	
+	/**
+	 * KEY_ST_NAME is the name of KeyCollectionStrategy
+	 * */
 	public static final String KEY_ST_NAME = "KeyCollection";
 	
+	/**
+	 * EXPL_ST_NAME is the name of ExploreStrategy
+	 * */
 	public static final String EXPL_ST_NAME = "Explore";
 	
+	/**
+	 * collection of all strategy names, in the order of priority for checking takeover
+	 * */
 	public static final String[] strategyNames = new String[] {HEAL_ST_NAME, EXIT_ST_NAME, KEY_ST_NAME};
 	
+	/**
+	 * DEFAULT_ST is the default one
+	 * */
 	public static final String DEFAULT_ST = KEY_ST_NAME;
 	
 	/**
@@ -85,7 +105,7 @@ public class StrategyManager {
 
 	}
 	
-	// check if needs takeover
+	// check if after taking over, the strategy is changed
 	private boolean takeover(String strategyName) {
 		
 		IEscapeStrategy newStrategy = strategies.get(strategyName);

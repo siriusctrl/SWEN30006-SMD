@@ -25,11 +25,6 @@ public class ExitStrategy implements IEscapeStrategy {
 		ArrayList<Coordinate> finishCoords = MapRecorder.finishLocations;
 		return evaluateBest(finishCoords, myAIController, simpleRoute);
 	}
-
-	@Override
-	public boolean isFinished(MyAIController myAIController) {
-		return false;
-	}
 	
 	@Override
 	public boolean checkTakeover(IEscapeStrategy st, MyAIController myAIController) {

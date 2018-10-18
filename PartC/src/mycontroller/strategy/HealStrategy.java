@@ -17,10 +17,19 @@ import java.util.ArrayList;
  */
 public class HealStrategy implements IEscapeStrategy {
 	
+	/**
+	 * HEALTH_THRESHOLD decides when the car needs to get healing
+	 * */
 	public static final int HEALTH_THRESHOLD = 50;
 	
+	/**
+	 * HEALTH_LEAVE_AT decides when the car should leave healing area
+	 * */
 	public static final int HEALTH_LEAVE_AT = 100;
 	
+	/**
+	 * Name of the health trap
+	 * */
 	public static final String HEALTH_TRAP = "health";
 	
 	// initialise pipeline
@@ -32,6 +41,8 @@ public class HealStrategy implements IEscapeStrategy {
 		
 		ArrayList<Coordinate> AllLocations = new ArrayList<>();
 		AllLocations.addAll(MapRecorder.healthLocations);
+		
+		// if all keys found then check if the finish is closer
 		if(myAIController.getKeys().size() == myAIController.numKeys()) {
 			// collected all keys
 			AllLocations.addAll(MapRecorder.finishLocations);
@@ -41,6 +52,7 @@ public class HealStrategy implements IEscapeStrategy {
 		
 		MapTile curTile = MapRecorder.mapTiles[curPos.x][curPos.y];
 		
+		// stay if currently at the health tile
 		if(curTile.getType() == MapTile.Type.TRAP) {
 			if(((TrapTile)curTile).getTrap() == HEALTH_TRAP) {
 				return Pathway.getStays();
@@ -50,11 +62,6 @@ public class HealStrategy implements IEscapeStrategy {
 		Pathway newBest = evaluateBest(AllLocations, myAIController, simpleRoute); // new best path
 		
 		return newBest;
-	}
-
-	@Override
-	public boolean isFinished(MyAIController myAIController) {
-		return false;
 	}
 	
 	@Override

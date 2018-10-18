@@ -52,7 +52,7 @@ public class ExploreStrategy implements IEscapeStrategy{
 						exactRoads.add(new Coordinate(x,y));
 					}
 
-					if(mapTiles[x][y].getType() == MapTile.Type.ROAD) {
+					if(mapTiles[x][y].getType() == MapTile.Type.TRAP) {
 						roadsMaybe.add(new Coordinate(x,y));
 					}
 				}
@@ -117,11 +117,6 @@ public class ExploreStrategy implements IEscapeStrategy{
 		
 		return itCount;
 		
-	}
-	
-	@Override
-	public boolean isFinished(MyAIController myAIController) {
-		return false;
 	}
 	
 	@Override

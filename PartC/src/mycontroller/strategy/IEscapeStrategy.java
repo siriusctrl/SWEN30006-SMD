@@ -21,13 +21,6 @@ public interface IEscapeStrategy {
 	Pathway findDestination(MyAIController myAIController);
 	
 	/**
-	 * Check whether the strategy has finished it's work
-	 * @param myAIController the car controller
-	 * @return whether the strategy is finished 
-	 */
-	boolean isFinished(MyAIController myAIController);
-	
-	/**
 	 * Check if this strategy needs to takeover the control.
 	 * @param myAIController the car controller
 	 * @return whether takeover or not 

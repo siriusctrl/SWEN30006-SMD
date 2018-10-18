@@ -15,7 +15,7 @@ public class MapRecorder {
 	// cost to get through a lava
 	public static final int LAVA_COST = 200;
 	// cost to get through a grass
-	public static final int GRASS_COST = 20;
+	public static final int GRASS_COST = 2000;
 	// cost to get through a mud, wall or unexplored road is too high to go through
 	public static final int MUD_COST = Integer.MAX_VALUE;
 	public static final int WALL_COST = Integer.MAX_VALUE;
@@ -133,7 +133,7 @@ public class MapRecorder {
 				}
 			}
 		}
-		printMap();
+		// printMap();
 	}
 	
 	/**

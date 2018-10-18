@@ -80,6 +80,11 @@ public class MyAIController extends CarController{
 			pathway = stManager.findNewPathway(this);
 		}
 		
+		System.out.println(pathway.getPath());
+		System.out.println("now" + new Coordinate(super.getPosition()));
+		System.out.println("to" + nextDest);
+		
+		
 		// when pathway.desti is (-1, -1), stays the same
 		// only appears when standing in health area
 		if(pathway == null || Pathway.getStays().getDesti().equals(pathway.getDesti())) {
@@ -151,13 +156,14 @@ public class MyAIController extends CarController{
 				applyBrake();
 				if(checkOriWallAhead(getOrientation(), getView())) {
 					applyReverseAcceleration();
-					
+					// return;
 				}
 				turnLeft();
 			} else {
 				applyBrake();
 				if(checkOriWallAhead(getOrientation(), getView())) {
 					applyReverseAcceleration();
+					// return;
 					
 				}
 				turnRight();

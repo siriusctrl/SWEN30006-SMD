@@ -17,8 +17,6 @@ import mycontroller.pipeline.astar.AStar;
  */
 public class KeyCollectionStrategy implements IEscapeStrategy {
 	
-	public static final int MAX_EXPLORE = 5;
-	
 	// explore strategy
 	private IEscapeStrategy explore;
 	
@@ -57,7 +55,6 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 		
 		// if there's any key that is explored but not yet gotten
 		if(notYet.size() > 0) {
-			//MapRecorder.printMap();
 			ArrayList<Coordinate> allCoords = new ArrayList<>();
 			
 			for(int cordKey: notYet) {
@@ -72,14 +69,8 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 			}
 		}
 		
-		// if there's no key availble (including unreachable), explore vertices
+		// if there's no key available (including unreachable), explore vertices
 		return explore.findDestination(myAIController);
-	}
-	
-	
-	@Override
-	public boolean isFinished(MyAIController myAIController) {
-		return false;
 	}
 	
 	@Override
