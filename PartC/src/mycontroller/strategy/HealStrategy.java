@@ -12,6 +12,9 @@ import tiles.TrapTile;
 
 import java.util.ArrayList;
 
+/**
+ * Heal strategy for car
+ */
 public class HealStrategy implements IEscapeStrategy {
 	
 	public static final int HEALTH_THRESHOLD = 50;
@@ -20,19 +23,17 @@ public class HealStrategy implements IEscapeStrategy {
 	
 	public static final String HEALTH_TRAP = "health";
 	
-	public HealStrategy() {
-		
-	}
-	
-	//initialise pipeline
+	// initialise pipeline
 	Step<Coordinate[], Pathway> findRoute = Step.of(AStar::findShortestPath);
 	Step<Coordinate[], Pathway> simpleRoute = findRoute.add(SimplifyPath::simplifyPath); 
 	
 	@Override
 	public Pathway findDestination(MyAIController myAIController) {
+		
 		ArrayList<Coordinate> AllLocations = new ArrayList<>();
 		AllLocations.addAll(MapRecorder.healthLocations);
 		if(myAIController.getKeys().size() == myAIController.numKeys()) {
+			// collected all keys
 			AllLocations.addAll(MapRecorder.finishLocations);
 		}
 		
@@ -46,32 +47,27 @@ public class HealStrategy implements IEscapeStrategy {
 			}
 		}
 		
-		Pathway newBest = evaluateBest(AllLocations, myAIController, simpleRoute);
-		/* if(!Pathway.getUnabletoReach().equals(newBest) && newBest.getDesti().equals(new Coordinate(myAIController.getPosition()))) {
-			return Pathway.getStays();
-		} */
+		Pathway newBest = evaluateBest(AllLocations, myAIController, simpleRoute); // new best path
+		
 		return newBest;
 	}
 
 	@Override
 	public boolean isFinished(MyAIController myAIController) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	@Override
 	public boolean checkTakeover(IEscapeStrategy st, MyAIController myAIController) {
-		boolean needHeal = true;
-		needHeal = needHeal && MapRecorder.healthLocations.size() > 0;
-		// needHeal = needHeal && myAIController.getHealth() < HealStrategy.HEALTH_THRESHOLD;
+		
+		boolean needHeal = (MapRecorder.healthLocations.size() > 0);
+
 		if(st == this) {
 			needHeal = !(myAIController.getHealth() == HealStrategy.HEALTH_LEAVE_AT);
 		}else {
 			needHeal = needHeal && myAIController.getHealth() < HealStrategy.HEALTH_THRESHOLD;
 		}
-		
-		// a star
-		
+
 		return needHeal;
 	}
 	

@@ -8,16 +8,14 @@ import mycontroller.pipeline.SimplifyPath;
 import mycontroller.pipeline.Step;
 import mycontroller.pipeline.astar.AStar;
 
-import java.util.ArrayList;
-import java.util.Queue;
-import java.util.Collections;
+import java.util.*;
 
+/**
+ * Exit strategy for car
+ *
+ */
 public class ExitStrategy implements IEscapeStrategy {
-	
-	public ExitStrategy() {
-		
-	}
-	
+
 	// initialise the pipeline
 	Step<Coordinate[], Pathway> findRoute = Step.of(AStar::findShortestPath);
 	Step<Coordinate[], Pathway> simpleRoute = findRoute.add(SimplifyPath::simplifyPath); 
@@ -35,8 +33,7 @@ public class ExitStrategy implements IEscapeStrategy {
 	
 	@Override
 	public boolean checkTakeover(IEscapeStrategy st, MyAIController myAIController) {
-		boolean check = true;
-		check = check && myAIController.getKeys().size() == myAIController.numKeys();
+		boolean check = (myAIController.getKeys().size() == myAIController.numKeys());
 		Pathway shortestPath = findDestination(myAIController);
 		check = check && !Pathway.getUnabletoReach().equals(shortestPath);
 		return check;

@@ -1,6 +1,11 @@
 package mycontroller.strategy;
 
+/**
+ * Escape strategy factory
+ *
+ */
 public class EscapeStrategyFactory {
+	
 	private static EscapeStrategyFactory escapeStrategyFactory;
 	
 	/**
@@ -22,7 +27,6 @@ public class EscapeStrategyFactory {
 	public IEscapeStrategy getStrategy(String name) {
 		IEscapeStrategy strategy = null;
 		try {
-			System.out.println(name + "Strategy");
 			strategy = (IEscapeStrategy) Class.forName("mycontroller.strategy." + name + "Strategy").newInstance();
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 			e.printStackTrace();

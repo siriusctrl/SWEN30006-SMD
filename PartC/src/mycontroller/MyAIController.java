@@ -11,28 +11,26 @@ import tiles.MapTile;
 
 import java.util.HashMap;
 
+/**
+ * MyAIController class.
+ * Extends from CarController, contains our group's AI implementation.
+ */
 public class MyAIController extends CarController{
 	
 	private StrategyManager stManager;
-	
-	private int wallSensitivity = 1;
-	
+
 	private Pathway pathway;
-	
-	private Coordinate lastPosition;
 	private Coordinate nextDest = null;
-	
-	//current position
-	private Coordinate currPos;
-	
+
+	// information for turning
 	private static HashMap<WorldSpatial.Direction, String[]> turnInfo;
 	private static HashMap<WorldSpatial.Direction, int[]> coordInfo;
 	
+	// constants for turning information
 	public static final String LEFT_TURN = "lft";
 	public static final String RIGHT_TURN = "rgt";
 	public static final String FORWARD_MOVE = "fw";
 	public static final String BKWARD_MOVE = "bw";
-	
 	
 	public static final String[] NORTH_TURN = new String[] {RIGHT_TURN, LEFT_TURN, FORWARD_MOVE, BKWARD_MOVE};
 	public static final String[] SOUTH_TURN = new String[] {LEFT_TURN, RIGHT_TURN, BKWARD_MOVE, FORWARD_MOVE};
@@ -52,11 +50,11 @@ public class MyAIController extends CarController{
 	public MyAIController(Car car) {
 		super(car);
 
+		// load map and manager
 		MapRecorder.loadMap(super.getMap());
-
 		stManager = new StrategyManager();
 		
-		
+		// initialise turn info
 		turnInfo = new HashMap<>();
 		coordInfo = new HashMap<>();
 		
@@ -74,23 +72,12 @@ public class MyAIController extends CarController{
 
 	@Override
 	public void update() {
-		
-		/* super.turnLeft();
-		super.applyForwardAcceleration(); */
-		
-		// may check if the car moves first?
+
 		MapRecorder.updateCarView(super.getView());
 		
 		if(checkUpdateManager()) {
 			pathway = stManager.findNewPathway(this);
 		}
-		
-		/* if(pathway != null) {
-			for (Coordinate o : pathway.getPath()) {
-				
-				System.out.println(MapRecorder.mapTiles[o.x][o.y].getType());
-			}
-		} */
 		
 		// when pathway.desti is (-1, -1), stays the same
 		// only appears when standing in health area
@@ -99,11 +86,10 @@ public class MyAIController extends CarController{
 		} else if(pathway != null) {
 			navigation();
 		}
-		
-		// use pipeline to decide path.. drive on path..
-		// consider the situation when target hasn't changed
+
 	}
 	
+	// check update manager to see if action is needed
 	private boolean checkUpdateManager() {
 		return pathway == null || stManager.checkAndTakeover(this) || pathway.getPath().size() == 0;
 	}
@@ -112,18 +98,7 @@ public class MyAIController extends CarController{
 	 * Drive towards the next destination point
 	 */
 	public void navigation() {
-		currPos = new Coordinate(super.getPosition());
-		
-		/* if(nextDest.equals(new Coordinate(getPosition()))) {
-			pathway.removeNext();
-			if((nextDest = pathway.getNext()) != null) {
-				turn();
-			}else {
-				super.applyReverseAcceleration();
-				nextDest = null;
-			}
-		} */
-		
+
 		if(nextDest == null || nextDest.equals(new Coordinate(getPosition()))) {
 			pathway.removeNext();
 			if(pathway.getPath().size() > 0) {
@@ -134,13 +109,12 @@ public class MyAIController extends CarController{
 		
 		moveTo(nextDest);
 		
-		/* if(nextDest != null) {
-			moveTo(nextDest);
-		} */
-		
-		
 	}
 	
+	/**
+	 * Move to the destination
+	 * @param nextDest target coordination
+	 */
 	public void moveTo(Coordinate nextDest) {
 		Coordinate nowPos = new Coordinate(getPosition());
 		
@@ -148,8 +122,6 @@ public class MyAIController extends CarController{
 		int deltaY = nextDest.y - nowPos.y;
 		
 		WorldSpatial.Direction Ori = super.getOrientation();
-		System.out.println("now position: " + nowPos);
-		System.out.println("next position: " + nextDest);
 		String[] turningInfo = turnInfo.get(Ori);
 		boolean[] conditions = new boolean[] {deltaX > 0, deltaX < 0, deltaY > 0, deltaY < 0};
 		for(int index = 0; index < conditions.length; index ++) {
@@ -161,42 +133,49 @@ public class MyAIController extends CarController{
 		
 	}
 	
+	/**
+	 * Do turning given information stored
+	 * @param info turn info
+	 */
 	public void doTurnInfo(String info) {
+		
 		applyForwardAcceleration();
+		
 		if(info == BKWARD_MOVE) {
-			super.applyBrake();
+			// brake
+			applyBrake();
 			applyReverseAcceleration();
-			// super.turnLeft();
-			// applyReverseAcceleration();
-		}else if(info != FORWARD_MOVE) {
-			if(info == LEFT_TURN) {
-				super.applyBrake();
-				if(checkOriWallAhead(super.getOrientation(), super.getView())) {
+		} else if(info != FORWARD_MOVE) {
+			if (info == LEFT_TURN) {
+				applyBrake();
+				if(checkOriWallAhead(getOrientation(), getView())) {
 					applyReverseAcceleration();
 					
 				}
-				super.turnLeft();
-				// System.out.println("left hey");
-			}else {
-				super.applyBrake();
-				if(checkOriWallAhead(super.getOrientation(), super.getView())) {
+				turnLeft();
+			} else {
+				applyBrake();
+				if(checkOriWallAhead(getOrientation(), getView())) {
 					applyReverseAcceleration();
 					
 				}
-				super.turnRight();
-				// System.out.println("right fuck");
+				turnRight();
 			}
 		}
-		/* else {
-			applyForwardAcceleration();
-		} */
 	}
 
-	
+	/**
+	 * Check if there is wall ahead in current orientation
+	 * @param dre direction
+	 * @param currentView current view of car
+	 * @return true if there is wall ahead
+	 */
 	public boolean checkOriWallAhead(WorldSpatial.Direction dre, HashMap<Coordinate, MapTile> currentView) {
+		
 		Coordinate curPos = new Coordinate(getPosition());
 		int[] delta = coordInfo.get(dre);
-		MapTile tile = currentView.get(new Coordinate(curPos.x+delta[0], curPos.y+delta[1]));
+		MapTile tile = currentView.get(new Coordinate(curPos.x + delta[0], curPos.y + delta[1]));
+		
 		if(tile.isType(MapTile.Type.WALL)){
 			return true;
 		}

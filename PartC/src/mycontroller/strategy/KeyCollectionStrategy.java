@@ -3,24 +3,18 @@ package mycontroller.strategy;
 import mycontroller.MapRecorder;
 import mycontroller.MyAIController;
 import utilities.Coordinate;
-import world.Car;
-import world.World;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Set;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import mycontroller.Pathway;
-import tiles.MapTile;
-import mycontroller.TileStatus;
 import mycontroller.pipeline.SimplifyPath;
 import mycontroller.pipeline.Step;
 import mycontroller.pipeline.astar.AStar;
 
+/**
+ * Key collection strategy
+ *
+ */
 public class KeyCollectionStrategy implements IEscapeStrategy {
 	
 	public static final int MAX_EXPLORE = 5;
@@ -28,9 +22,13 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 	// explore strategy
 	private IEscapeStrategy explore;
 	
+	// initialise pipeline
 	Step<Coordinate[], Pathway> findRoute = Step.of(AStar::findShortestPath);
 	Step<Coordinate[], Pathway> simpleRoute = findRoute.add(SimplifyPath::simplifyPath);
 	
+	/**
+	 * Constructor
+	 */
 	public KeyCollectionStrategy() {
 		explore = EscapeStrategyFactory.getInstance().getStrategy(StrategyManager.EXPL_ST_NAME);
 	}
@@ -65,7 +63,6 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 				allCoords.addAll(keys.get(cordKey));
 			}
 			
-			System.out.println("all:" + allCoords);
 			Pathway bestOne = evaluateBest(allCoords, myAIController, simpleRoute);
 			
 			// if the there's a way to the key
@@ -81,7 +78,6 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 	
 	@Override
 	public boolean isFinished(MyAIController myAIController) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	

@@ -1,21 +1,18 @@
 package mycontroller.strategy;
 
 import java.util.Map;
-
 import java.util.HashMap;
-
-import mycontroller.MapRecorder;
 import mycontroller.MyAIController;
-
 import mycontroller.Pathway;
-import utilities.Coordinate;
 
+/**
+ * Manages all strategies, including takeover, altering and decision change
+ *
+ */
 public class StrategyManager {
 	
 	private IEscapeStrategy currentStrategy = null;
 	private Map<String, IEscapeStrategy> strategies;
-	
-	private Coordinate currentDest;
 
 	public static final String EXIT_ST_NAME = "Exit";
 	public static final String HEAL_ST_NAME = "Heal";
@@ -27,12 +24,17 @@ public class StrategyManager {
 	
 	public static final String DEFAULT_ST = KEY_ST_NAME;
 	
-	
+	/**
+	 * Constructor for StrategyManager
+	 */
 	public StrategyManager() {
 		strategies = new HashMap<String, IEscapeStrategy>();
 		initialize();
 	}
 	
+	/**
+	 * Initialize by putting strategies to a map
+	 */
 	public void initialize() {
 		for(String name: strategyNames) {
 			strategies.put(name, (IEscapeStrategy) EscapeStrategyFactory.getInstance().getStrategy(name));
@@ -45,7 +47,7 @@ public class StrategyManager {
 	 * Update strategy
 	 * 
 	 * @param myAIController MyAIController.
-	 * @return newPathway new pathway to get to the destination
+	 * @return new pathway to get to the destination
 	 * */
 	public Pathway findNewPathway(MyAIController myAIController) {
 		Pathway newPathway = currentStrategy.findDestination(myAIController);
@@ -56,17 +58,7 @@ public class StrategyManager {
 			takeover(DEFAULT_ST);
 			newPathway = currentStrategy.findDestination(myAIController);
 		}
-		
-		/* System.out.println("newPath=");
-		if(newPathway != null) {
-			for (Coordinate o : newPathway.getPath()) {
-				System.out.println("---");
-				System.out.println("x:" + o.x + "y:" + o.y);
-				System.out.println(MapRecorder.mapTiles[o.x][o.y].getType());
-				System.out.println("---");
-			}
-		} 
-		System.out.println("="); */
+
 		return newPathway;
 	}
 	
@@ -75,9 +67,10 @@ public class StrategyManager {
 	 * Check if currently need a strategy taking over.
 	 * 
 	 * @param myAIController MyAIController.
-	 * @return isStrategyChanged true if strategy is changed
+	 * @return true if strategy is changed
 	 * */
 	public boolean checkAndTakeover(MyAIController myAIController) {
+		
 		if(currentStrategy == null) {
 			return takeover(DEFAULT_ST);
 		}
@@ -92,13 +85,16 @@ public class StrategyManager {
 
 	}
 	
+	// check if needs takeover
 	private boolean takeover(String strategyName) {
+		
 		IEscapeStrategy newStrategy = strategies.get(strategyName);
+		
 		if(currentStrategy == newStrategy) {
 			return false;
 		}
 		currentStrategy = newStrategy;
-		// System.out.println("Switch to " + strategyName);
+		
 		return true;
 	}
 }
