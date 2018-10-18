@@ -67,32 +67,16 @@ public class ExploreStrategy implements IEscapeStrategy{
 		if (exactRoads.size() == 0) {
 			currentEvaluating = roadsMaybe;
 		}
-		
-		Collections.sort(currentEvaluating, (a,b)-> findExploreCount(b) - findExploreCount(a));
 
-		ArrayList<Pathway> allPathway = new ArrayList<>();
 		Pathway minPath = Pathway.getUnabletoReach();
 		
-		for(int index = 0; index < currentEvaluating.size(); index ++) {
-			if (findExploreCount(currentEvaluating.get(index)) > UNEXPLORE_THRESHOLD_S) {
-				// evaluation
-				minPath = evaluateBest(currentEvaluating.subList(index, index + 1), myAIController, simpleRoute);
-				if(!Pathway.getUnabletoReach().equals(minPath)) {
-					allPathway.add(minPath);
-				}
-			} else {
-				minPath = evaluateBest(currentEvaluating.subList(index, index + 1), myAIController, simpleRoute);
-				if(!Pathway.getUnabletoReach().equals(minPath)) {
-					break;
-				}
-			}
+		int i = findBestOne(currentEvaluating, myAIController, minPath);
+		
+		if(findExploreCount(currentEvaluating.get(i)) == 0) {
+			currentEvaluating = roadsMaybe;
+			findBestOne(currentEvaluating, myAIController, minPath);
 		}
 		
-		// obtain optimised route
-		if(allPathway.size() > 0) {
-			Collections.sort(allPathway);
-			minPath = allPathway.get(0);
-		}
 		
 		return minPath;
 	}
@@ -117,6 +101,45 @@ public class ExploreStrategy implements IEscapeStrategy{
 		
 		return itCount;
 		
+	}
+	
+	public int findBestOne(ArrayList<Coordinate> currentEvaluating, MyAIController myAIController, Pathway targetPath) {
+		Collections.sort(currentEvaluating, (a,b)-> findExploreCount(b) - findExploreCount(a));
+		
+		System.out.println("exact="+currentEvaluating);
+		
+		System.out.println(findExploreCount(currentEvaluating.get(1)));
+
+		ArrayList<Pathway> allPathway = new ArrayList<>();
+		Pathway minPath = Pathway.getUnabletoReach();
+		
+		int index = 0;
+		
+		for(; index < currentEvaluating.size(); index ++) {
+			if (findExploreCount(currentEvaluating.get(index)) > UNEXPLORE_THRESHOLD_S) {
+				// evaluation
+				minPath = evaluateBest(currentEvaluating.subList(index, index + 1), myAIController, simpleRoute);
+				if(!Pathway.getUnabletoReach().equals(minPath)) {
+					allPathway.add(minPath);
+				}
+			} else {
+				minPath = evaluateBest(currentEvaluating.subList(index, index + 1), myAIController, simpleRoute);
+				if(!Pathway.getUnabletoReach().equals(minPath)) {
+					break;
+				}
+			}
+		}
+		
+		if(allPathway.size() > 0) {
+			Collections.sort(allPathway);
+			minPath = allPathway.get(0);
+		}
+		
+		targetPath.setCost(minPath.getCost());
+		targetPath.setPath(minPath.getPath());
+		targetPath.setDesti(minPath.getDesti());
+		
+		return index;
 	}
 	
 	@Override
