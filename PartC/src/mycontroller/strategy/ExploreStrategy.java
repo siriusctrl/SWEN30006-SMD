@@ -68,14 +68,11 @@ public class ExploreStrategy implements IEscapeStrategy{
 			currentEvaluating = roadsMaybe;
 		}
 		
-		Collections.sort(currentEvaluating, new Comparator<Coordinate>() {
-			public int compare(Coordinate cr1, Coordinate cr2) {
-				return findExploreCount(cr2) - findExploreCount(cr1);
-			}
-		});
+		Collections.sort(currentEvaluating, (a,b)-> findExploreCount(b) - findExploreCount(a));
 
 		ArrayList<Pathway> allPathway = new ArrayList<>();
 		Pathway minPath = Pathway.getUnabletoReach();
+		
 		for(int index = 0; index < currentEvaluating.size(); index ++) {
 			if (findExploreCount(currentEvaluating.get(index)) > UNEXPLORE_THRESHOLD_S) {
 				// evaluation
