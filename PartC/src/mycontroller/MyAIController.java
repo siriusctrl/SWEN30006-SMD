@@ -22,10 +22,18 @@ public class MyAIController extends CarController{
 
 	private Pathway pathway;
 	private Coordinate nextDest = null;
+	private Coordinate nextNextDest = null;
+	private Coordinate previous = null;
+	
+	private boolean turnLate = false;
+	private boolean turnLateRev = false;
 
 	// information for turning
 	private static HashMap<WorldSpatial.Direction, String[]> turnInfo;
-	private static HashMap<WorldSpatial.Direction, int[]> coordInfo;
+	private static HashMap<WorldSpatial.Direction, int[][]> coordInfo;
+	private static HashMap<Integer, relativeDirections> direIndex;
+	
+	private enum relativeDirections {FRONT, BACK, LEFT, RIGHT, SHOULDNTHAPPEN};
 	
 	// constants for turning information
 	public static final String LEFT_TURN = "lft";
@@ -43,6 +51,12 @@ public class MyAIController extends CarController{
 	public static final int[] WEST_AHEAD = new int[] {-1, 0};
 	public static final int[] EAST_AHEAD = new int[] {1, 0};
 	
+	public static final int[][] NORTH_DIRE = new int[][] {{0, -1}, {0, 1}, {1, 0}, {-1, 0}};
+	public static final int[][] SOUTH_DIRE = new int[][] {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
+	public static final int[][] WEST_DIRE = new int[][] {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+	public static final int[][] EAST_DIRE = new int[][] {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+	
+	
 
 	/**
 	 * constructor for MyAIController
@@ -58,16 +72,23 @@ public class MyAIController extends CarController{
 		// initialise turn info
 		turnInfo = new HashMap<>();
 		coordInfo = new HashMap<>();
+		direIndex = new HashMap<>();
 		
 		turnInfo.put(WorldSpatial.Direction.NORTH, NORTH_TURN);
 		turnInfo.put(WorldSpatial.Direction.SOUTH, SOUTH_TURN);
 		turnInfo.put(WorldSpatial.Direction.WEST, WEST_TURN);
 		turnInfo.put(WorldSpatial.Direction.EAST, EAST_TURN);
 		
-		coordInfo.put(WorldSpatial.Direction.NORTH, NORTH_AHEAD);
-		coordInfo.put(WorldSpatial.Direction.SOUTH, SOUTH_AHEAD);
-		coordInfo.put(WorldSpatial.Direction.WEST, WEST_AHEAD);
-		coordInfo.put(WorldSpatial.Direction.EAST, EAST_AHEAD);
+		coordInfo.put(WorldSpatial.Direction.NORTH, NORTH_DIRE);
+		coordInfo.put(WorldSpatial.Direction.SOUTH, SOUTH_DIRE);
+		coordInfo.put(WorldSpatial.Direction.WEST, WEST_DIRE);
+		coordInfo.put(WorldSpatial.Direction.EAST, EAST_DIRE);
+		
+		direIndex.put(0, relativeDirections.FRONT);
+		direIndex.put(1, relativeDirections.BACK);
+		direIndex.put(2, relativeDirections.LEFT);
+		direIndex.put(3, relativeDirections.RIGHT);
+		
 		
 	}
 
@@ -90,7 +111,27 @@ public class MyAIController extends CarController{
 		if(pathway == null || Pathway.getStays().getDesti().equals(pathway.getDesti())) {
 			// stays
 		} else if(pathway != null) {
-			navigation();
+			if(nextDest == null) {
+				nextDest = pathway.removeNext();
+			}
+			
+			Coordinate now = new Coordinate(getPosition());
+			
+			if(nextNextDest != null && now.equals(nextDest)) {
+				previous = nextDest;
+				nextDest = nextNextDest;
+				nextNextDest = null;
+			}
+			
+			if(nextNextDest == null) {
+				if(pathway.getPath().size() > 0) {
+					nextNextDest = pathway.removeNext();
+				}else {
+					return;
+				}
+			}
+			
+			move();
 		}
 
 	}
@@ -99,6 +140,145 @@ public class MyAIController extends CarController{
 	private boolean checkUpdateManager() {
 		return pathway == null || stManager.checkAndTakeover(this) || pathway.getPath().size() == 0;
 	}
+	
+	
+	private relativeDirections directionBFromA(WorldSpatial.Direction ori, Coordinate a, Coordinate b) {
+		int[][] dires = coordInfo.get(ori);
+		for(int index = 0; index < dires.length; index ++) {
+			if(Math.signum((double)(a.x - b.x)) == (double)(dires[index][0]) &&
+					Math.signum((double)(a.y - b.y)) == (double)(dires[index][1])) {
+				return direIndex.get(index);
+			}
+		}
+		
+		return relativeDirections.SHOULDNTHAPPEN;
+		
+	}
+
+	
+	public void doNormalMove(Coordinate nextDest, Coordinate nextNextDest) {
+		Coordinate now = new Coordinate(getPosition());
+		WorldSpatial.Direction ori = super.getOrientation();
+		
+		relativeDirections dire = directionBFromA(ori, nextDest, now);
+		
+		if(dire == relativeDirections.BACK) {
+			applyForwardAcceleration();
+		}else if(dire == relativeDirections.FRONT) {
+			applyReverseAcceleration();
+		}
+	}
+	
+	public void doTurnBefore(Coordinate nextDest, Coordinate nextNextDest, boolean reverse) {
+		WorldSpatial.Direction ori = super.getOrientation();
+		
+		relativeDirections dire = directionBFromA(ori, nextDest, nextNextDest);
+		
+		if(reverse) {
+			if(dire == relativeDirections.LEFT) {
+				turnRight();
+			}else if(dire == relativeDirections.RIGHT) {
+				turnLeft();
+			}
+		}else {
+			if(dire == relativeDirections.LEFT) {
+				turnLeft();
+			}else if(dire == relativeDirections.RIGHT) {
+				turnRight();
+			}
+		}
+	}
+	
+	public void doTurnLate(Coordinate nextDest, Coordinate nextNextDest) {
+		
+		WorldSpatial.Direction ori = super.getOrientation();
+		
+		Coordinate now = new Coordinate(getPosition());
+		int[][] dires = coordInfo.get(ori);
+		int[] frontMinus = dires[0];
+		
+		int backX = now.x + frontMinus[0];
+		int backY = now.y + frontMinus[1];
+		int frontX = now.x - frontMinus[0];
+		int frontY = now.y - frontMinus[1];
+		
+		MapTile backT = MapRecorder.mapTiles[backX][backY];
+		TileStatus backS = MapRecorder.mapStatus[backX][backY];
+		MapTile frontT = MapRecorder.mapTiles[frontX][frontY];
+		TileStatus frontS = MapRecorder.mapStatus[frontX][frontY];
+		
+		if(backS == TileStatus.EXPLORED && backT.getType() == MapTile.Type.ROAD) {
+			applyReverseAcceleration();
+			turnLateRev = false;
+		}else if (frontS == TileStatus.EXPLORED && frontT.getType() == MapTile.Type.ROAD) {
+			applyForwardAcceleration();
+			turnLateRev  = true;
+		}
+		
+		turnLate = true;
+		
+		return;
+		
+	}
+	
+	public void move() {
+		if(turnLate) {
+			doNormalMove(previous, nextDest);
+			doTurnBefore(previous, nextDest, turnLateRev);
+			turnLate = false;
+			return;
+		}
+		
+		WorldSpatial.Direction ori = super.getOrientation();
+		Coordinate now = new Coordinate(getPosition());
+		int[][] dires = coordInfo.get(ori);
+		int[] frontMinus = dires[0];
+			
+		relativeDirections dire = directionBFromA(ori, nextDest, now);
+			
+		if(dire == relativeDirections.LEFT || dire == relativeDirections.RIGHT) {
+			doTurnLate(nextDest, nextNextDest);
+			return;
+		}
+		
+		int aheadX = now.x - frontMinus[0];
+		int aheadY = now.y - frontMinus[1];
+		int backX = now.x + frontMinus[0];
+		int backY = now.y + frontMinus[1];
+		
+		doNormalMove(nextDest, nextNextDest);
+		
+		if(aheadX == nextDest.x && aheadY == nextDest.y) {
+			doTurnBefore(nextDest, nextNextDest, false);
+		}else if(backX == nextDest.x && backY == nextDest.y) {
+			doTurnBefore(nextDest, nextNextDest, true);
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	/**
 	 * Drive towards the next destination point
@@ -116,6 +296,18 @@ public class MyAIController extends CarController{
 		moveTo(nextDest);
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	/**
 	 * Move to the destination
@@ -178,15 +370,7 @@ public class MyAIController extends CarController{
 	 * @return true if there is wall ahead
 	 */
 	public boolean checkOriWallAhead(WorldSpatial.Direction dre, HashMap<Coordinate, MapTile> currentView) {
-		
-		Coordinate curPos = new Coordinate(getPosition());
-		int[] delta = coordInfo.get(dre);
-		MapTile tile = currentView.get(new Coordinate(curPos.x + delta[0], curPos.y + delta[1]));
-		
-		if(tile.isType(MapTile.Type.WALL) || tile instanceof MudTrap){
-			return true;
-		}
-		return false;
+		return true;
 		
 	}
 
