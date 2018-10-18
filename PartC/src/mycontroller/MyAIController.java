@@ -148,8 +148,8 @@ public class MyAIController extends CarController{
 		int deltaY = nextDest.y - nowPos.y;
 		
 		WorldSpatial.Direction Ori = super.getOrientation();
-		// System.out.println("now position: " + nowPos);
-		// System.out.println(nextDest);
+		System.out.println("now position: " + nowPos);
+		System.out.println("next position: " + nextDest);
 		String[] turningInfo = turnInfo.get(Ori);
 		boolean[] conditions = new boolean[] {deltaX > 0, deltaX < 0, deltaY > 0, deltaY < 0};
 		for(int index = 0; index < conditions.length; index ++) {
