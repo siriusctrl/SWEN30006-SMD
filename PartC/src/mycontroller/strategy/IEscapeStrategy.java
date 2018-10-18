@@ -60,7 +60,7 @@ public interface IEscapeStrategy {
 		Pathway minPath = Pathway.getUnabletoReach();
 		if(pathways.size() > 0) {
 			Collections.sort(pathways);
-			minPath = pathways.get(pathways.size() - 1);
+			minPath = pathways.get(0);
 		}
 		
 		// if the shortest path's cost is more than the max cost, then the path is unreachable now.
