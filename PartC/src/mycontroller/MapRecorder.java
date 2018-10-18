@@ -159,6 +159,8 @@ public class MapRecorder {
 				if(grid instanceof LavaTrap) {
 					if(((LavaTrap) grid).getKey() > 0) {
 						System.out.print( "Key! ");
+					}else {
+						System.out.print("Lava! ");
 					}
 				}else if(grid instanceof HealthTrap) {
 					System.out.print("Health* ");
