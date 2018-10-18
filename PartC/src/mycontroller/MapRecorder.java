@@ -5,6 +5,10 @@ import world.World;
 
 import java.util.*;
 
+/**
+ * The class to record knowledge of the map, including map tile, map status and cost to 
+ * step on each tile.
+ */
 public class MapRecorder {
 	// cost to get through a normal road
 	public static final int ROAD_COST = 1;
@@ -64,6 +68,7 @@ public class MapRecorder {
 		traverseMap(start.x, start.y);
 	}
 	
+	// BFS traversal to record cost and map status
 	private static void traverseMap(int x, int y) {
 		if (!xyInBound(x, y)) {
 			return;
@@ -104,6 +109,7 @@ public class MapRecorder {
 				mapTiles[c.x][c.y] = m;
 				mapStatus[c.x][c.y] = TileStatus.EXPLORED;
 				
+				// different traps have different costs and behave differently
 				if (m instanceof LavaTrap) {
 					LavaTrap trap = (LavaTrap) m;
 					cost[c.x][c.y] = LAVA_COST;
@@ -129,6 +135,12 @@ public class MapRecorder {
 		}
 	}
 	
+	/**
+	 * check if the coordinate formed by x and y is in bound of map
+	 * @param x x-coordinate
+	 * @param y y-coordinate
+	 * @return true if (x, y) is in the map
+	 */
 	public static boolean xyInBound(int x, int y) {
 		if (x < 0 || x >= World.MAP_WIDTH || y < 0 || y >= World.MAP_HEIGHT) {
 			return false;
