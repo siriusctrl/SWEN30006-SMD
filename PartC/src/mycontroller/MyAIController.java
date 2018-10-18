@@ -8,6 +8,7 @@ import world.WorldSpatial;
 import utilities.Coordinate;
 import mycontroller.strategy.StrategyManager;
 import tiles.MapTile;
+import tiles.MudTrap;
 
 import java.util.HashMap;
 
@@ -176,7 +177,7 @@ public class MyAIController extends CarController{
 		int[] delta = coordInfo.get(dre);
 		MapTile tile = currentView.get(new Coordinate(curPos.x + delta[0], curPos.y + delta[1]));
 		
-		if(tile.isType(MapTile.Type.WALL)){
+		if(tile.isType(MapTile.Type.WALL) || tile instanceof MudTrap){
 			return true;
 		}
 		return false;
