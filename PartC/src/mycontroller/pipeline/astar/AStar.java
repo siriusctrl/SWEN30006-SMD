@@ -17,8 +17,7 @@ public class AStar {
 
 	/**
 	 * A Star algorithm to find pathway between start and end coordinate.
-	 * @param start start coordinate
-	 * @param end end coordinate
+	 * @param coors start coordinate and end coordinate
 	 * @return pathway from start to end
 	 */
 	public static Pathway findShortestPath(Coordinate[] coors){
@@ -42,9 +41,14 @@ public class AStar {
         return path;
 	}
 	
-	// core function for A Star algorithm path calculation.
-	// make use of openQueue and closeSet for waiting to visit and already visited nodes
-	private static List<Node> calculatePath(Coordinate start, Coordinate end) {
+	/**
+	 * Core function for A Star algorithm path calculation.
+	 * Made use of openQueue and closeSet for waiting to visit and already visited nodes.
+	 * @param start start coordinate
+	 * @param end target coordinate
+	 * @return list of path nodes
+	 */
+	public static List<Node> calculatePath(Coordinate start, Coordinate end) {
 		
 		Node begin = nodes[start.x][start.y];
 		Node target = nodes[end.x][end.y];
@@ -137,10 +141,18 @@ public class AStar {
         
         Coordinate coord = node.coordinate;
 
-        if (coord.y < World.MAP_HEIGHT - 1) neighbours.add(nodes[coord.x][coord.y + 1]); // up
-        if (coord.y > 0) neighbours.add(nodes[coord.x][coord.y - 1]); // down
-        if (coord.x > 0) neighbours.add(nodes[coord.x - 1][coord.y]); // left
-        if (coord.x < World.MAP_WIDTH - 1) neighbours.add(nodes[coord.x + 1][coord.y]); // right
+        if (coord.y < World.MAP_HEIGHT - 1) {
+        		neighbours.add(nodes[coord.x][coord.y + 1]); // up
+        }
+        if (coord.y > 0) {
+        		neighbours.add(nodes[coord.x][coord.y - 1]); // down
+        }
+        if (coord.x > 0) {
+        		neighbours.add(nodes[coord.x - 1][coord.y]); // left
+        }
+        if (coord.x < World.MAP_WIDTH - 1) {
+        		neighbours.add(nodes[coord.x + 1][coord.y]); // right
+        }
 
         return neighbours;
     }

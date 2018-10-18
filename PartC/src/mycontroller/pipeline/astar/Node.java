@@ -18,32 +18,15 @@ public class Node implements Comparable<Node> {
      *
      * @param x x coordinate
      * @param y y coordinate
-     * @param walkCost cost of walking on tile, -1 means not walkable
+     * @param walkCost cost of walking on tile
      */
     public Node(int x, int y, int walkCost) {
         this.coordinate = new Coordinate(x, y);
         this.walkCost = walkCost;
     }
-
-    /**
-     * Constructor for Node, overload
-     *
-     * @param coordinate coordinate of node
-     * @param parent parent node
-     * @param gCost cost to this point
-     * @param hCost heuristic cost to finish point
-     * @param walkCost cost of walking on tile, -1 means not walkable
-     */
-    public Node(Coordinate coordinate, Node parent, int gCost, int hCost, int walkCost) {
-        this.coordinate = coordinate;
-        this.parent = parent;
-        this.gCost = gCost;
-        this.hCost = hCost;
-        this.walkCost = walkCost;
-    }
     
     /**
-     * get total cost
+     * Get total cost, including previous and heuristic costs
      * @return total cost
      */
     public int getTotalCost() {

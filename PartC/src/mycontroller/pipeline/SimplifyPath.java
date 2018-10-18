@@ -4,32 +4,43 @@ import java.util.*;
 import mycontroller.Pathway;
 import utilities.Coordinate;
 
+/**
+ * Path simplification in pipeline.
+ * Used to simplify path, e.g. 2,2->2,3->2,4->2,5->3,5->4,5 will be simplified to 
+ * 2,2->2,5->4,5
+ */
 public class SimplifyPath {
 
+	/**
+	 * Core step for path simplification
+	 * @param path the pathway given
+	 * @return simplified pathway, only turning points inside
+	 */
 	public static Pathway simplifyPath(Pathway path) {
+		
 		if(path == null || path.getPath().size() == 0) {
 			return path;
 		}
 		
 		Coordinate[] coors = new Coordinate[path.getPath().size()];
-		// System.out.println(path.getPath().size());
 		Stack<Coordinate> newPath = new Stack<>();
 		int pos = 0;
 		int now = 0;
 		
-		for(int i=0;i<coors.length;i++) {
-			// System.out.println(path.getPath().get(i));
+		for (int i = 0; i < coors.length; i++) {
 			coors[i] = path.getPath().get(i);
 		}
 		
+		// push new path
 		newPath.push(coors[pos]);
 		now++;
 		
+		// for points on straight line, only record start and finish coordinates
 		while(now < coors.length - 1) {
-			if(OnStraightLine(coors[pos],coors[now]) && OnStraightLine(coors[pos], coors[now+1])) {
+			if(OnStraightLine(coors[pos], coors[now]) && OnStraightLine(coors[pos], coors[now + 1])) {
 				coors[now] = null;
 				now++;
-			}else {
+			} else {
 				pos = now;
 				now++;
 			}
@@ -50,12 +61,12 @@ public class SimplifyPath {
 	 * Test if the two coordinate are on a straight line.
 	 * @param c1 a coordinate
 	 * @param c2 another coordinate
-	 * @return true, if they one a straight line.
+	 * @return true, if they form a straight line.
 	 */
 	public static boolean OnStraightLine(Coordinate c1, Coordinate c2) {
-		if((c1.x - c2.x == 0) || c1.y - c2.y == 0 ) {
+		if ((c1.x - c2.x == 0) || c1.y - c2.y == 0 ) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
