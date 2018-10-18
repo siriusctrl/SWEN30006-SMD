@@ -15,6 +15,7 @@ import tiles.MapTile;
 import utilities.Coordinate;
 import world.Car;
 import world.World;
+import tiles.TrapTile;
 
 /**
  * Strategy for exploration of map
@@ -23,6 +24,8 @@ public class ExploreStrategy implements IEscapeStrategy{
 	
 	public static final int MAX_EXPLORE = 5;
 	public static final int UNEXPLORE_THRESHOLD_S = 10;
+	
+	public static final String LAVA_NAME = "lava";
 	
 	// initialise pipeline
 	Step<Coordinate[], Pathway> findRoute = Step.of(AStar::findShortestPath);
@@ -52,7 +55,7 @@ public class ExploreStrategy implements IEscapeStrategy{
 						exactRoads.add(new Coordinate(x,y));
 					}
 
-					if(mapTiles[x][y].getType() == MapTile.Type.TRAP) {
+					if(mapTiles[x][y].getType() == MapTile.Type.TRAP && ((TrapTile)mapTiles[x][y]).getTrap() == LAVA_NAME) {
 						roadsMaybe.add(new Coordinate(x,y));
 					}
 				}
