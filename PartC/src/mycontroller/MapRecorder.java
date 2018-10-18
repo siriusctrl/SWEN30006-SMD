@@ -133,6 +133,7 @@ public class MapRecorder {
 				}
 			}
 		}
+		printMap();
 	}
 	
 	/**
@@ -148,4 +149,30 @@ public class MapRecorder {
 		return true;
 	}
 
+	public static void printMap() {
+		int w = World.MAP_WIDTH;
+		int h = World.MAP_HEIGHT;
+		
+		for(int i = 0; i < h; i++) {
+			for (int j=0; j < w; j++) {
+				MapTile grid = MapRecorder.mapTiles[j][h-i-1];
+				if(grid instanceof LavaTrap) {
+					if(((LavaTrap) grid).getKey() > 0) {
+						System.out.print( "Key! ");
+					}
+				}else if(grid instanceof HealthTrap) {
+					System.out.print("Health* ");
+				}else if(grid instanceof MudTrap){
+					System.out.print("Mud+ ");
+				}else if(grid instanceof GrassTrap){
+					System.out.print("Grass- ");
+				}else {
+					System.out.print(grid.getType() + " ");
+				}
+			}
+			System.out.println();
+		}
+		System.out.println("------------------------");
+	}
+	
 }

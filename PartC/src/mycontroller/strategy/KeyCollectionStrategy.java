@@ -57,6 +57,7 @@ public class KeyCollectionStrategy implements IEscapeStrategy {
 		
 		// if there's any key that is explored but not yet gotten
 		if(notYet.size() > 0) {
+			//MapRecorder.printMap();
 			ArrayList<Coordinate> allCoords = new ArrayList<>();
 			
 			for(int cordKey: notYet) {
