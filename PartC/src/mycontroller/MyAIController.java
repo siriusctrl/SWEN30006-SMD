@@ -1,7 +1,7 @@
 package mycontroller;
 
 import mycontroller.Pathway;
-
+import mycontroller.pipeline.SimplifyPath;
 import controller.CarController;
 import world.Car;
 import world.WorldSpatial;
@@ -21,7 +21,7 @@ public class MyAIController extends CarController{
 	private StrategyManager stManager;
 
 	private Pathway pathway;
-	private Coordinate nextDest = null;
+	public Coordinate nextDest = new Coordinate(super.getPosition());
 
 	// information for turning
 	private static HashMap<WorldSpatial.Direction, String[]> turnInfo;
@@ -42,6 +42,8 @@ public class MyAIController extends CarController{
 	public static final int[] SOUTH_AHEAD = new int[] {0, -1};
 	public static final int[] WEST_AHEAD = new int[] {-1, 0};
 	public static final int[] EAST_AHEAD = new int[] {1, 0};
+	
+	private static boolean finish = true;
 	
 
 	/**
@@ -76,14 +78,17 @@ public class MyAIController extends CarController{
 
 		MapRecorder.updateCarView(super.getView());
 		
-		if(checkUpdateManager()) {
+		if((finish && checkUpdateManager())) {
 			pathway = stManager.findNewPathway(this);
+			if(nextDest == pathway.getNext()) {
+				pathway.removeNext();
+			}
+			//pathway.getPath().push(nextDest);
+			//SimplifyPath.simplifyPath(pathway);
 		}
 		
 		System.out.println(pathway.getPath());
-		System.out.println("now" + new Coordinate(super.getPosition()));
-		System.out.println("to" + nextDest);
-		
+		System.out.println("now: " + new Coordinate(super.getPosition()));		
 		
 		// when pathway.desti is (-1, -1), stays the same
 		// only appears when standing in health area
@@ -104,28 +109,62 @@ public class MyAIController extends CarController{
 	 * Drive towards the next destination point
 	 */
 	public void navigation() {
+		finish = false;
 
-		if(nextDest == null || nextDest.equals(new Coordinate(getPosition()))) {
-			pathway.removeNext();
+		if(nextDest == null || nextDest.equals(new Coordinate(getPosition())) ) {
+			Coordinate temp = null;
+			nextDest = pathway.removeNext();
+			System.out.println("to: " + nextDest);
+			
 			if(pathway.getPath().size() > 0) {
-				nextDest = pathway.getNext();
+				temp = pathway.getNext();
 			}
-			applyBrake();
+			
+			if(temp == null) {
+				// means their is no furthur destination after nextDest
+				// do something
+				moveTo(null, false);
+			}else {
+				// means their is a coor after nextDest
+				// compare their relative ori
+				// do something
+				if(Math.abs(temp.x - nextDest.x) == 1 || Math.abs(temp.y - nextDest.y) == 1) {
+					moveTo(temp, true);
+				}else {
+					moveTo(temp, false);
+				}
+			}
+		}else {
+			Coordinate now = new Coordinate(super.getPosition());
+			
+			if(Math.abs(now.x - nextDest.x) == 2 || Math.abs(now.y - nextDest.y) == 2) {
+				System.out.println("*********************************");
+				finish = true;
+			}
+			
+			System.out.println("previous to: " + nextDest);
+			moveTo(null, false);
 		}
-		
-		moveTo(nextDest);
-		
 	}
 	
 	/**
 	 * Move to the destination
 	 * @param nextDest target coordination
 	 */
-	public void moveTo(Coordinate nextDest) {
-		Coordinate nowPos = new Coordinate(getPosition());
+	public void moveTo(Coordinate nextDest, boolean needTurn) {
+		Coordinate nowPos = null;
+		Coordinate target = null;
 		
-		int deltaX = nextDest.x - nowPos.x;
-		int deltaY = nextDest.y - nowPos.y;
+		if (needTurn == true) {
+			nowPos = this.nextDest;
+			target = nextDest;
+		}else {
+			nowPos = new Coordinate(super.getPosition());
+			target = this.nextDest;
+		}
+		
+		int deltaX = target.x - nowPos.x;
+		int deltaY = target.y - nowPos.y;
 		
 		WorldSpatial.Direction Ori = super.getOrientation();
 		String[] turningInfo = turnInfo.get(Ori);
@@ -150,6 +189,7 @@ public class MyAIController extends CarController{
 			// brake
 			applyBrake();
 			applyReverseAcceleration();
+			
 		} else if(info != FORWARD_MOVE) {
 			if (info == LEFT_TURN) {
 				applyBrake();
@@ -188,5 +228,6 @@ public class MyAIController extends CarController{
 		return false;
 		
 	}
-
+	
 }
+

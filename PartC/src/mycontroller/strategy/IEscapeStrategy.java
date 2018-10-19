@@ -40,7 +40,7 @@ public interface IEscapeStrategy {
 		
 		// all pathways
 		ArrayList<Pathway> pathways = new ArrayList<>();
-		Coordinate startNode = new Coordinate(myAIController.getPosition());
+		Coordinate startNode = new Coordinate(myAIController.nextDest.x, myAIController.nextDest.y);
 		
 		// for all coordinates, find their shortest path to current car
 		for(Coordinate cr: coords) {
