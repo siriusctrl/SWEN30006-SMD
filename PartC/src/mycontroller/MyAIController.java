@@ -78,9 +78,14 @@ public class MyAIController extends CarController{
 
 		MapRecorder.updateCarView(super.getView());
 		
-		if((finish && checkUpdateManager())) {
+		//System.out.println("isfinish? " + finish);
+		
+		if(checkUpdateManager() || pathway.getPath().size() == 0) {
 			pathway = stManager.findNewPathway(this);
-			if(nextDest == pathway.getNext()) {
+			System.out.println("new path: " + pathway.getPath());
+			
+			
+			if(nextDest.equals(pathway.getNext())) {
 				pathway.removeNext();
 			}
 			//pathway.getPath().push(nextDest);
@@ -109,16 +114,16 @@ public class MyAIController extends CarController{
 	 * Drive towards the next destination point
 	 */
 	public void navigation() {
-		finish = false;
 
-		if(nextDest == null || nextDest.equals(new Coordinate(getPosition())) ) {
+		if(nextDest.equals(new Coordinate(getPosition())) ) {
 			Coordinate temp = null;
 			nextDest = pathway.removeNext();
-			System.out.println("to: " + nextDest);
 			
 			if(pathway.getPath().size() > 0) {
 				temp = pathway.getNext();
 			}
+			
+			System.out.println("target :" + nextDest + " turn to: " + temp + " the stack " + pathway.getPath());
 			
 			if(temp == null) {
 				// means their is no furthur destination after nextDest
@@ -136,13 +141,7 @@ public class MyAIController extends CarController{
 			}
 		}else {
 			Coordinate now = new Coordinate(super.getPosition());
-			
-			if(Math.abs(now.x - nextDest.x) == 2 || Math.abs(now.y - nextDest.y) == 2) {
-				System.out.println("*********************************");
-				finish = true;
-			}
-			
-			System.out.println("previous to: " + nextDest);
+			System.out.println("keep going to: " + nextDest);
 			moveTo(null, false);
 		}
 	}
